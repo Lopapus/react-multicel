@@ -4,14 +4,16 @@ import {
   Route
 } from 'react-router-dom'
 import { Home } from './pages'
+import Workspace from './layouts/Admin/Workspace'
 
 const Routing = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<div>Pagina /</div>} />
-        <Route path="/" >
-          <Route path="home" element={<Home />} />
+        <Route path="/" element={<Workspace />} >
+          <Route path="dashboard" element={<Home />} />
+          <Route path="template" />
+          <Route path=":page" element={<Home />} />
         </Route>
       </Routes>
     </Router>
