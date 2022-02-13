@@ -3,7 +3,7 @@ const Login = () => {
     <main>
 
       {/* <!-- Section --> */}
-      <section className="vh-lg-100 mt-5 mt-lg-0 bg-soft d-flex align-items-center">
+      <section className="vh-lg-100 mt-6 mt-lg-0 bg-soft d-flex align-items-center">
         <div className="container">
           {/* <p className="text-center">
             <a href="../dashboard/dashboard.html" className="d-flex align-items-center justify-content-center">
@@ -15,8 +15,8 @@ const Login = () => {
             <div className="col-12 d-flex align-items-center justify-content-center">
               <div className="bg-white shadow border-0 rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                 <div className="text-center text-md-center mb-4 mt-md-0">
+                  {/* <h1 className="mb-0 h3">Ingreso al sistema</h1> */}
                   <img src="https://pngimg.com/uploads/padlock/padlock_PNG9407.png" width={100} />
-                  <h1 className="mb-0 h3">Ingreso al sistema</h1>
                 </div>
                 <form action="#" className="mt-4">
                   {/* <!-- Form --> */}
@@ -42,19 +42,19 @@ const Login = () => {
                       </div>
                     </div>
                     {/* <!-- End of Form --> */}
-                    {/* <div className="d-flex justify-content-between align-items-top mb-4">
-                      <div className="form-check">
+                    <div className="d-flex justify-content-between align-items-top mb-4">
+                      {/* <div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" id="remember" />
                         <label className="form-check-label mb-0" htmlFor="remember">
                           Remember me
                         </label>
-                      </div>
+                      </div> */}
                       <div>
-                        <a href="./forgot-password.html" className="small text-right">
-                          Lost password?
+                        <a href="./forgot-password.html" className="small text-gray-500 text-right">
+                          Olvidé mi contraseña
                         </a>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                   <div className="d-grid">
                     <button type="submit" className="btn btn-gray-800">Ingresar</button>

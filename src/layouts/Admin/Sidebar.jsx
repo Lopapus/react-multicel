@@ -1,5 +1,6 @@
+import { Link } from 'react-router-dom'
 import NavItem from '../Sidebar/NavItem'
-import NavItemBadge from '../Sidebar/NavItemBadge'
+// import NavItemBadge from '../Sidebar/NavItemBadge'
 import NavItemMultilevel from '../Sidebar/NavItemMultilevel'
 import NavSeparator from '../Sidebar/NavSeparator'
 
@@ -11,9 +12,9 @@ const Sidebar = () => {
     <>
       {/* Mobile design */}
       <nav className="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
-        <a className="navbar-brand me-lg-5" href="../../index.html">
+        <Link to="/" className="navbar-brand me-lg-5">
           <img className="navbar-brand-dark" src="../../assets/img/brand/light.svg" alt="Volt logo" /> <img className="navbar-brand-light" src="../../assets/img/brand/dark.svg" alt="Volt logo" />
-        </a>
+        </Link>
         <div className="d-flex align-items-center">
           <button className="navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -50,29 +51,33 @@ const Sidebar = () => {
           <ul className="nav flex-column pt-3 pt-md-0">
 
             <li className="d-flex justify-content-center"> {/* nav-item */}
-              <a href="../../index.html" className="nav-link d-flex align-items-center">
-                {/* <span className="sidebar-icon">
-                <img src="../../assets/img/brand/light.svg" height="20" width="20" alt="Volt Logo" />
-                </span> */}
-                <span className="mt-1 ms-1 sidebar-text"> <i className="fas fa-mobile-alt"></i> MULTICEL</span>
-              </a>
+              <Link to="/" className="nav-link d-flex align-items-center">
+                <span className="sidebar-icon">
+                  <img src="https://www.partesdel.com/wp-content/uploads/Partes-de-un-Logo.....png" height="20" width="20" alt="Volt Logo" />
+                </span>
+                <span className="mt-1 ms-1 sidebar-text">MULTICEL</span>
+              </Link>
             </li>
 
             <NavSeparator colorclass={'border-gray-700'} />
-            <NavItem label={'Inicio'} path={'inicio'} iconclass={'fa-solid fa-home'} />
+            <NavItem label={'Inicio'} path={''} iconclass={'fa-solid fa-home'} />
+            <NavItem label={'Login'} path={'login'} iconclass={'fa-solid fa-user'} />
             <NavItem label={'Productos'} path={'productos'} iconclass={'fa-solid fa-box'} />
             <NavItem label={'Usuarios'} path={'usuarios'} iconclass={'fa-solid fa-user'} />
             <NavItem label={'Caja'} path={'caja'} iconclass={'fa-solid fa-cash-register'} />
-            <NavItem label={'Ventas'} path={'ventas'} iconclass={'fa-solid fa-dollar-sign'} />
+            <NavItem label={'Ofertas'} path={'ofertas'} iconclass={'fa-solid fa-percent'} />
+            {/* <NavItem label={'Ventas'} path={'ventas'} iconclass={'fa-solid fa-dollar-sign'} /> */}
             <NavItem label={'Proveedores'} path={'proveedores'} iconclass={'fa-solid fa-users'} />
-            <NavItem label={'Reportes'} path={'reportes'} iconclass={'fa-solid fa-chart-pie'} />
-            <NavItemBadge label={'Alertas'} path={'alertas'} iconclass={'fa-solid fa-circle-exclamation'} badgelabel={1} badgetxtcolor={'text-white'} badgebgcolor={'bg-danger'} />
+            {/* <NavItem label={'Reportes'} path={'reportes'} iconclass={'fa-solid fa-chart-pie'} /> */}
+            {/* <NavItemBadge label={'Alertas'} path={'alertas'} iconclass={'fa-solid fa-circle-exclamation'} badgelabel={1} badgetxtcolor={'text-white'} badgebgcolor={'bg-danger'} /> */}
 
-            <NavItemMultilevel label={'Configuración'} iconclass={'fa-solid fa-gear'} >
-              <NavItem label={'Metodos de pago'} path={'configuracion/methodos-de-pago'} iconclass={'fa-solid fa-credit-card'} />
+            <NavItemMultilevel label={'Parametros'} iconclass={'fa-solid fa-gear'} >
+              <NavItem label={'Metodos de pago'} path={'parametros/methodos-de-pago'} iconclass={'fa-solid fa-credit-card'} />
               <NavItemMultilevel label={'Productos'} iconclass={'fa-regular fa-clipboard'} >
-                <NavItem label={'Categoria'} path={'configuracion/categoria'} iconclass={'fa-solid fa-list'} />
-                <NavItem label={'Subcategoria'} path={'configuracion/subcategoria'} iconclass={'fa-solid fa-list'} />
+                <NavItem label={'Categoria'} path={'parametros/categorias'} iconclass={'fa-solid fa-list'} />
+                <NavItem label={'Subcategoria'} path={'parametros/subcategorias'} iconclass={'fa-solid fa-list'} />
+                <NavItem label={'Marcas'} path={'parametros/marcas'} iconclass={'fa-solid fa-list'} />
+                <NavItem label={'Modelos'} path={'parametros/modelos'} iconclass={'fa-solid fa-list'} />
               </NavItemMultilevel>
             </NavItemMultilevel>
           </ul>
