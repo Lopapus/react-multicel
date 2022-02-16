@@ -1,56 +1,48 @@
-import { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-
-const MySwal = withReactContent(Swal)
+import { useContext, useState } from 'react'
+import { SessionContext } from '../contexts/SessionProvider'
+import fetchCallback from '../helpers/fetchCallback'
+import Swal2 from '../components/SweetAlert2'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const [ver, setVer] = useState(false)
   const [form, setForm] = useState({})
+  const login = useContext(SessionContext)[1]
+  const navigate = useNavigate()
+
+  const handleShowAlert = async (response) => {
+    const SwalTimer = Swal2.mixin({
+      title: <p className='h3'>{response.json.msg}</p>,
+      timer: 1500,
+      showConfirmButton: false
+    })
+
+    if (response.ok) {
+      await SwalTimer.fire({
+        icon: 'success'
+      })
+      login({ type: 'login', payload: response.json.user })
+      navigate('/')
+    } else {
+      SwalTimer.fire({
+        icon: 'error'
+      })
+      login({ type: 'logout' })
+    }
+  }
 
   const handleSubmitForm = async (e) => {
     e.preventDefault()
-    const request = {
+
+    const url = 'http://127.0.0.1:4000/login'
+    const content = {
       headers: {
         'Content-Type': 'application/json'
-        // 'Access-Control-Allow-Origin': '*',
       },
       method: 'POST',
       body: JSON.stringify(form)
     }
-    try {
-      const response = await fetch('http://127.0.0.1:4000/login', request)
-      const json = await response.json()
-      let swal_message = ''
-      let swal_icon = ''
-      let swal_title = ''
-      if (response.ok) {
-        swal_title = 'Acceso concedido'
-        swal_message = json.msg
-        swal_icon = 'success'
-      } else {
-        swal_title = 'Error de acceso'
-        swal_message = json.msg
-        console.log(json.msg)
-        swal_icon = 'error'
-      }
-
-      MySwal.fire({
-        title: <p className='h3'>{swal_title}</p>,
-        text: swal_message,
-        icon: swal_icon,
-        timer: 1500,
-        showConfirmButton: false
-        // footer: 'Copyright 2018',
-        // didOpen: () => {
-        //   // `MySwal` is a subclass of `Swal`
-        //   //   with all the same instance & static methods
-        //   MySwal.clickConfirm()
-        // }
-      })
-    } catch (error) {
-
-    }
+    fetchCallback(url, content, handleShowAlert)
   }
 
   const handleSetForm = (e) => {
@@ -66,10 +58,6 @@ const Login = () => {
       }
     }
   }
-
-  useEffect(() => {
-    // console.log(form)
-  }, [form])
 
   return (
     <main>

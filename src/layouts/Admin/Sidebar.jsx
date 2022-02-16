@@ -1,13 +1,17 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { SessionContext } from '../../contexts/SessionProvider'
 import NavItem from '../Sidebar/NavItem'
 // import NavItemBadge from '../Sidebar/NavItemBadge'
-import NavItemMultilevel from '../Sidebar/NavItemMultilevel'
+// import NavItemMultilevel from '../Sidebar/NavItemMultilevel'
 import NavSeparator from '../Sidebar/NavSeparator'
+import ButtonIcon from '../../components/ButtonIcon'
 
 const Sidebar = () => {
   // const multiList = [
   //   <NavItem key={'multi-list-navitem-0'} label={'Tables'} path={'bootstrap-tables'} iconclass={'fas fa-users'} />
   // ]
+  const session = useContext(SessionContext)[0]
   return (
     <>
       {/* Mobile design */}
@@ -27,16 +31,17 @@ const Sidebar = () => {
         <div className="sidebar-inner px-4 pt-3">
           <div className="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
             <div className="d-flex align-items-center">
-              <div className="avatar-lg me-4">
+              {/* <div className="avatar-lg me-4">
                 <img src="../../assets/img/team/profile-picture-3.jpg" className="card-img-top rounded-circle border-white"
                   alt="Bonnie Green" />
-              </div>
+              </div> */}
               <div className="d-block">
-                <h2 className="h5 mb-3">Hi, Jane</h2>
-                <a href="../../pages/examples/sign-in.html" className="btn btn-secondary btn-sm d-inline-flex align-items-center">
-                  <svg className="icon icon-xxs me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                  Sign Out
-                </a>
+                <h2 className="h5 mb-3">Hola, {session.nombre}</h2>
+                <Link to="/logout">
+                  <ButtonIcon btncolor='btn-secondary' btnsize='btn-sm' iconclass={'fa-solid fa-person-running'}>
+                    Cerrar Sesion
+                  </ButtonIcon>
+                </Link>
               </div>
             </div>
             <div className="collapse-close d-md-none">
@@ -60,18 +65,20 @@ const Sidebar = () => {
             </li>
 
             <NavSeparator colorclass={'border-gray-700'} />
+
             <NavItem label={'Inicio'} path={''} iconclass={'fa-solid fa-home'} />
-            <NavItem label={'Login'} path={'login'} iconclass={'fa-solid fa-user'} />
-            <NavItem label={'Productos'} path={'productos'} iconclass={'fa-solid fa-box'} />
-            <NavItem label={'Usuarios'} path={'usuarios'} iconclass={'fa-solid fa-user'} />
-            <NavItem label={'Caja'} path={'caja'} iconclass={'fa-solid fa-cash-register'} />
-            <NavItem label={'Ofertas'} path={'ofertas'} iconclass={'fa-solid fa-percent'} />
-            {/* <NavItem label={'Ventas'} path={'ventas'} iconclass={'fa-solid fa-dollar-sign'} /> */}
-            <NavItem label={'Proveedores'} path={'proveedores'} iconclass={'fa-solid fa-users'} />
+            {/* <NavItem label={'Productos'} path={'productos'} iconclass={'fa-solid fa-box'} /> */}
+            {
+              session.rol === 'admin' &&
+              <NavItem label={'Usuarios'} path={'usuarios'} iconclass={'fa-solid fa-user'} />
+            }
+            {/* <NavItem label={'Caja'} path={'caja'} iconclass={'fa-solid fa-cash-register'} /> */}
+            {/* <NavItem label={'Ofertas'} path={'ofertas'} iconclass={'fa-solid fa-percent'} /> */}
+            {/* <NavItem label={'Proveedores'} path={'proveedores'} iconclass={'fa-solid fa-users'} /> */}
             {/* <NavItem label={'Reportes'} path={'reportes'} iconclass={'fa-solid fa-chart-pie'} /> */}
             {/* <NavItemBadge label={'Alertas'} path={'alertas'} iconclass={'fa-solid fa-circle-exclamation'} badgelabel={1} badgetxtcolor={'text-white'} badgebgcolor={'bg-danger'} /> */}
 
-            <NavItemMultilevel label={'Parametros'} iconclass={'fa-solid fa-gear'} >
+            {/* <NavItemMultilevel label={'Parametros'} iconclass={'fa-solid fa-gear'} >
               <NavItem label={'Metodos de pago'} path={'parametros/methodos-de-pago'} iconclass={'fa-solid fa-credit-card'} />
               <NavItemMultilevel label={'Productos'} iconclass={'fa-regular fa-clipboard'} >
                 <NavItem label={'Categoria'} path={'parametros/categorias'} iconclass={'fa-solid fa-list'} />
@@ -79,7 +86,7 @@ const Sidebar = () => {
                 <NavItem label={'Marcas'} path={'parametros/marcas'} iconclass={'fa-solid fa-list'} />
                 <NavItem label={'Modelos'} path={'parametros/modelos'} iconclass={'fa-solid fa-list'} />
               </NavItemMultilevel>
-            </NavItemMultilevel>
+            </NavItemMultilevel> */}
           </ul>
         </div>
       </nav>

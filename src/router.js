@@ -5,28 +5,40 @@ import {
 } from 'react-router-dom'
 import { Home, Login, Page404, Users } from './pages'
 import Workspace from './layouts/Admin/Workspace'
-// import DashboardProvider from './contexts/DashboardProvider'
+import SessionProvider, { SessionContext } from './contexts/SessionProvider'
+import { useContext } from 'react'
 
-const Routing = () => {
+const Rutas = () => {
+  const session = useContext(SessionContext)[0]
+
   return (
     <Router>
       <Routes>
-          {/* <DashboardProvider >  */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/denied" element={<Page404 />} />
+        <Route path="/login" element={<Login />} />
+        {
+          // Rutas a las que puede acceder el usuario logueado
+          session &&
           <Route path="/" element={<Workspace />} >
-              <Route path="dashboard">
-                <Route index element={<Home />} />
-                <Route path=":page" element={<Home />} />
-              </Route>
+            <Route index element={<Home />} />
+            <Route path="cuenta" element={<div>Informacion de la cuenta</div>} />
+            {
+              // Rutas privadas a las que solo puede acceder el administrador
+              session.rol === 'admin' &&
               <Route path="usuarios" element={<Users />} />
-              <Route path="template" />
-              <Route path=":page" element={<Home />} />
-              <Route path=":page/:page" element={<Home />} />
-              <Route path="*" element={<Home />} />
+            }
           </Route>
+        }
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </Router>
+  )
+}
+
+const Routing = () => {
+  return (
+    <SessionProvider>
+      <Rutas/>
+    </SessionProvider>
   )
 }
 

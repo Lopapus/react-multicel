@@ -7,7 +7,7 @@ const UserItem = ({ name, rol }) => {
         <div className="col-auto">
           {/* <!-- Avatar --> */}
           <span className="avatar">
-            <img className="rounded" alt="Image placeholder" src="https://cambodiaict.net/wp-content/uploads/2019/12/computer-icons-user-profile-google-account-photos-icon-account.jpg" />
+            <img className="rounded" alt="Image placeholder" src="https://www.getbillage.com/files/user/avatar/_usuario.png" />
           </span>
         </div>
         <div className="col-auto ms--2">
