@@ -1,29 +1,15 @@
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SessionContext } from '../../contexts/SessionProvider'
-import Host from '../../host'
 
 const LogoutButton = ({ className }) => {
-  const [session, dispatch] = useContext(SessionContext)
+  const dispatch = useContext(SessionContext)[1]
   const navigate = useNavigate()
 
   const handleLogout = async () => {
     try {
-      const content = {
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': session.token
-        },
-        mode: 'cors',
-        method: 'GET'
-      }
-      const response = await fetch(`${Host}/logout`, content)
-      // const json = await response.json()
-      if (response.ok) {
-        console.log(response)
-        dispatch({ type: 'logout' })
-        navigate('login')
-      }
+      dispatch({ type: 'logout' })
+      navigate('login')
     } catch (error) {
       console.log(error)
     }

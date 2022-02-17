@@ -4,7 +4,7 @@ import {
   Route,
   Navigate
 } from 'react-router-dom'
-import { Home, Login, Page404, Users } from './pages'
+import { Home, Login, Page404, UserAccount, Users } from './pages'
 import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
@@ -22,7 +22,7 @@ const Rutas = () => {
           <>
             <Route path="/" element={<Workspace />} >
               <Route index element={<Home />} />
-              <Route path="cuenta" element={<div>Informacion de la cuenta</div>} />
+              <Route path="cuenta" element={<UserAccount />} />
               {
                 // Rutas privadas a las que solo puede acceder el administrador
                 session.rol === 'admin' &&
