@@ -3,8 +3,9 @@ import {
   Routes,
   Route
 } from 'react-router-dom'
-import { Home, Login, Page404, Users } from './pages'
+import { Home, Login, Page404, Users, CreateUsers } from './pages'
 import Workspace from './layouts/Admin/Workspace'
+
 // import DashboardProvider from './contexts/DashboardProvider'
 
 const Routing = () => {
@@ -19,7 +20,10 @@ const Routing = () => {
                 <Route index element={<Home />} />
                 <Route path=":page" element={<Home />} />
               </Route>
-              <Route path="usuarios" element={<Users />} />
+              <Route path="usuarios">
+                <Route index element={<Users />} />
+                <Route path='crear' element={<CreateUsers />}/>
+              </Route>
               <Route path="template" />
               <Route path=":page" element={<Home />} />
               <Route path=":page/:page" element={<Home />} />
