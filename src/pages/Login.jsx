@@ -3,6 +3,7 @@ import { SessionContext } from '../contexts/SessionProvider'
 import fetchCallback from '../helpers/fetchCallback'
 import Swal2 from '../components/SweetAlert2'
 import { useNavigate } from 'react-router-dom'
+import Host from '../host'
 
 const Login = () => {
   const [ver, setVer] = useState(false)
@@ -34,11 +35,14 @@ const Login = () => {
   const handleSubmitForm = async (e) => {
     e.preventDefault()
 
-    const url = 'http://127.0.0.1:4000/login'
+    const url = `${Host}/login`
     const content = {
       headers: {
         'Content-Type': 'application/json'
+        // 'Access-Control-Allow-Origin': 'http://127.0.0.1:3000',
+        // 'Access-Control-Allow-Methods': 'POST, GET, OPTIONS'
       },
+      mode: 'cors',
       method: 'POST',
       body: JSON.stringify(form)
     }

@@ -1,7 +1,8 @@
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  Navigate
 } from 'react-router-dom'
 import { Home, Login, Page404, Users } from './pages'
 import Workspace from './layouts/Admin/Workspace'
@@ -18,17 +19,20 @@ const Rutas = () => {
         {
           // Rutas a las que puede acceder el usuario logueado
           session &&
-          <Route path="/" element={<Workspace />} >
-            <Route index element={<Home />} />
-            <Route path="cuenta" element={<div>Informacion de la cuenta</div>} />
-            {
-              // Rutas privadas a las que solo puede acceder el administrador
-              session.rol === 'admin' &&
-              <Route path="usuarios" element={<Users />} />
-            }
-          </Route>
+          <>
+            <Route path="/" element={<Workspace />} >
+              <Route index element={<Home />} />
+              <Route path="cuenta" element={<div>Informacion de la cuenta</div>} />
+              {
+                // Rutas privadas a las que solo puede acceder el administrador
+                session.rol === 'admin' &&
+                <Route path="usuarios" element={<Users />} />
+              }
+            </Route>
+            <Route path="*" element={<Page404 />} />
+          </>
         }
-        <Route path="*" element={<Page404 />} />
+        <Route path="*" element={<Navigate to="login" />} />
       </Routes>
     </Router>
   )
