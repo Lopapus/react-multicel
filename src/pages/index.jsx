@@ -1,5 +1,6 @@
 export { default as Home } from './Home'
 export { default as Login } from './Login'
 export { default as Users } from './Users'
+export { default as UserAccount } from './UserAccount'
 export { default as Page404 } from './Page404'
 export { default as CreateUsers } from './CreateUsers'

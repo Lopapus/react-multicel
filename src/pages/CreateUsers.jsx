@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-
-// const [showAlert, setShowAlert] = useState(null)
-// console.log(showAlert)
+import Message from '../components/message'
 
 const CreateUsers = () => {
+  const [showAlert, setShowAlert] = useState(null)
   const [form, setForm] = useState({})
 
   const handleChangeForm = (e) => {
@@ -24,8 +23,14 @@ const CreateUsers = () => {
       const response = await fetch('http://127.0.0.1:4000/usuarios', request)
       const json = await response.json()
       console.log(json)
+      if (response.ok) {
+        setShowAlert(<Message message= {'Usuario agregado correctamente'} className='alert p-1 alert-success' />)
+      } else {
+        setShowAlert(<Message message= {json.msg} className='alert p-1 alert-danger' />)
+      }
     } catch (error) {
-      // setShowAlert({ Message: 'Error', style: 'col-2 alert alert-danger' })
+      // setShowAlert({ message: 'Error', style: 'col-2 alert alert-danger' })
+      setShowAlert(<Message message= 'Error' className='col-2 alert alert-danger' />)
     }
   }
 
@@ -54,14 +59,16 @@ const CreateUsers = () => {
               <label>Contraseña</label>
               <input type="password" className="form-control" name="password" placeholder="" onChange={handleChangeForm} required></input>
             </div>
-            <div className="form-group">
+            <div className="mb-2 form-group">
               <label>Rol</label>
-              <select name="rol" id="rol" className="form-select" onChange={handleChangeForm}>
+              <select name="rol" id="rol" className="form-select" defaultValue={''} onChange={handleChangeForm} required>
+                <option disabled value="" readOnly={true}>Seleccione</option>
                 <option value="admin">Administrador</option>
                 <option value="personal">Personal</option>
               </select>
             </div>
-            <button type="submit" className="btn btn-primary">Agregar usuario</button>
+            <button type="submit" className="mb-2 btn btn-primary">Agregar usuario</button>
+            {showAlert}
           </form>
         </div>
       </div>

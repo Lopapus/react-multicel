@@ -1,36 +1,51 @@
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  Navigate
 } from 'react-router-dom'
-import { Home, Login, Page404, Users, CreateUsers } from './pages'
+import { CreateUsers, Home, Login, Page404, UserAccount, Users } from './pages'
 import Workspace from './layouts/Admin/Workspace'
+import SessionProvider, { SessionContext } from './contexts/SessionProvider'
+import { useContext } from 'react'
 
-// import DashboardProvider from './contexts/DashboardProvider'
+const Rutas = () => {
+  const session = useContext(SessionContext)[0]
 
-const Routing = () => {
   return (
     <Router>
       <Routes>
-          {/* <DashboardProvider >  */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/denied" element={<Page404 />} />
-          <Route path="/" element={<Workspace />} >
-              <Route path="dashboard">
-                <Route index element={<Home />} />
-                <Route path=":page" element={<Home />} />
-              </Route>
-              <Route path="usuarios">
-                <Route index element={<Users />} />
-                <Route path='crear' element={<CreateUsers />}/>
-              </Route>
-              <Route path="template" />
-              <Route path=":page" element={<Home />} />
-              <Route path=":page/:page" element={<Home />} />
-              <Route path="*" element={<Home />} />
-          </Route>
+        <Route path="/login" element={<Login />} />
+        {
+          // Rutas a las que puede acceder el usuario logueado
+          session &&
+          <>
+            <Route path="/" element={<Workspace />} >
+              <Route index element={<Home />} />
+              <Route path="cuenta" element={<UserAccount />} />
+              {
+                // Rutas privadas a las que solo puede acceder el administrador
+                session.rol === 'admin' &&
+                <Route path="usuarios">
+                  <Route index element={<Users />} />
+                  <Route path="crear" element={<CreateUsers />} />
+                </Route>
+              }
+            </Route>
+            <Route path="*" element={<Page404 />} />
+          </>
+        }
+        <Route path="*" element={<Navigate to="login" />} />
       </Routes>
     </Router>
+  )
+}
+
+const Routing = () => {
+  return (
+    <SessionProvider>
+      <Rutas/>
+    </SessionProvider>
   )
 }
 

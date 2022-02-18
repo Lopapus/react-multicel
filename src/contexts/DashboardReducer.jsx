@@ -1,15 +1,13 @@
-
 // Tipos de acciones
 const types = {
-  navItemSelected: 'navItemSelected'
+  action: 'action'
 }
 
 // Acciones que tiene el redux
 // Data es el valor que es enviado por el payload
 const actions = {
-  navItemSelected: (data) => {
+  action: async (data) => {
     console.log(data)
-    return 'funcionando'
   }
 }
 
