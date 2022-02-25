@@ -4,8 +4,10 @@ import UserList from '../components/UserList'
 import ButtonIcon from '../components/ButtonIcon'
 import CardComponent from '../layouts/Card/CardComponent'
 import { Link } from 'react-router-dom'
+import useDeleteUser from '../hooks/useDeleteUser'
 
 const Users = () => {
+  const [resultado, setDelete] = useDeleteUser()
   const [stateUsers, setStateUsers] = useState([])
 
   const handleFetch = async () => {
@@ -18,7 +20,6 @@ const Users = () => {
       console.log(error)
     }
   }
-
   // const handleDelete(){
   // stateUsers.find()
   // }
@@ -26,6 +27,12 @@ const Users = () => {
   useEffect(() => {
     handleFetch()
   }, [])
+  useEffect(() => {
+    if (resultado) {
+      const listUsers = stateUsers.filter(element => element.id !== resultado)
+      setStateUsers(listUsers)
+    }
+  }, [resultado])
   return (
     <>
       <Link to='/usuarios/crear'>
@@ -40,7 +47,7 @@ const Users = () => {
             stateUsers.length > 0 &&
             stateUsers.map(
               (user, key) =>
-              <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.id} />
+              <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.id} onDelete={() => setDelete(user.id)} />
             )
           }
         </UserList>

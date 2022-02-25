@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
 import Message from '../components/message'
+import { useParams } from 'react-router-dom'
 
 const CreateUsers = () => {
   const [showAlert, setShowAlert] = useState(null)
   const [form, setForm] = useState({})
+  const params = useParams()
+
+  console.log(params)
 
   const handleChangeForm = (e) => {
     const { name, value } = e.target

@@ -29,6 +29,7 @@ const Rutas = () => {
                 <Route path="usuarios">
                   <Route index element={<Users />} />
                   <Route path="crear" element={<CreateUsers />} />
+                  <Route path=":id" element={<CreateUsers />} />
                 </Route>
               }
             </Route>
