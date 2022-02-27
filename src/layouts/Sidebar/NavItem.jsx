@@ -1,4 +1,5 @@
-import { Link, useLocation } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+import NavItemSizeControls from './NavItemSizeControls'
 
 const NavItem = ({ label, path, iconclass = '' }) => {
   const handleSetActive = () => {
@@ -9,17 +10,19 @@ const NavItem = ({ label, path, iconclass = '' }) => {
 
   return (
     <li className={`nav-item ${handleSetActive()} `}>
-      <Link to={path} className="nav-link d-flex flex-row">
-        {
-          iconclass !== '' &&
-          <span className='sidebar-icon-container text-center'>
-            <span className="sidebar-icon">
-              <i className={iconclass}></i>
+      <NavLink to={path} >
+        <NavItemSizeControls className="nav-link d-flex flex-row" >
+          {
+            iconclass !== '' &&
+            <span className='sidebar-icon-container text-center'>
+              <span className="sidebar-icon">
+                <i className={iconclass}></i>
+              </span>
             </span>
-          </span>
-        }
-        <span className="sidebar-text">{label}</span>
-      </Link>
+          }
+          <span className="sidebar-text">{label}</span>
+        </NavItemSizeControls>
+      </NavLink>
     </li>
   )
 }

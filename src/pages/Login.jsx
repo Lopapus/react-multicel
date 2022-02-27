@@ -1,31 +1,33 @@
 import { useContext, useState } from 'react'
 import { SessionContext } from '../contexts/SessionProvider'
-import fetchCallback from '../helpers/fetchCallback'
 import Swal2 from '../components/SweetAlert2'
 import { useNavigate } from 'react-router-dom'
 import Host from '../host'
+import { useFetchCallBack } from '../hooks/fetch-multicel'
 
 const Login = () => {
   const [ver, setVer] = useState(false)
   const [form, setForm] = useState({})
   const login = useContext(SessionContext)[1]
   const navigate = useNavigate()
+  const fetchCallBack = useFetchCallBack()
 
   const handleShowAlert = async (response) => {
     const SwalTimer = Swal2.mixin({
-      title: <p className='h3'>{response.json.msg}</p>,
       timer: 1500,
       showConfirmButton: false
     })
 
     if (response.ok) {
       await SwalTimer.fire({
+        title: <p className='h3 text-success'>{response.json.msg}</p>,
         icon: 'success'
       })
       login({ type: 'login', payload: response.json.user })
       navigate('/')
     } else {
       SwalTimer.fire({
+        title: <p className='h3 text-danger'>{response.json.msg}</p>,
         icon: 'error'
       })
       login({ type: 'logout' })
@@ -36,17 +38,20 @@ const Login = () => {
     e.preventDefault()
 
     const url = `${Host}/login`
+    // const content = {
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   mode: 'cors',
+    //   method: 'POST',
+    //   body: JSON.stringify(form)
+    // }
     const content = {
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Access-Control-Allow-Origin': 'http://127.0.0.1:3000',
-        // 'Access-Control-Allow-Methods': 'POST, GET, OPTIONS'
-      },
-      mode: 'cors',
       method: 'POST',
       body: JSON.stringify(form)
     }
-    fetchCallback(url, content, handleShowAlert)
+
+    fetchCallBack(url, content, handleShowAlert)
   }
 
   const handleSetForm = (e) => {
