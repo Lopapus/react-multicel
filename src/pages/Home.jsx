@@ -1,6 +1,8 @@
 import { useContext } from 'react'
 import { SessionContext } from '../contexts/SessionProvider'
 import CardComponent from '../layouts/Card/CardComponent'
+import img_usuario from '../images/sistema/usuario.png'
+import svg_woman from '../images/svg/at-work.svg'
 
 const Home = () => {
   const session = useContext(SessionContext)[0]
@@ -15,11 +17,11 @@ const Home = () => {
               <p>
                 <b>En esta versión del sistema podrás realizar las siguientes acciones:</b>
                 <ul>
-                  <li>
+                  <li className="mt-2">
                     Ingresar al sistema con los datos de usuario y contraseña, provistos por un usuario <b>administrador</b>
                   </li>
-                  <li>
-                    Al presionar el icono de <img className="mx-1 rounded-circle" src="https://www.getbillage.com/files/user/avatar/_usuario.png" width={18} /> se desplegará un menú con dos opciones:
+                  <li className="mt-2">
+                    Al presionar el icono de <img className="mx-1 rounded-circle" src={img_usuario} width={18} alt="user image" /> se desplegará un menú con dos opciones:
                     <ul>
                       <li>
                         <span className="text-gray-400 me-2">
@@ -38,7 +40,7 @@ const Home = () => {
                   {
                     session.rol === 'admin' &&
                     <>
-                      <li>
+                      <li className="mt-2">
                         <b>Administrar</b> los usuarios que pueden ingresar al sistema:
                         <ul>
                           <li>Ver los datos de cada usuario</li>
@@ -54,7 +56,9 @@ const Home = () => {
 
           </div>
         </div>
-        <div className="col-xl-5 col-xxl-12 text-center"><img className="img-fluid" src="https://sb-admin-pro.startbootstrap.com/assets/img/illustrations/at-work.svg" style={{ maxWidth: '26rem' }} /></div>
+        <div className="col-xl-5 col-xxl-12 text-center">
+          <img className="img-fluid" src={svg_woman} style={{ maxWidth: '26rem' }} />
+        </div>
       </div>
     </CardComponent>
   )

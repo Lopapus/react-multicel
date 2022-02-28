@@ -6,6 +6,8 @@ import NavItem from '../Sidebar/NavItem'
 // import NavItemMultilevel from '../Sidebar/NavItemMultilevel'
 import NavSeparator from '../Sidebar/NavSeparator'
 // import ButtonIcon from '../../components/ButtonIcon'
+import img_multicel from '../../images/logo/Multicel.png'
+import icon_multicel from '../../images/logo/Multicel_icon.png'
 
 const Sidebar = () => {
   // const multiList = [
@@ -17,8 +19,7 @@ const Sidebar = () => {
       {/* Mobile design navbar controls */}
       <nav className="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
         <Link to="/" className="navbar-brand me-lg-5">
-          <img className="navbar-brand-dark me-2" src="https://www.partesdel.com/wp-content/uploads/Partes-de-un-Logo.....png" alt="Volt logo" />
-          Multicel
+          <img className="navbar-brand-dark me-2" src={icon_multicel} alt="Multicel icon" />
           {/* <img className="navbar-brand-light" src="../../assets/img/brand/dark.svg" alt="Volt logo" /> */}
         </Link>
         <div className="d-flex align-items-center">
@@ -59,9 +60,9 @@ const Sidebar = () => {
             <li className="d-flex justify-content-center"> {/* nav-item */}
               <Link to="/" className="nav-link d-flex align-items-center">
                 <span className="sidebar-icon">
-                  <img src="https://www.partesdel.com/wp-content/uploads/Partes-de-un-Logo.....png" height="20" width="20" alt="Volt Logo" />
+                  <img src={img_multicel} width={100} alt="Multicel logo" />
                 </span>
-                <span className="mt-1 ms-1 sidebar-text">MULTICEL</span>
+                {/* <span className="mt-1 ms-1 sidebar-text">MULTICEL</span> */}
               </Link>
             </li>
 

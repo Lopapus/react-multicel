@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import ButtonIcon from './ButtonIcon'
+import img_usuario from '../images/sistema/usuario.png'
 
 const UserItem = ({ name, rol, id, onDelete }) => {
   return (
@@ -8,7 +9,7 @@ const UserItem = ({ name, rol, id, onDelete }) => {
         <div className="col-auto">
           {/* <!-- Avatar --> */}
           <span className="avatar">
-            <img className="rounded" alt="Image placeholder" src="https://www.getbillage.com/files/user/avatar/_usuario.png" />
+            <img className="rounded" src={img_usuario} alt="user image" />
           </span>
         </div>
         <div className="col-auto ms--2">

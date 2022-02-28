@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import Host from '../host'
 import { useFetchCallBack } from '../hooks/fetch-multicel'
 import ButtonIcon from '../components/ButtonIcon'
+import img_lock from '../images/sistema/lock.png'
 
 const Login = () => {
   const [ver, setVer] = useState(false)
@@ -79,7 +80,7 @@ const Login = () => {
               <div className="bg-white shadow border-0 rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                 <div className="text-center text-md-center mb-4 mt-md-0">
                   {/* <h1 className="mb-0 h3">Ingreso al sistema</h1> */}
-                  <img src="https://pngimg.com/uploads/padlock/padlock_PNG9407.png" width={100} />
+                  <img src={img_lock} width={100} alt="lock image" />
                 </div>
                 <form onSubmit={handleSubmitForm} className="mt-4">
                   {/* <!-- Form --> */}

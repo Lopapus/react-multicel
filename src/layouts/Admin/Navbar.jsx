@@ -2,6 +2,7 @@
 
 import { Link } from 'react-router-dom'
 import LogoutButton from './LogoutButton'
+import img_usuario from '../../images/sistema/usuario.png'
 
 const Navbar = () => {
   return (
@@ -27,7 +28,7 @@ const Navbar = () => {
             <li className="nav-item dropdown " >
               <a className="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <div className="media d-flex align-items-center">
-                  <img className="avatar rounded-circle" alt="Image placeholder" src="https://www.getbillage.com/files/user/avatar/_usuario.png" />
+                  <img className="avatar rounded-circle" alt="user image" src={img_usuario} />
                   <div className="media-body ms-2 text-dark align-items-center "> {/* d-none d-lg-block */}
                     {/* <span className="mb-0 font-small fw-bold text-gray-900">Admin</span> */}
                   </div>
