@@ -25,7 +25,7 @@ const UserAccount = () => {
         <div className="col-12 mt-4">
           <div className="w-auto d-grid gap-2 d-flex justify-content-center justify-content-md-start">
             <ButtonIcon btncolor='btn-secondary' btnsize='btn-sm' iconclass={'fa-solid fa-pencil'}>
-              Mofificar datos
+              Modificar datos
             </ButtonIcon>
             <ButtonIcon btncolor='btn-secondary' btnsize='btn-sm' iconclass={'fa-solid fa-key'}>
               Cambiar contraseña

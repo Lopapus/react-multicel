@@ -5,7 +5,7 @@ import NavItem from '../Sidebar/NavItem'
 // import NavItemBadge from '../Sidebar/NavItemBadge'
 // import NavItemMultilevel from '../Sidebar/NavItemMultilevel'
 import NavSeparator from '../Sidebar/NavSeparator'
-import ButtonIcon from '../../components/ButtonIcon'
+// import ButtonIcon from '../../components/ButtonIcon'
 
 const Sidebar = () => {
   // const multiList = [
@@ -14,7 +14,7 @@ const Sidebar = () => {
   const session = useContext(SessionContext)[0]
   return (
     <>
-      {/* Mobile design */}
+      {/* Mobile design navbar controls */}
       <nav className="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
         <Link to="/" className="navbar-brand me-lg-5">
           <img className="navbar-brand-dark me-2" src="https://www.partesdel.com/wp-content/uploads/Partes-de-un-Logo.....png" alt="Volt logo" />
@@ -31,12 +31,11 @@ const Sidebar = () => {
       {/* Desktop and sidebar */}
       <nav id="sidebarMenu" className="sidebar d-lg-block bg-gray-800 text-white collapse" data-simplebar>
         <div className="sidebar-inner px-4 pt-3">
-          <div className="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
-            <div className="d-flex align-items-center">
-              {/* <div className="avatar-lg me-4">
-                <img src="../../assets/img/team/profile-picture-3.jpg" className="card-img-top rounded-circle border-white"
-                  alt="Bonnie Green" />
-              </div> */}
+
+          {/* mobile content */}
+          <div className="d-flex d-md-none align-items-center justify-content-end">
+            {/* <div className="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4"> */}
+            {/* <div className="d-flex align-items-center">
               <div className="d-block">
                 <h2 className="h5 mb-3">Hola, {session.nombre}</h2>
                 <Link to="/logout">
@@ -45,12 +44,12 @@ const Sidebar = () => {
                   </ButtonIcon>
                 </Link>
               </div>
-            </div>
+            </div> */}
             <div className="collapse-close d-md-none">
-              <a href="#sidebarMenu" data-bs-toggle="collapse"
+              <a onContextMenu={(e) => e.preventDefault()} className="btn btn-outline-danger btn-sm" href="#sidebarMenu" data-bs-toggle="collapse"
                 data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="true"
                 aria-label="Toggle navigation">
-                <svg className="icon icon-xs" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                <i className="fa-solid fa-xmark"></i>
               </a>
             </div>
           </div>

@@ -4,10 +4,12 @@ import Swal2 from '../components/SweetAlert2'
 import { useNavigate } from 'react-router-dom'
 import Host from '../host'
 import { useFetchCallBack } from '../hooks/fetch-multicel'
+import ButtonIcon from '../components/ButtonIcon'
 
 const Login = () => {
   const [ver, setVer] = useState(false)
   const [form, setForm] = useState({})
+  const [disabled, setDisabled] = useState(false)
   const login = useContext(SessionContext)[1]
   const navigate = useNavigate()
   const fetchCallBack = useFetchCallBack()
@@ -20,15 +22,15 @@ const Login = () => {
 
     if (response.ok) {
       await SwalTimer.fire({
-        title: <p className='h3 text-success'>{response.json.msg}</p>,
-        icon: 'success'
+        icon: 'success',
+        title: <p className='h3 text-success'>{response.json.msg}</p>
       })
       login({ type: 'login', payload: response.json.user })
       navigate('/')
     } else {
       SwalTimer.fire({
-        title: <p className='h3 text-danger'>{response.json.msg}</p>,
-        icon: 'error'
+        icon: 'error',
+        title: <p className='h3 text-danger'>{response.json.msg || 'Ocurrió un error, vuelva a intentarlo'}</p>
       })
       login({ type: 'logout' })
     }
@@ -38,20 +40,18 @@ const Login = () => {
     e.preventDefault()
 
     const url = `${Host}/login`
-    // const content = {
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   mode: 'cors',
-    //   method: 'POST',
-    //   body: JSON.stringify(form)
-    // }
     const content = {
       method: 'POST',
       body: JSON.stringify(form)
     }
 
-    fetchCallBack(url, content, handleShowAlert)
+    try {
+      setDisabled(true)
+      await fetchCallBack(url, content, handleShowAlert)
+      setDisabled(false)
+    } catch (error) {
+      setDisabled(false)
+    }
   }
 
   const handleSetForm = (e) => {
@@ -86,7 +86,7 @@ const Login = () => {
                   <div className="form-group mb-4">
                     {/* <label htmlFor="email">Usuario</label> */}
                     <div className="input-group">
-                      <span className="input-group-text" id="basic-addon1">
+                      <span className="input-group-text px-3" id="basic-addon1">
                         <i className="fas fa-user"></i>
                       </span>
                       <input onChange={handleSetForm} type="text" className="form-control" placeholder="usuario" id="usuario" name="usuario" autoFocus required />
@@ -98,41 +98,25 @@ const Login = () => {
                     <div className="form-group mb-4">
                       {/* <label htmlFor="password">Contraseña</label> */}
                       <div className="input-group">
-                        <span className="input-group-text" id="basic-addon2">
+                        <span className="input-group-text px-3" id="basic-addon2">
                           <i className="fas fa-lock"></i>
                         </span>
-                        <input onChange={handleSetForm} type={ver ? 'text' : 'password'} placeholder="contraseña" className="form-control" id="password" name="password" required />
-                        <span className="input-group-text">
-                          <button
+                        <input autoComplete='off' onChange={handleSetForm} type={ver ? 'text' : 'password'} placeholder="contraseña" className="form-control" id="password" name="password" required />
+                        <span className="input-group-text p-1">
+                          <ButtonIcon
+                            btncolor=""
                             type="button"
-                            onMouseDown={() => setVer(true)}
-                            onMouseUp={() => setVer(false)}
-                            // onClick={() => setVer(!ver)}
+                            btnsize="btn-xs"
+                            iconclass={`fa-solid ${ver ? 'fa-eye-slash' : 'fa-eye'}`}
+                            onClick={() => setVer(!ver)}
                             onContextMenu={(e) => { e.preventDefault() }}
-                            className="btn btn-xs"
-                          >
-                            <i className="fa-solid fa-eye"></i>
-                          </button>
+                          />
                         </span>
                       </div>
                     </div>
-                    {/* <!-- End of Form --> */}
-                    {/* <div className="d-flex justify-content-between align-items-top mb-4">
-                      <div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" id="remember" />
-                        <label className="form-check-label mb-0" htmlFor="remember">
-                          Remember me
-                        </label>
-                      </div>
-                      <div>
-                        <a href="./forgot-password.html" className="small text-gray-500 text-right">
-                          Olvidé mi contraseña
-                        </a>
-                      </div>
-                    </div> */}
                   </div>
                   <div className="d-grid">
-                    <button type="submit" className="btn btn-gray-800">Ingresar</button>
+                    <button disabled={disabled} type="submit" className="btn btn-gray-800">{!disabled ? 'Ingresar' : 'Ingresando...'}</button>
                   </div>
                 </form>
               </div>
