@@ -78,10 +78,12 @@ const Login = () => {
           <div className="row justify-content-center form-bg-image" data-background-lg="../../assets/img/illustrations/signin.svg">
             <div className="col-12 d-flex align-items-center justify-content-center">
               <div className="bg-white shadow border-0 rounded border-light p-4 p-lg-5 w-100 fmxw-500">
-                <div className="text-center text-md-center mb-4 mt-md-0">
+
+                <div className="text-center text-md-center mb-4 mt-md-0 animate__animated animate__pulse">
                   {/* <h1 className="mb-0 h3">Ingreso al sistema</h1> */}
                   <img src={img_lock} width={100} alt="lock image" />
                 </div>
+
                 <form onSubmit={handleSubmitForm} className="mt-4">
                   {/* <!-- Form --> */}
                   <div className="form-group mb-4">
@@ -120,6 +122,7 @@ const Login = () => {
                     <button disabled={disabled} type="submit" className="btn btn-gray-800">{!disabled ? 'Ingresar' : 'Ingresando...'}</button>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>

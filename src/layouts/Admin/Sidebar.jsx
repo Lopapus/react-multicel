@@ -78,6 +78,8 @@ const Sidebar = () => {
             {/* <NavItem label={'Ofertas'} path={'ofertas'} iconclass={'fa-solid fa-percent'} /> */}
             {/* <NavItem label={'Proveedores'} path={'proveedores'} iconclass={'fa-solid fa-users'} /> */}
             {/* <NavItem label={'Reportes'} path={'reportes'} iconclass={'fa-solid fa-chart-pie'} /> */}
+            {/* <NavItem label={'Reportes'} path={'reportes'} iconclass={'bi bi-pie-chart-fill'} />
+            <NavItem label={'Reportes'} path={'reportes'} iconclass={'bi bi-person-circle'} /> */}
             {/* <NavItemBadge label={'Alertas'} path={'alertas'} iconclass={'fa-solid fa-circle-exclamation'} badgelabel={1} badgetxtcolor={'text-white'} badgebgcolor={'bg-danger'} /> */}
 
             {/* <NavItemMultilevel label={'Parametros'} iconclass={'fa-solid fa-gear'} >

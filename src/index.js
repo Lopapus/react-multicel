@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import 'animate.css'
+import 'bootstrap'
 import './index.css'
 import './css/volt.css'
 import './css/volt.css.map'

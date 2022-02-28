@@ -26,14 +26,14 @@ const Navbar = () => {
           {/* <!-- Navbar links --> */}
           <ul className="navbar-nav align-items-center ">
             <li className="nav-item dropdown " >
-              <a className="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <section className="nav-link dropdown-toggle pt-1 px-0" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <div className="media d-flex align-items-center">
-                  <img className="avatar rounded-circle" alt="user image" src={img_usuario} />
+                  <img className="avatar rounded-circle" alt="user image" src={img_usuario} draggable={false} />
                   <div className="media-body ms-2 text-dark align-items-center "> {/* d-none d-lg-block */}
                     {/* <span className="mb-0 font-small fw-bold text-gray-900">Admin</span> */}
                   </div>
                 </div>
-              </a>
+              </section>
               <div className="dropdown-menu dashboard-dropdown dropdown-menu-end mt-2 py-1">
                 <Link to="/cuenta" className="dropdown-item d-flex align-items-center">
                   <span className="dropdown-icon text-gray-400">
