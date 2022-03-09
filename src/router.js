@@ -4,7 +4,7 @@ import {
   Route,
   Navigate
 } from 'react-router-dom'
-import { CreateUsers, Home, Login, Page404, UserAccount, Users } from './pages'
+import { CreateUsers, Home, Login, Page404, Test, UserAccount, Users } from './pages'
 import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
@@ -36,6 +36,7 @@ const Rutas = () => {
             <Route path="*" element={<Page404 />} />
           </>
         }
+        <Route path="test" element={<Test />} />
         <Route path="*" element={<Navigate to="login" />} />
       </Routes>
     </Router>

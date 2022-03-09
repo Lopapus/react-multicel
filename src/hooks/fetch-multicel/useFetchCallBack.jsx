@@ -2,7 +2,6 @@ import Swal2 from '../../components/SweetAlert2'
 import { SessionContext } from '../../contexts/SessionProvider'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import fetchCallBack from '../../helpers/fetchCallBack'
 
 const SwalError = Swal2.mixin({
   icon: 'error',
@@ -26,7 +25,14 @@ const useFetchCallBack = () => {
     }
 
     try {
-      const response = await fetchCallBack(url, complete_content, callback)
+      const response = await fetch(url, complete_content)
+      const json = await response.json()
+      response.json = json
+
+      // en caso de que cuente con un callback
+      if (callback) {
+        callback(response)
+      }
 
       // En caso de que no este logueado
       if (response.status === 401) {

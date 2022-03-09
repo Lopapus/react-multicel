@@ -8,6 +8,7 @@ import NavSeparator from '../Sidebar/NavSeparator'
 // import ButtonIcon from '../../components/ButtonIcon'
 import img_multicel from '../../images/logo/Multicel.png'
 import icon_multicel from '../../images/logo/Multicel_icon.png'
+import NavItemSizeControls from '../Sidebar/NavItemSizeControls'
 
 const Sidebar = () => {
   // const multiList = [
@@ -58,11 +59,13 @@ const Sidebar = () => {
           <ul className="nav flex-column pt-3 pt-md-0">
 
             <li className="d-flex justify-content-center"> {/* nav-item */}
-              <Link to="/" className="nav-link d-flex align-items-center">
-                <span className="sidebar-icon">
-                  <img src={img_multicel} width={100} alt="Multicel logo" />
-                </span>
-                {/* <span className="mt-1 ms-1 sidebar-text">MULTICEL</span> */}
+              <Link to="/" >
+                <NavItemSizeControls className="nav-link d-flex align-items-center">
+                  <span className="sidebar-icon">
+                    <img src={img_multicel} width={100} alt="Multicel logo" />
+                  </span>
+                  {/* <span className="mt-1 ms-1 sidebar-text">MULTICEL</span> */}
+                </NavItemSizeControls>
               </Link>
             </li>
 
