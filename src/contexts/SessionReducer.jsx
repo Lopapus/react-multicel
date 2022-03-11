@@ -20,6 +20,15 @@ const actions = {
   logout: () => {
     localStorage.removeItem('user')
     return null
+  },
+  update: (data) => {
+    if (localStorage.getItem('user')) {
+      const user = JSON.parse(localStorage.getItem('user'))
+      const update = { ...user, ...data }
+      localStorage.setItem('user', JSON.stringify(update))
+      const user_updated = JSON.parse(localStorage.getItem('user'))
+      return user_updated
+    }
   }
 }
 
