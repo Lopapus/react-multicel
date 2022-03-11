@@ -2,6 +2,7 @@ import CardComponent from '../layouts/Card/CardComponent'
 import { SessionContext } from '../contexts/SessionProvider'
 import { useContext } from 'react'
 import ButtonIcon from '../components/ButtonIcon'
+import { Link } from 'react-router-dom'
 
 const UserAccount = () => {
   const session = useContext(SessionContext)[0]
@@ -24,9 +25,11 @@ const UserAccount = () => {
         </div>
         <div className="col-12 mt-4">
           <div className="w-auto d-grid gap-2 d-flex justify-content-center justify-content-md-start">
-            <ButtonIcon btncolor='btn-secondary' btnsize='btn-sm' iconclass={'fa-solid fa-pencil'}>
-              Modificar datos
-            </ButtonIcon>
+            <Link to={`${session.usuario}`}>
+              <ButtonIcon btncolor='btn-secondary' btnsize='btn-sm' iconclass={'fa-solid fa-pencil'}>
+                Modificar datos
+              </ButtonIcon>
+            </Link>
             <ButtonIcon btncolor='btn-secondary' btnsize='btn-sm' iconclass={'fa-solid fa-key'}>
               Cambiar contraseña
             </ButtonIcon>

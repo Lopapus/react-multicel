@@ -8,6 +8,8 @@ import { CreateUsers, Home, Login, Page404, UserAccount, Users } from './pages'
 import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
+import EditUser from './pages/EditUser'
+import ViewUser from './components/ViewUser'
 
 const Rutas = () => {
   const session = useContext(SessionContext)[0]
@@ -22,12 +24,16 @@ const Rutas = () => {
           <>
             <Route path="/" element={<Workspace />} >
               <Route index element={<Home />} />
-              <Route path="cuenta" element={<UserAccount />} />
+              <Route path="cuenta">
+                <Route index element={<UserAccount />} />
+                <Route path=':id' element={<EditUser />} />
+              </Route>
               {
                 // Rutas privadas a las que solo puede acceder el administrador
                 session.rol === 'admin' &&
                 <Route path="usuarios">
                   <Route index element={<Users />} />
+                  <Route path='user:id' element={<ViewUser />} />
                   <Route path="crear" element={<CreateUsers />} />
                   <Route path=":id" element={<CreateUsers />} />
                 </Route>

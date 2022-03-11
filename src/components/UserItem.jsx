@@ -22,6 +22,9 @@ const UserItem = ({ name, rol, id, onDelete }) => {
         </div>
         <div className="col d-flex flex-row justify-content-end">
           <div className='w-auto d-grid gap-2 d-flex'>
+            <Link to={`user${id}`}>
+              <ButtonIcon btncolor={'btn-info'} btnsize={'btn-sm'} iconclass={'fa-solid fa-eye'} />
+            </Link>
             <Link to={`/usuarios/${id}`}>
               <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-pencil'} />
             </Link>
