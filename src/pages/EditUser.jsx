@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from 'react'
 import { SessionContext } from '../contexts/SessionProvider'
 import { useParams, Link } from 'react-router-dom'
 import Message from '../components/message'
+import { useSetForm } from '../hooks'
 
 const EditUser = () => {
   const [stateDatos, setStateDatos] = useState({})
-  const [form, setForm] = useState({})
+  const form = useState({})[0]
   const [showAlert, setShowAlert] = useState(null)
+  const [forms, setForms] = useSetForm()
 
   const [session, dispatch] = useContext(SessionContext)
 
@@ -28,10 +30,10 @@ const EditUser = () => {
     }
   }
 
-  const handleChangeForm = (e) => {
+  /* const handleChangeForm = (e) => {
     const { name, value } = e.target
     setForm({ ...form, [name]: value })
-  }
+  } */
   // console.log(url, method)
   const handleSubmitForm = async (e) => {
     e.preventDefault()
@@ -64,7 +66,7 @@ const EditUser = () => {
   useEffect(
     () => {
       // console.log(form)
-    }, [form]
+    }, [forms]
   )
   return (
     <>
@@ -80,19 +82,11 @@ const EditUser = () => {
               <form onSubmit={handleSubmitForm}>
                 <div className='form-group'>
                   <label>Nombre</label>
-                  <input type="text" name="nombre" id="nombre" defaultValue={item.nombre} className='form-control' onChange={handleChangeForm} required></input>
+                  <input type="text" name="nombre" id="nombre" defaultValue={item.nombre} className='form-control' onChange={setForms} required></input>
                 </div>
                 <div className='form-group'>
                   <label>Nombre de usuario</label>
-                  <input type="text" className="form-control" defaultValue={item.usuario} disabled></input>
-                </div>
-                <div className='form-group'>
-                  <label>Nuevo nombre de usuario</label>
-                  <input type="text" name="usuario" id="usuario" className='form-control' onChange={handleChangeForm} required></input>
-                </div>
-                <div className='form-group mb-2'>
-                  <label>Confirmar nombre de usuario</label>
-                  <input type="text" name="confirmUsuario" id="confirmUsuario" className='form-control'></input>
+                  <input type="text" name="usuario" id="usuario" defaultValue={item.usuario} className='form-control' onChange={setForms} required></input>
                 </div>
                 <div className='form-group'>
                   <Link to={'../'}>

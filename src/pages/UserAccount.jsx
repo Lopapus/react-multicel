@@ -2,6 +2,7 @@ import CardComponent from '../layouts/Card/CardComponent'
 import { SessionContext } from '../contexts/SessionProvider'
 import { useContext } from 'react'
 import ButtonIcon from '../components/ButtonIcon'
+import img_usuario from '../images/sistema/usuario.png'
 import { Link } from 'react-router-dom'
 
 const UserAccount = () => {
@@ -12,7 +13,7 @@ const UserAccount = () => {
         <div className="col-12">
           <div className="row">
             <div className="col-12 col-md-auto d-flex justify-content-center align-items-center">
-              <img className="rounded-circle" src="https://www.getbillage.com/files/user/avatar/_usuario.png" width={90} height={90} />
+              <img className="rounded-circle" src={img_usuario} width={90} height={90} />
             </div>
             <div className="col-12 col-md-auto d-flex justify-content-center">
               <div className="text-center text-md-start">
