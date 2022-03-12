@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { SessionContext } from '../contexts/SessionProvider'
+import host from '../host'
 
 const viewUser = () => {
   const params = useParams()
@@ -17,7 +18,7 @@ const viewUser = () => {
         },
         method: 'GET'
       }
-      const peticion = await fetch(`http://localhost:4000/usuarios/${params.id}`, request)
+      const peticion = await fetch(`${host}/usuarios/${params.id}`, request)
       const res = await peticion.json()
       console.log(res)
       setDatosUser(res)
@@ -25,6 +26,7 @@ const viewUser = () => {
       console.log(error)
     }
   }
+
   console.log(datosUser)
   useEffect(() => {
     handleFetch()
@@ -35,17 +37,19 @@ const viewUser = () => {
         <div className="card-header border-bottom d-flex align-items-center justify-content-between">
           <h2 className="fs-5 fw-bold mb-0">Datos del usuario</h2>
         </div>
-        <h1>{datosUser.nombre}</h1>
-        {/*
-          datosUser.length > 0 &&
-          datosUser.map(
-            (item, key) => (
-              <div key={`user-${key}`} className='form-group'>
-                <h3>{item.usuario}</h3>
-                <h3>{item.nombre}</h3>
-              </div>
-            )) */
-        }
+        <div className='card-body'>
+          <div className='form-group'>
+            <h6>Nombre: {datosUser.nombre}</h6>
+            <h6>Usuario: {datosUser.usuario}</h6>
+            <h6>Clave maestra: {datosUser.clave_maestra}</h6>
+            <h6>Rol: {datosUser.rol}</h6>
+          </div>
+          <div className='form-group'>
+            <Link to={'../'}>
+              <button className='btn btn-warning mt-2'>Volver</button>
+            </Link>
+          </div>
+        </div>
       </div>
     </>
   )

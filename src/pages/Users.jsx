@@ -5,6 +5,7 @@ import ButtonIcon from '../components/ButtonIcon'
 import CardComponent from '../layouts/Card/CardComponent'
 import { Link } from 'react-router-dom'
 import useDeleteUser from '../hooks/useDeleteUser'
+import host from '../host'
 
 const Users = () => {
   const [resultado, setDelete] = useDeleteUser()
@@ -12,7 +13,7 @@ const Users = () => {
 
   const handleFetch = async () => {
     try {
-      const peticion = await fetch('http://localhost:4000/usuarios')
+      const peticion = await fetch(`${host}/usuarios`)
       const res = await peticion.json()
       // console.log(res)
       setStateUsers(res)
@@ -20,9 +21,6 @@ const Users = () => {
       console.log(error)
     }
   }
-  // const handleDelete(){
-  // stateUsers.find()
-  // }
 
   useEffect(() => {
     handleFetch()

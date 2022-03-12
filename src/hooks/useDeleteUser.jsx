@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react'
 import { SessionContext } from '../contexts/SessionProvider'
 import Swal2 from '../components/SweetAlert2'
+import host from '../host'
 
 const useDeleteUser = () => {
   const [valorFinal, setValorFinal] = useState(null)
@@ -25,7 +26,7 @@ const useDeleteUser = () => {
     /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         try {
-          const response = await fetch('http://127.0.0.1:4000/usuarios', request)
+          const response = await fetch(`${host}/usuarios`, request)
           const json = await response.json()
           console.log(json)
           setValorFinal(id)
@@ -33,7 +34,7 @@ const useDeleteUser = () => {
           setValorFinal(null)
         }
       } else if (result.isDenied) {
-      // sexo//
+        // //
       }
     })
   }
@@ -42,7 +43,3 @@ const useDeleteUser = () => {
 }
 
 export default useDeleteUser
-
-// const [valor,funcion] = useDeleteUser()
-// funcion(1)
-// valor

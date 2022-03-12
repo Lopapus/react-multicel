@@ -1,17 +1,22 @@
 import { useState, useEffect, useContext } from 'react'
 import Message from '../components/message'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { SessionContext } from '../contexts/SessionProvider'
+import { useSetForm } from '../hooks'
+import Swal2 from '../components/SweetAlert2'
+import host from '../host'
+// import formCreateSchema from '../validations/vCreateUser'
 
 const CreateUsers = () => {
   const [showAlert, setShowAlert] = useState(null)
-  const [form, setForm] = useState({})
+  const [forms, setForms] = useSetForm()
   const params = useParams()
 
   const session = useContext(SessionContext)[0]
 
   let user
   let method
+  let url
 
   if (params.id) {
     const [stateUsers, setStateUsers] = useState({})
@@ -25,9 +30,8 @@ const CreateUsers = () => {
           },
           method: 'GET'
         }
-        const peticion = await fetch(`http://localhost:4000/usuarios/${params.id}`, request)
+        const peticion = await fetch(`${host}/usuarios/${params.id}`, request)
         const res = await peticion.json()
-        // console.log(res)
         setStateUsers(res)
       } catch (error) {
         console.log(error)
@@ -37,9 +41,8 @@ const CreateUsers = () => {
       handleFetch()
     }, [])
 
-    // console.log(stateUsers)
-
     user = {
+      id: stateUsers.id,
       nombre: stateUsers.nombre,
       usuario: stateUsers.usuario,
       password: stateUsers.password,
@@ -47,10 +50,13 @@ const CreateUsers = () => {
       clave_maestra: stateUsers.clave_maestra
     }
 
-    method = 'PUT'
+    method = 'PATCH'
+    url = `${host}/usuarios/${params.id}`
   } else {
     method = 'POST'
+    url = `${host}/usuarios`
     user = {
+      id: '',
       nombre: '',
       usuario: '',
       password: '',
@@ -59,13 +65,6 @@ const CreateUsers = () => {
     }
   }
 
-  // console.log(user)
-
-  const handleChangeForm = (e) => {
-    const { name, value } = e.target
-    setForm({ ...form, [name]: value })
-  }
-  // console.log(url, method)
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     const request = {
@@ -74,27 +73,66 @@ const CreateUsers = () => {
         'auth-token': session.token
       },
       method: method,
-      body: JSON.stringify(form)
+      body: JSON.stringify({ ...forms, id: user.id })
     }
+
     try {
-      const response = await fetch('http://127.0.0.1:4000/usuarios', request)
+      const response = await fetch(url, request)
       const json = await response.json()
       // console.log(json)
       if (response.ok) {
-        setShowAlert(<Message message= {'Usuario agregado correctamente'} className='alert p-1 alert-success' />)
+        if (method === 'POST') {
+          setShowAlert(<Message message= {'Usuario agregado correctamente'} className='alert p-1 alert-success' />)
+        } else {
+          setShowAlert(<Message message= {'Se ha editado correctamente'} className='alert p-1 alert-success' />)
+        }
       } else {
         setShowAlert(<Message message= {json.msg || json} className='alert p-1 alert-danger' />)
       }
     } catch (error) {
-      // setShowAlert({ message: 'Error', style: 'col-2 alert alert-danger' })
-      setShowAlert(<Message message= 'Error' className='col-2 alert alert-danger' />)
+      setShowAlert(<Message message= 'Error' className='alert alert-danger' />)
     }
+  }
+
+  const handleSubmitMaster = async (e) => {
+    e.preventDefault()
+    const request = {
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': session.token
+      },
+      method: 'PUT',
+      body: JSON.stringify({ id: user.id })
+    }
+    Swal2.fire({
+      title: '¿Desea generar una nueva clave maestra?',
+      showDenyButton: false,
+      confirmButtonColor: '#161d27',
+      showCancelButton: true,
+      confirmButtonText: 'GENERAR'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`${host}/usuarios/master`, request)
+          const json = await response.json()
+          if (response.ok) {
+            setShowAlert(<Message message= {'Clave maestra actualizada correctamente'} className='alert p-1 alert-success' />)
+          } else {
+            setShowAlert(<Message message= {json.msg || json} className='alert p-1 alert-danger' />)
+          }
+        } catch (error) {
+          setShowAlert(<Message message= 'Error' className='alert alert-danger' />)
+        }
+      } else if (result.isDenied) {
+        // //
+      }
+    })
   }
 
   useEffect(
     () => {
-      // console.log(form)
-    }, [form]
+      console.log(forms)
+    }, [forms]
   )
   return (
     <>
@@ -105,47 +143,70 @@ const CreateUsers = () => {
         <div className="card-body">
           {
         params.id
-          ? <form onSubmit={handleSubmitForm}>
-            <div className="mb-2 form-group">
-              <label>Clave maestra</label>
-              <input type="text" name='clave_maestra' id='clave_maestra' className='form-control' onChange={handleChangeForm} defaultValue={user.clave_maestra}/>
+          ? <div>
+              <form onSubmit={handleSubmitMaster}>
+                <label>Clave maestra</label>
+                <div className="input-group mb-3">
+                  <input type="text" name='clave_maestra' className='form-control' defaultValue={user.clave_maestra} disabled />
+                  <div className="input-group-append">
+                    <button type='submit' className="btn btn-primary"><i className="fa-solid fa-arrow-rotate-right"></i></button>
+                  </div>
+                </div>
+              </form>
+              <form onSubmit={handleSubmitForm}>
+                <div className="mb-2 form-group">
+                  <label>Rol</label>
+                  {
+                    user.rol === 'admin'
+                      ? <select name="rol" className="form-control" onChange={setForms}>
+                          <option value="admin">Administrador</option>
+                          <option value="personal">Personal</option>
+                        </select>
+                      : <select name="rol" className="form-control" onChange={setForms}>
+                          <option value="personal">Personal</option>
+                          <option value="admin">Administrador</option>
+                        </select>
+                  }
+                </div>
+                <div className='form-group mx-2 mb-2'>
+                  <Link to="../">
+                    <button className='btn btn-warning'>Volver</button>
+                  </Link>
+                  <button type="submit" className="btn btn-primary mx-2">Guardar cambios</button>
+                </div>
+                {showAlert}
+              </form>
             </div>
-            <div className="mb-2 form-group">
-              <label>Rol</label>
-              <select name="rol" id="rol" className="form-select" defaultValue={user.rol ? user.rol : 0 } onChange={handleChangeForm} required>
-                <option disabled value="" readOnly={true}>Seleccione</option>
-                <option value="admin">Administrador</option>
-                <option value="personal">Personal</option>
-              </select>
-            </div>
-            <button type="submit" className="mb-2 btn btn-primary">Guardar cambios</button>
-            {showAlert}
-        </form>
           : <form onSubmit={handleSubmitForm}>
-            <div className="form-group">
-              <label>Nombre y apellido</label>
-              <input type="text" className="form-control" name="nombre" placeholder="" defaultValue={user.nombre} onChange={handleChangeForm} required></input>
-            </div>
-            <div className="form-group">
-              <label>Usuario</label>
-              <input type="text" className="form-control" name="usuario" placeholder="" defaultValue={user.usuario} onChange={handleChangeForm} required></input>
-            </div>
-            <div className="form-group">
-              <label>Contraseña</label>
-              <input type="password" className="form-control" name="password" placeholder="" defaultValue={user.password} onChange={handleChangeForm} required></input>
-            </div>
-            <div className="mb-2 form-group">
-              <label>Rol</label>
-              <select name="rol" id="rol" className="form-select" defaultValue={user.rol ? user.rol : '' } onChange={handleChangeForm} required>
-                <option disabled value="" readOnly={true}>Seleccione</option>
-                <option value="admin">Administrador</option>
-                <option value="personal">Personal</option>
-              </select>
-            </div>
-            <button type="submit" className="mb-2 btn btn-primary">Agregar usuario</button>
-            {showAlert}
-          </form>
-      }
+              <div className="form-group">
+                <label>Nombre y apellido</label>
+                <input type="text" className="form-control" name="nombre" defaultValue={user.nombre} onChange={setForms} required></input>
+              </div>
+              <div className="form-group">
+                <label>Usuario</label>
+                <input type="text" className="form-control" name="usuario" defaultValue={user.usuario} onChange={setForms} required></input>
+              </div>
+              <div className="form-group">
+                <label>Contraseña</label>
+                <input type="password" className="form-control" name="password" defaultValue={user.password} onChange={setForms} required></input>
+              </div>
+              <div className="mb-2 form-group">
+                <label>Rol</label>
+                <select name="rol" id="rol" className="form-select" defaultValue={user.rol ? user.rol : '' } onChange={setForms} required>
+                  <option className="form-control" disabled value="" readOnly={true}>Seleccione</option>
+                  <option className="form-control" value="admin">Administrador</option>
+                  <option className="form-control" value="personal">Personal</option>
+                </select>
+              </div>
+              <div className='form-group mx-2 mb-2'>
+                  <Link to="../">
+                    <button className='btn btn-warning'>Volver</button>
+                  </Link>
+                  <button type="submit" className="btn btn-primary mx-2">Agregar usuario</button>
+                </div>
+              {showAlert}
+            </form>
+          }
         </div>
       </div>
     </>

@@ -9,7 +9,8 @@ import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
 import EditUser from './pages/EditUser'
-import ViewUser from './components/ViewUser'
+import ViewUser from './pages/ViewUser'
+import EditPassword from './pages/EditPassword'
 
 const Rutas = () => {
   const session = useContext(SessionContext)[0]
@@ -27,6 +28,7 @@ const Rutas = () => {
               <Route path="cuenta">
                 <Route index element={<UserAccount />} />
                 <Route path=':id' element={<EditUser />} />
+                <Route path='clave:id' element={<EditPassword />} />
               </Route>
               {
                 // Rutas privadas a las que solo puede acceder el administrador

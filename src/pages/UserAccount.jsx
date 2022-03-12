@@ -31,9 +31,11 @@ const UserAccount = () => {
                 Modificar datos
               </ButtonIcon>
             </Link>
-            <ButtonIcon btncolor='btn-secondary' btnsize='btn-sm' iconclass={'fa-solid fa-key'}>
-              Cambiar contraseña
-            </ButtonIcon>
+            <Link to={`clave${session.usuario}`}>
+              <ButtonIcon btncolor='btn-secondary' btnsize='btn-sm' iconclass={'fa-solid fa-key'}>
+                Cambiar contraseña
+              </ButtonIcon>
+            </Link>
           </div>
         </div>
       </div>
