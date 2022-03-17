@@ -63,28 +63,33 @@ const EditPassword = () => {
   )
   return (
     <>
-      <div className='form-group'>
-        <form onSubmit={handleSubmitForm}>
-          <div className='form-group mb-2'>
-            <label>Contraseña actual o clave maestra</label>
-            <input type='password' name='old_password' className='form-control' onChange={setForms} required></input>
-          </div>
-          <div className='form-group mb-2'>
-            <label>Nueva contraseña</label>
-            <input type='password' name='password' className='form-control' onChange={setForms} required></input>
-          </div>
-          <div className='form-group mb-2'>
-            <label>Confirmar nueva contraseña</label>
-            <input type='password' name='passwordC' className='form-control' required></input>
-          </div>
-          <div className='form-group mx-2 mb-2'>
-            <Link to='../'>
-              <button className='btn btn-warning'>Volver</button>
-            </Link>
-            <button className='btn btn-primary mx-2'>Guardar</button>
-          </div>
-          {showAlert}
-        </form>
+      <div className="card border-0 shadow mt-3">
+        <div className="card-header border-bottom d-flex align-items-center justify-content-between">
+          <h2 className="fs-5 fw-bold mb-0">CAMBIAR CONTRASEÑA</h2>
+        </div>
+        <div className="card-body">
+          <form onSubmit={handleSubmitForm}>
+            <div className='form-group mb-2'>
+              <label>Contraseña actual o clave maestra</label>
+              <input type='password' name='old_password' className='form-control' onChange={setForms} required></input>
+            </div>
+            <div className='form-group mb-2'>
+              <label>Nueva contraseña</label>
+              <input type='password' name='password' className='form-control' onChange={setForms} required></input>
+            </div>
+            <div className='form-group mb-2'>
+              <label>Confirmar nueva contraseña</label>
+              <input type='password' name='passwordC' className='form-control' required></input>
+            </div>
+            <div className='form-group mx-2 mb-2'>
+              <Link to='../'>
+                <button className='btn btn-warning'>Volver</button>
+              </Link>
+              <button className='btn btn-primary mx-2'>Guardar</button>
+            </div>
+            {showAlert}
+          </form>
+        </div>
       </div>
     </>
   )

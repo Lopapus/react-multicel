@@ -6,6 +6,7 @@ import CardComponent from '../layouts/Card/CardComponent'
 import { Link } from 'react-router-dom'
 import useDeleteUser from '../hooks/useDeleteUser'
 import host from '../host'
+import Loader from '../components/Loader'
 
 const Users = () => {
   const [resultado, setDelete] = useDeleteUser()
@@ -15,7 +16,6 @@ const Users = () => {
     try {
       const peticion = await fetch(`${host}/usuarios`)
       const res = await peticion.json()
-      // console.log(res)
       setStateUsers(res)
     } catch (error) {
       console.log(error)
@@ -42,11 +42,13 @@ const Users = () => {
       <CardComponent title={'Usuarios'}>
         <UserList>
           {
-            stateUsers.length > 0 &&
-            stateUsers.map(
-              (user, key) =>
-              <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.id} onDelete={() => setDelete(user.id)} />
-            )
+            stateUsers.length > 0
+              ? stateUsers.map(
+                (user, key) =>
+                  <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.id} onDelete={() => setDelete(user.id)} />
+              )
+              : <Loader />
+
           }
         </UserList>
       </CardComponent>

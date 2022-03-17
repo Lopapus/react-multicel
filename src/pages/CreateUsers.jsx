@@ -106,6 +106,7 @@ const CreateUsers = () => {
     }
     Swal2.fire({
       title: '¿Desea generar una nueva clave maestra?',
+      html: '<i>Una vez acepte la clave maestra actual no se podrá recuperar, en cambio se generará una nueva<i/>',
       showDenyButton: false,
       confirmButtonColor: '#161d27',
       showCancelButton: true,
