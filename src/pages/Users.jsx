@@ -10,7 +10,7 @@ import Loader from '../components/Loader'
 import { SessionContext } from '../contexts/SessionProvider'
 
 const Users = () => {
-  const [resultado, setDelete] = useDeleteUser()
+  const deleteUser = useDeleteUser()
   const [stateUsers, setStateUsers] = useState([])
 
   const session = useContext(SessionContext)[0]
@@ -26,15 +26,18 @@ const Users = () => {
     }
   }
 
-  useEffect(() => {
-    handleFetch()
-  }, [])
-  useEffect(() => {
-    if (resultado) {
-      const listUsers = stateUsers.filter(element => element.id !== resultado)
-      setStateUsers(listUsers)
+  useEffect(handleFetch, [])
+
+  const handleDeleteUser = async (user) => {
+    const result = await deleteUser(user)
+    if (result) {
+      const newList = [...stateUsers].filter(
+        element => element.id !== user.id
+      )
+      setStateUsers([...newList])
     }
-  }, [resultado])
+  }
+
   return (
     <>
       <Link to='/usuarios/crear'>
@@ -49,7 +52,7 @@ const Users = () => {
             stateUsers.length > 0
               ? stateUsers.map(
                 (user, key) =>
-                  <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.usuario} onDelete={() => setDelete(user.id)} />
+                  <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.usuario} onDelete={() => handleDeleteUser(user)} />
               )
               : <Loader />
           }

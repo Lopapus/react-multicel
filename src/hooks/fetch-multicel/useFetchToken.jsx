@@ -11,12 +11,13 @@ const useFetchToken = () => {
   return (url, content = {}, callback) => {
     if (session) {
       const token_content = {
+        ...content,
         headers: {
-          'auth-token': session.token,
-          ...content.headers
-        },
-        ...content
+          ...content.headers,
+          'auth-token': session.token
+        }
       }
+
       return fetchCallback(url, token_content, callback)
     } else {
       navigate('/login')

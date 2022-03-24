@@ -1,45 +1,52 @@
-import { useState, useContext } from 'react'
-import { SessionContext } from '../contexts/SessionProvider'
+// import { useState } from 'react' //, useContext
+// import { SessionContext } from '../contexts/SessionProvider'
 import Swal2 from '../components/SweetAlert2'
 import host from '../host'
+import { useFetchToken } from './fetch-multicel'
 
 const useDeleteUser = () => {
-  const [valorFinal, setValorFinal] = useState(null)
-  const session = useContext(SessionContext)[0]
+  const fetchToken = useFetchToken()
 
-  const deleteUser = (id) => {
-    const request = {
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': session.token
-      },
+  const deleteUser = async ({ id, usuario }) => {
+    const content = {
       method: 'DELETE',
       body: JSON.stringify({ id })
     }
-    Swal2.fire({
-      title: '¿Está seguro de eliminar el usuario?',
+
+    const result = await Swal2.fire({
+      title: `¿Está seguro de eliminar el usuario ${usuario}?`,
       showDenyButton: false,
       confirmButtonColor: '#E11D48',
+      timer: 5000,
       showCancelButton: true,
-      confirmButtonText: 'ELIMINAR'
-    }).then(async (result) => {
-    /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(`${host}/usuarios`, request)
-          const json = await response.json()
-          console.log(json)
-          setValorFinal(id)
-        } catch (error) {
-          setValorFinal(null)
-        }
-      } else if (result.isDenied) {
-        // //
-      }
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Eliminar'
     })
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetchToken(`${host}/usuarios`, content)
+
+        if (!response.ok) {
+          Swal2.fire({
+            icon: 'error',
+            title: `${response?.json?.msg || 'Ocurrio un fallo vuelva a intentarlo'}`,
+            showDenyButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            timer: 2000
+          })
+        }
+
+        return response.ok
+      } catch (error) {
+        return null
+      }
+    }
+    return null
   }
 
-  return [valorFinal, deleteUser]
+  return deleteUser
 }
 
 export default useDeleteUser

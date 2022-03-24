@@ -15,13 +15,13 @@ const useFetchCallBack = () => {
 
   return async (url, content, callback = null) => {
     const complete_content = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...content.headers
-      },
       mode: 'cors',
       method: 'GET',
-      ...content
+      ...content,
+      headers: {
+        ...content.headers,
+        'Content-Type': 'application/json'
+      }
     }
 
     try {
