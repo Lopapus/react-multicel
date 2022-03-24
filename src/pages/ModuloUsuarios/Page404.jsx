@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import ButtonIcon from '../components/ButtonIcon'
+import ButtonIcon from '../../components/ButtonIcon'
 
 const Page404 = () => {
   return (

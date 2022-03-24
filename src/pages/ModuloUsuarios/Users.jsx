@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import UserItem from '../components/UserItem'
-import UserList from '../components/UserList'
-import ButtonIcon from '../components/ButtonIcon'
-import CardComponent from '../layouts/Card/CardComponent'
-import useDeleteUser from '../hooks/useDeleteUser'
-import { useFetchToken } from '../hooks/fetch-multicel'
-import host from '../host'
-import Loader from '../components/Loader'
-import { SessionContext } from '../contexts/SessionProvider'
+import UserItem from '../../components/UserItem'
+import UserList from '../../components/UserList'
+import ButtonIcon from '../../components/ButtonIcon'
+import CardComponent from '../../layouts/Card/CardComponent'
+import useDeleteUser from '../../hooks/useDeleteUser'
+import { useFetchToken } from '../../hooks/fetch-multicel'
+import Server from '../../services/Server'
+import Loader from '../../components/Loader'
+import { SessionContext } from '../../contexts/SessionProvider'
 
 const Users = () => {
   const deleteUser = useDeleteUser()
@@ -19,7 +19,7 @@ const Users = () => {
 
   const handleFetch = async () => {
     try {
-      const peticion = await fetchToken(`${host}/usuarios`)
+      const peticion = await fetchToken(`${Server}/usuarios`)
       const res = peticion.json
       const list = res.filter(element => element.usuario !== session.usuario)
       setStateUsers(list)

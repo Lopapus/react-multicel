@@ -1,12 +1,12 @@
 import { useContext, useState } from 'react'
-import { SessionContext } from '../contexts/SessionProvider'
 import { useNavigate } from 'react-router-dom'
-import { useFetchCallBack } from '../hooks/fetch-multicel'
-import { useSetForm } from '../hooks'
-import Host from '../host'
-import ButtonIcon from '../components/ButtonIcon'
-import img_lock from '../images/sistema/lock.png'
-import SwalTimer from '../helpers/SwalTimer'
+import { SessionContext } from '../../contexts/SessionProvider'
+import { useFetchCallBack } from '../../hooks/fetch-multicel'
+import { useSetForm } from '../../hooks'
+import Server from '../../services/Server'
+import ButtonIcon from '../../components/ButtonIcon'
+import img_lock from '../../images/sistema/lock.png'
+import SwalTimer from '../../helpers/SwalTimer'
 
 const Login = () => {
   const [ver, setVer] = useState(false)
@@ -30,7 +30,7 @@ const Login = () => {
   const handleSubmitForm = async (e) => {
     e.preventDefault()
 
-    const url = `${Host}/login`
+    const url = `${Server}/login`
     const content = {
       method: 'POST',
       body: JSON.stringify(form)

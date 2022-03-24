@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { SessionContext } from '../contexts/SessionProvider'
+import { SessionContext } from '../../contexts/SessionProvider'
 import { useParams, Link } from 'react-router-dom'
-import Message from '../components/message'
-import { useSetForm } from '../hooks'
-import host from '../host'
-import { useFetchToken } from '../hooks/fetch-multicel'
+import Message from '../../components/message'
+import { useSetForm } from '../../hooks'
+import Server from '../../services/Server'
+import { useFetchToken } from '../../hooks/fetch-multicel'
 
 const EditUser = () => {
   const [stateDatos, setStateDatos] = useState({})
@@ -17,7 +17,7 @@ const EditUser = () => {
   const params = useParams()
   const handleFetch = async () => {
     try {
-      const peticion = await fetchToken(`${host}/usuarios/user/${params.id}`)
+      const peticion = await fetchToken(`${Server}/usuarios/user/${params.id}`)
       const res = peticion.json
       setStateDatos(res)
     } catch (error) {
@@ -32,7 +32,7 @@ const EditUser = () => {
       body: JSON.stringify({ ...forms, id: stateDatos[0].id })
     }
     try {
-      const response = await fetchToken(`${host}/usuarios/${params.id}`, request)
+      const response = await fetchToken(`${Server}/usuarios/${params.id}`, request)
       const json = response.json
       if (response.ok) {
         setShowAlert(<Message message={'Se ha editado correctamente'} className='alert p-1 alert-success' />)

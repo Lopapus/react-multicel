@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import Message from '../components/message'
+import Message from '../../components/message'
 import { useParams, Link } from 'react-router-dom'
-import { useSetForm } from '../hooks'
-import { useFetchToken } from '../hooks/fetch-multicel'
-import Swal2 from '../components/SweetAlert2'
-import host from '../host'
+import { useSetForm } from '../../hooks'
+import { useFetchToken } from '../../hooks/fetch-multicel'
+import Swal2 from '../../components/SweetAlert2'
+import Server from '../../services/Server'
 // import formCreateSchema from '../validations/vCreateUser'
 
 const CreateUsers = () => {
@@ -21,7 +21,7 @@ const CreateUsers = () => {
   if (params.id) {
     const handleFetch = async () => {
       try {
-        const peticion = await fetchToken(`${host}/usuarios/user/${params.id}`)
+        const peticion = await fetchToken(`${Server}/usuarios/user/${params.id}`)
         const res = peticion.json
         setStateUsers(res[0])
       } catch (error) {
@@ -42,10 +42,10 @@ const CreateUsers = () => {
     }
 
     method = 'PATCH'
-    url = `${host}/usuarios/${params.id}`
+    url = `${Server}/usuarios/${params.id}`
   } else {
     method = 'POST'
-    url = `${host}/usuarios`
+    url = `${Server}/usuarios`
     user = {
       id: '',
       nombre: '',
@@ -96,10 +96,9 @@ const CreateUsers = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await fetchToken(`${host}/usuarios/master`, request)
+          const response = await fetchToken(`${Server}/usuarios/master`, request)
           const json = response.json
           if (response.ok) {
-            user.clave_maestra = json.clave_maestra
             setShowAlert(<Message message={'Clave maestra actualizada correctamente'} className='alert p-1 alert-success text-center' />)
           } else {
             setShowAlert(<Message message={json.msg} className='alert p-1 alert-danger text-center' />)

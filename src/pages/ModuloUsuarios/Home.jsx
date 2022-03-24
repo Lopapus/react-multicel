@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-import { SessionContext } from '../contexts/SessionProvider'
-import CardComponent from '../layouts/Card/CardComponent'
-import img_usuario from '../images/sistema/usuario.png'
-import svg_woman from '../images/svg/at-work.svg'
+import { SessionContext } from '../../contexts/SessionProvider'
+import CardComponent from '../../layouts/Card/CardComponent'
+import img_usuario from '../../images/sistema/usuario.png'
+import svg_woman from '../../images/svg/at-work.svg'
 
 const Home = () => {
   const session = useContext(SessionContext)[0]

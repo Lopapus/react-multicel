@@ -1,7 +1,5 @@
-// import { useState } from 'react' //, useContext
-// import { SessionContext } from '../contexts/SessionProvider'
 import Swal2 from '../components/SweetAlert2'
-import host from '../host'
+import Server from '../services/Server'
 import { useFetchToken } from './fetch-multicel'
 
 const useDeleteUser = () => {
@@ -25,7 +23,7 @@ const useDeleteUser = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetchToken(`${host}/usuarios`, content)
+        const response = await fetchToken(`${Server}/usuarios`, content)
 
         if (!response.ok) {
           Swal2.fire({

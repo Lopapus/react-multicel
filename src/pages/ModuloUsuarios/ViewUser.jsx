@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import Loader from '../components/Loader'
-import { SessionContext } from '../contexts/SessionProvider'
-import host from '../host'
+import Loader from '../../components/Loader'
+import { SessionContext } from '../../contexts/SessionProvider'
+import Server from '../../services/Server'
 
 const viewUser = () => {
   const params = useParams()
@@ -19,7 +19,7 @@ const viewUser = () => {
         },
         method: 'GET'
       }
-      const peticion = await fetch(`${host}/usuarios/user/${params.id}`, request)
+      const peticion = await fetch(`${Server}/usuarios/user/${params.id}`, request)
       const res = await peticion.json()
       setDatosUser(res)
     } catch (error) {

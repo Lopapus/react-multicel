@@ -4,13 +4,10 @@ import {
   Route,
   Navigate
 } from 'react-router-dom'
-import { CreateUsers, Home, Login, Page404, Test, UserAccount, Users } from './pages'
+import { CreateUsers, Home, Login, Page404, Test, UserAccount, Users, EditUser, ViewUser, EditPassword } from './pages/ModuloUsuarios'
 import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
-import EditUser from './pages/EditUser'
-import ViewUser from './pages/ViewUser'
-import EditPassword from './pages/EditPassword'
 
 const Rutas = () => {
   const session = useContext(SessionContext)[0]

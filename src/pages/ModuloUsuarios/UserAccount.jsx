@@ -1,9 +1,9 @@
-import CardComponent from '../layouts/Card/CardComponent'
-import { SessionContext } from '../contexts/SessionProvider'
 import { useContext } from 'react'
-import ButtonIcon from '../components/ButtonIcon'
-import img_usuario from '../images/sistema/usuario.png'
 import { Link } from 'react-router-dom'
+import CardComponent from '../../layouts/Card/CardComponent'
+import { SessionContext } from '../../contexts/SessionProvider'
+import img_usuario from '../../images/sistema/usuario.png'
+import ButtonIcon from '../../components/ButtonIcon'
 
 const UserAccount = () => {
   const session = useContext(SessionContext)[0]
