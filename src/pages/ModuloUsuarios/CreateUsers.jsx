@@ -98,6 +98,7 @@ const CreateUsers = () => {
         try {
           const response = await fetchToken(`${Server}/usuarios/master`, request)
           const json = response.json
+          stateUsers.clave_maestra = json.clave_maestra
           if (response.ok) {
             setShowAlert(<Message message={'Clave maestra actualizada correctamente'} className='alert p-1 alert-success text-center' />)
           } else {
