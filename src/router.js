@@ -35,7 +35,8 @@ const Rutas = () => {
                 session.rol === 'admin' &&
                 <Route path="usuarios">
                   <Route index element={<Users />} />
-                  <Route path='user:id' element={<ViewUser />} />
+                  <Route path='info/:id' element={<ViewUser />} />
+                  <Route path='info/' element={<Navigate to='../' />} />
                   <Route path="crear" element={<CreateUsers />} />
                   <Route path=":id" element={<CreateUsers />} />
                 </Route>

@@ -19,16 +19,14 @@ const viewUser = () => {
         },
         method: 'GET'
       }
-      const peticion = await fetch(`${host}/usuarios/${params.id}`, request)
+      const peticion = await fetch(`${host}/usuarios/user/${params.id}`, request)
       const res = await peticion.json()
-      // console.log(res)
       setDatosUser(res)
     } catch (error) {
       console.log(error)
     }
   }
 
-  console.log(datosUser)
   useEffect(() => {
     handleFetch()
   }, [])
@@ -36,16 +34,17 @@ const viewUser = () => {
     <>
       {
         datosUser.length > 0
-          ? <div className="card border-0 shadow mt-3">
+          ? datosUser.map((item, key) => (
+            <div key={key} className="card border-0 shadow mt-3">
               <div className="card-header border-bottom d-flex align-items-center justify-content-between">
                 <h2 className="fs-5 fw-bold mb-0">Datos del usuario</h2>
               </div>
               <div className='card-body'>
                 <div className='form-group'>
-                  <h6>Nombre: {datosUser.nombre}</h6>
-                  <h6>Usuario: {datosUser.usuario}</h6>
-                  <h6>Clave maestra: {datosUser.clave_maestra}</h6>
-                  <h6>Rol: {datosUser.rol}</h6>
+                  <h6>Nombre: {item.nombre}</h6>
+                  <h6>Usuario: {item.usuario}</h6>
+                  <h6>Clave maestra: {item.clave_maestra}</h6>
+                  <h6>Rol: {item.rol}</h6>
                 </div>
                 <div className='form-group'>
                   <Link to={'../'}>
@@ -54,6 +53,7 @@ const viewUser = () => {
                 </div>
               </div>
             </div>
+          ))
           : <Loader />
       }
     </>

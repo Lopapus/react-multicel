@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import UserItem from '../components/UserItem'
 import UserList from '../components/UserList'
 import ButtonIcon from '../components/ButtonIcon'
@@ -7,16 +7,20 @@ import { Link } from 'react-router-dom'
 import useDeleteUser from '../hooks/useDeleteUser'
 import host from '../host'
 import Loader from '../components/Loader'
+import { SessionContext } from '../contexts/SessionProvider'
 
 const Users = () => {
   const [resultado, setDelete] = useDeleteUser()
   const [stateUsers, setStateUsers] = useState([])
 
+  const session = useContext(SessionContext)[0]
+
   const handleFetch = async () => {
     try {
       const peticion = await fetch(`${host}/usuarios`)
       const res = await peticion.json()
-      setStateUsers(res)
+      const list = res.filter(element => element.usuario !== session.usuario)
+      setStateUsers(list)
     } catch (error) {
       console.log(error)
     }
@@ -45,10 +49,9 @@ const Users = () => {
             stateUsers.length > 0
               ? stateUsers.map(
                 (user, key) =>
-                  <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.id} onDelete={() => setDelete(user.id)} />
+                  <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.usuario} onDelete={() => setDelete(user.id)} />
               )
               : <Loader />
-
           }
         </UserList>
       </CardComponent>

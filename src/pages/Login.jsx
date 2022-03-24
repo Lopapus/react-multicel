@@ -95,9 +95,7 @@ const Login = () => {
                   <div className="d-grid">
                     <button disabled={disabled} type="submit" className="btn btn-gray-800">{!disabled ? 'Ingresar' : 'Ingresando...'}</button>
                   </div>
-
                 </form>
-
               </div>
             </div>
           </div>
