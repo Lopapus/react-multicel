@@ -20,11 +20,11 @@ const Users = () => {
   const handleFetch = async () => {
     try {
       const peticion = await fetchToken(`${host}/usuarios`)
-      const res = await peticion.json()
+      const res = peticion.json
       const list = res.filter(element => element.usuario !== session.usuario)
       setStateUsers(list)
     } catch (error) {
-      // console.log(error)
+      console.log(error)
     }
   }
 
