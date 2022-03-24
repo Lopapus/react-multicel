@@ -34,7 +34,7 @@ const useFetchCallBack = () => {
       }
 
       // En caso de que no este logueado
-      if (response.status === 401) {
+      if (response?.status === 401) {
         await SwalError.fire({
           timer: 2000,
           title: <p className='h3 text-danger'>{response.json.msg}</p>
