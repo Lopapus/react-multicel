@@ -1,28 +1,30 @@
 import { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import UserItem from '../components/UserItem'
 import UserList from '../components/UserList'
 import ButtonIcon from '../components/ButtonIcon'
 import CardComponent from '../layouts/Card/CardComponent'
-import { Link } from 'react-router-dom'
 import useDeleteUser from '../hooks/useDeleteUser'
+import { useFetchToken } from '../hooks/fetch-multicel'
 import host from '../host'
 import Loader from '../components/Loader'
 import { SessionContext } from '../contexts/SessionProvider'
 
 const Users = () => {
   const deleteUser = useDeleteUser()
+  const fetchToken = useFetchToken()
   const [stateUsers, setStateUsers] = useState([])
 
   const session = useContext(SessionContext)[0]
 
   const handleFetch = async () => {
     try {
-      const peticion = await fetch(`${host}/usuarios`)
+      const peticion = await fetchToken(`${host}/usuarios`)
       const res = await peticion.json()
       const list = res.filter(element => element.usuario !== session.usuario)
       setStateUsers(list)
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 
@@ -45,7 +47,6 @@ const Users = () => {
           Agregar
         </ButtonIcon>
       </Link>
-      {/* <h2 className="fs-5 fw-bold mb-0">Usuarios</h2> */}
       <CardComponent title={'Usuarios'}>
         <UserList>
           {
