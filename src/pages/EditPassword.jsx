@@ -4,26 +4,21 @@ import { useParams, Link } from 'react-router-dom'
 import Message from '../components/message'
 import { useSetForm } from '../hooks'
 import host from '../host'
+import { useFetchToken } from '../hooks/fetch-multicel'
 
 const EditPassword = () => {
   const [stateDatos, setStateDatos] = useState({})
   const [showAlert, setShowAlert] = useState(null)
   const [forms, setForms] = useSetForm()
+  const fetchToken = useFetchToken()
 
-  const [session, dispatch] = useContext(SessionContext)
+  const dispatch = useContext(SessionContext)[1]
 
   const params = useParams()
   const handleFetch = async () => {
     try {
-      const request = {
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': session.token
-        },
-        method: 'GET'
-      }
-      const peticion = await fetch(`${host}/usuarios/user/${params.id}`, request)
-      const res = await peticion.json()
+      const peticion = await fetchToken(`${host}/usuarios/user/${params.id}`)
+      const res = peticion.json
       setStateDatos(res)
     } catch (error) {
       console.log(error)
@@ -33,34 +28,30 @@ const EditPassword = () => {
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     const request = {
-      headers: {
-        'Content-Type': 'application/json',
-        'auth-token': session.token
-      },
       method: 'PUT',
       body: JSON.stringify({ ...forms, id: stateDatos[0].id })
     }
     try {
-      const response = await fetch(`${host}/usuarios/password`, request)
-      const json = await response.json()
+      const response = await fetchToken(`${host}/usuarios/password`, request)
+      const json = response.json
       if (response.ok) {
-        setShowAlert(<Message message= {'Se ha editado correctamente'} className='alert p-1 alert-success' />)
+        setShowAlert(<Message message={'Se ha editado correctamente'} className='alert p-1 alert-success' />)
         dispatch({ type: 'update', payload: { ...forms } })
       } else {
-        setShowAlert(<Message message= {json.msg || json} className='alert p-1 alert-danger' />)
+        setShowAlert(<Message message={json.msg} className='alert p-1 alert-danger' />)
       }
     } catch (error) {
-      setShowAlert(<Message message= 'Error' className='col-2 alert alert-danger' />)
+      setShowAlert(<Message message='Error' className='col-2 alert alert-danger' />)
     }
   }
   useEffect(() => {
     handleFetch()
   }, [])
-  useEffect(
-    () => {
-      console.log(forms)
-    }, [forms]
-  )
+  // useEffect(
+  //   () => {
+  //     console.log(forms)
+  //   }, [forms]
+  // )
   return (
     <>
       <div className="card border-0 shadow mt-3">
@@ -81,11 +72,12 @@ const EditPassword = () => {
               <label>Confirmar nueva contraseña</label>
               <input type='password' name='passwordC' className='form-control' required></input>
             </div>
-            <div className='form-group mx-2 mb-2'>
-              <Link to='../'>
-                <button className='btn btn-warning'>Volver</button>
+            <div className='form-group mb-2'>
+              <Link to={'../'}>
+                <button type="button" className='btn btn-info me-2'>Volver</button>
               </Link>
-              <button className='btn btn-primary mx-2'>Guardar</button>
+              <button type="reset" className="btn btn-danger mx-2">Cancelar</button>
+              <button type="submit" className='btn btn-primary mx-2'>Guardar</button>
             </div>
             {showAlert}
           </form>
