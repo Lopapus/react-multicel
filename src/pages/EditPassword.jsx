@@ -47,11 +47,11 @@ const EditPassword = () => {
   useEffect(() => {
     handleFetch()
   }, [])
-  // useEffect(
-  //   () => {
-  //     console.log(forms)
-  //   }, [forms]
-  // )
+  useEffect(
+    () => {
+      setShowAlert(null)
+    }, [forms]
+  )
   return (
     <>
       <div className="card border-0 shadow mt-3">
