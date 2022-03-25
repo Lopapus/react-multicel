@@ -74,9 +74,8 @@ const EditPassword = () => {
             </div>
             <div className='form-group mb-2'>
               <Link to={'../'}>
-                <button type="button" className='btn btn-info me-2'>Volver</button>
+                <button type="button" className='btn btn-secondary me-2'>Volver</button>
               </Link>
-              <button type="reset" className="btn btn-danger mx-2">Cancelar</button>
               <button type="submit" className='btn btn-primary mx-2'>Guardar</button>
             </div>
             {showAlert}

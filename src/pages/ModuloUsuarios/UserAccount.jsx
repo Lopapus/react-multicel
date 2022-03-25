@@ -18,8 +18,8 @@ const UserAccount = () => {
             <div className="col-12 col-md-auto d-flex justify-content-center">
               <div className="text-center text-md-start">
                 <p className="h3 fw-bolder mb-1">{session.nombre}</p>
-                <p className="h5 fw-bolder mb-1">{session.usuario}</p>
-                <p className=" fw-bolder text-info">{session.rol}</p>
+                <p className="h5 fw-bolder mb-1">Usuario: {session.usuario}</p>
+                <p className=" fw-bolder text-info">Rol: {session.rol}</p>
               </div>
             </div>
           </div>

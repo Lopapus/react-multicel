@@ -14,6 +14,7 @@ const Users = () => {
   const deleteUser = useDeleteUser()
   const fetchToken = useFetchToken()
   const [stateUsers, setStateUsers] = useState([])
+  const [message, setMessage] = useState(<Loader />)
 
   const session = useContext(SessionContext)[0]
 
@@ -22,6 +23,9 @@ const Users = () => {
       const peticion = await fetchToken(`${Server}/usuarios`)
       const res = peticion.json
       const list = res.filter(element => element.usuario !== session.usuario)
+      if (list.length === 0) {
+        setMessage(<h5 className="text-center">Aun no hay usuarios</h5>)
+      }
       setStateUsers(list)
     } catch (error) {
       console.log(error)
@@ -55,7 +59,7 @@ const Users = () => {
                 (user, key) =>
                   <UserItem key={'usuario-' + key} name={user.usuario} rol={user.rol} id={user.usuario} onDelete={() => handleDeleteUser(user)} />
               )
-              : <Loader />
+              : message
           }
         </UserList>
       </CardComponent>
