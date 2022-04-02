@@ -5,12 +5,14 @@ import Message from '../../components/message'
 import { useSetForm } from '../../hooks'
 import Server from '../../services/Server'
 import { useFetchToken } from '../../hooks/fetch-multicel'
+import formEditPasswordSchema from '../../validations/vEditPassword'
 
 const EditPassword = () => {
   const [stateDatos, setStateDatos] = useState({})
   const [showAlert, setShowAlert] = useState(null)
   const [forms, setForms] = useSetForm()
   const fetchToken = useFetchToken()
+  const [disableBtn, setDisableBtn] = useState(true)
 
   const dispatch = useContext(SessionContext)[1]
 
@@ -52,6 +54,12 @@ const EditPassword = () => {
       setShowAlert(null)
     }, [forms]
   )
+  useEffect(() => {
+    formEditPasswordSchema.isValid(forms).then((esValido) => {
+      console.log(!esValido)
+      setDisableBtn(!esValido)
+    })
+  }, [forms])
   return (
     <>
       <div className="card border-0 shadow mt-3">
@@ -69,14 +77,10 @@ const EditPassword = () => {
               <input type='password' name='password' className='form-control' onChange={setForms} required></input>
             </div>
             <div className='form-group mb-2'>
-              <label>Confirmar nueva contraseña</label>
-              <input type='password' name='passwordC' className='form-control' required></input>
-            </div>
-            <div className='form-group mb-2'>
               <Link to={'../'}>
                 <button type="button" className='btn btn-secondary me-2'>Volver</button>
               </Link>
-              <button type="submit" className='btn btn-primary mx-2'>Guardar</button>
+              <button type="submit" className='btn btn-primary mx-2' disabled={disableBtn}>Guardar</button>
             </div>
             {showAlert}
           </form>

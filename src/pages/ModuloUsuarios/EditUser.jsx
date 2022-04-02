@@ -5,12 +5,14 @@ import Message from '../../components/message'
 import { useSetForm } from '../../hooks'
 import Server from '../../services/Server'
 import { useFetchToken } from '../../hooks/fetch-multicel'
+import formEditUserSchema from '../../validations/vEditUser'
 
 const EditUser = () => {
   const [stateDatos, setStateDatos] = useState({})
   const [showAlert, setShowAlert] = useState(null)
   const [forms, setForms] = useSetForm()
   const fetchToken = useFetchToken()
+  const [disableBtn, setDisableBtn] = useState(true)
 
   const dispatch = useContext(SessionContext)[1]
 
@@ -52,6 +54,12 @@ const EditUser = () => {
       setShowAlert(null)
     }, [forms]
   )
+  useEffect(() => {
+    formEditUserSchema.isValid(forms).then((esValido) => {
+      console.log(!esValido)
+      setDisableBtn(!esValido)
+    })
+  }, [forms])
   return (
     <>
       {
@@ -76,7 +84,7 @@ const EditUser = () => {
                     <Link to={'../'}>
                       <button type="button" className='btn btn-secondary me-2'>Volver</button>
                     </Link>
-                    <button type="submit" className='btn btn-primary mx-2'>Guardar</button>
+                    <button type="submit" className='btn btn-primary mx-2' disabled={disableBtn}>Guardar</button>
                   </div>
                   {showAlert}
                 </form>

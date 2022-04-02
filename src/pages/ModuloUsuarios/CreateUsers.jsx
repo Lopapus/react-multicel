@@ -5,7 +5,7 @@ import { useSetForm } from '../../hooks'
 import { useFetchToken } from '../../hooks/fetch-multicel'
 import Swal2 from '../../components/SweetAlert2'
 import Server from '../../services/Server'
-// import formCreateSchema from '../validations/vCreateUser'
+import formCreateSchema from '../../validations/vCreateUser'
 
 const CreateUsers = () => {
   const [showAlert, setShowAlert] = useState(null)
@@ -13,6 +13,7 @@ const CreateUsers = () => {
   const params = useParams()
   const fetchToken = useFetchToken()
   const [stateUsers, setStateUsers] = useState({})
+  const [disableBtn, setDisableBtn] = useState(true)
 
   let user
   let method
@@ -116,6 +117,12 @@ const CreateUsers = () => {
       setShowAlert(null)
     }, [forms]
   )
+  useEffect(() => {
+    formCreateSchema.isValid(forms).then((esValido) => {
+      console.log(!esValido)
+      setDisableBtn(!esValido)
+    })
+  }, [forms])
   return (
     <>
       <div className="card border-0 shadow mt-3">
@@ -162,15 +169,15 @@ const CreateUsers = () => {
               : <form onSubmit={handleSubmitForm}>
                 <div className="form-group">
                   <label>Nombre y apellido</label>
-                  <input type="text" className="form-control" name="nombre" defaultValue={user.nombre} onChange={setForms} required></input>
+                  <input type="text" className="form-control" name="nombre" minLength="6" defaultValue={user.nombre} onChange={setForms} required></input>
                 </div>
                 <div className="form-group">
                   <label>Usuario</label>
-                  <input type="text" className="form-control" name="usuario" defaultValue={user.usuario} onChange={setForms} required></input>
+                  <input type="text" className="form-control" name="usuario" minLength="8" defaultValue={user.usuario} onChange={setForms} required></input>
                 </div>
                 <div className="form-group">
                   <label>Contraseña</label>
-                  <input type="password" className="form-control" name="password" defaultValue={user.password} onChange={setForms} required></input>
+                  <input type="password" className="form-control" name="password" minLength="8" defaultValue={user.password} onChange={setForms} required></input>
                 </div>
                 <div className="mb-2 form-group">
                   <label>Rol</label>
@@ -184,7 +191,7 @@ const CreateUsers = () => {
                   <Link to="../">
                     <button className='btn btn-warning'>Volver</button>
                   </Link>
-                  <button type="submit" className="btn btn-primary mx-2">Agregar usuario</button>
+                  <button type="submit" className="btn btn-primary mx-2" disabled={disableBtn}>Agregar usuario</button>
                 </div>
                 {showAlert}
               </form>
