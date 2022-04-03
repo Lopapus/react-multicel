@@ -1,2 +1,2 @@
 
-export default process.env.SERVER_API
+export default 'https://testing-multicel.herokuapp.com'
