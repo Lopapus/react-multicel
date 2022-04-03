@@ -1,1 +1,3 @@
-export default 'http://127.0.0.1:4000'
+import { config } from 'dotenv'
+config()
+export default process.env.SERVER_API
