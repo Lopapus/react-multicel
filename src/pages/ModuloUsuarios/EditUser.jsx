@@ -6,6 +6,7 @@ import { useSetForm } from '../../hooks'
 import Server from '../../services/Server'
 import { useFetchToken } from '../../hooks/fetch-multicel'
 import formEditUserSchema from '../../validations/vEditUser'
+import Loader from '../../components/Loader'
 
 const EditUser = () => {
   const [stateDatos, setStateDatos] = useState({})
@@ -56,16 +57,15 @@ const EditUser = () => {
   )
   useEffect(() => {
     formEditUserSchema.isValid(forms).then((esValido) => {
-      console.log(!esValido)
       setDisableBtn(!esValido)
     })
   }, [forms])
   return (
     <>
       {
-        stateDatos.length > 0 &&
-        stateDatos.map(
-          (item, key) => (
+        stateDatos.length > 0
+          ? stateDatos.map(
+            (item, key) => (
             <div key={'user-' + key} className="card border-0 shadow mt-3">
               <div className="card-header border-bottom d-flex align-items-center justify-content-between">
                 <h2 className="fs-5 fw-bold mb-0">Usuario</h2>
@@ -90,7 +90,8 @@ const EditUser = () => {
                 </form>
               </div>
             </div>
-          ))
+            ))
+          : <Loader />
       }
     </>
   )
