@@ -56,7 +56,6 @@ const EditPassword = () => {
   )
   useEffect(() => {
     formEditPasswordSchema.isValid(forms).then((esValido) => {
-      console.log(!esValido)
       setDisableBtn(!esValido)
     })
   }, [forms])

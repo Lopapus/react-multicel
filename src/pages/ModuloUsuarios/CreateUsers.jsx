@@ -6,6 +6,7 @@ import { useFetchToken } from '../../hooks/fetch-multicel'
 import Swal2 from '../../components/SweetAlert2'
 import Server from '../../services/Server'
 import formCreateSchema from '../../validations/vCreateUser'
+import Loader from '../../components/Loader'
 
 const CreateUsers = () => {
   const [showAlert, setShowAlert] = useState(null)
@@ -133,8 +134,9 @@ const CreateUsers = () => {
         <div className="card-body">
           {
             params.id
-              ? <div>
-                <form onSubmit={handleSubmitMaster}>
+              ? stateUsers.clave_maestra
+                ? <div>
+                    <form onSubmit={handleSubmitMaster}>
                       <label>Clave maestra</label>
                       <div className="input-group mb-3">
                         <input type="text" name='clave_maestra' className='form-control' defaultValue={user.clave_maestra} disabled />
@@ -167,6 +169,7 @@ const CreateUsers = () => {
                       {showAlert}
                     </form>
                   </div>
+                : <Loader />
               : <form onSubmit={handleSubmitForm}>
                     <div className="form-group">
                       <label>Nombre y apellido</label>
