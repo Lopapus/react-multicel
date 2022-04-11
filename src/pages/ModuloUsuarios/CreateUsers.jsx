@@ -126,7 +126,7 @@ const CreateUsers = () => {
     })
   }, [forms])
   useEffect(() => {
-    console.log(stateUsers)
+    //
   }, [stateUsers])
   return (
     <>

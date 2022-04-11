@@ -47,6 +47,7 @@ const EditUser = () => {
       setShowAlert(<Message message='Error' className='col-2 alert alert-danger' />)
     }
   }
+
   useEffect(() => {
     handleFetch()
   }, [])
