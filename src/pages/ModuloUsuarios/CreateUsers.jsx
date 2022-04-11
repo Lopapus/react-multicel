@@ -142,7 +142,7 @@ const CreateUsers = () => {
                     <form onSubmit={handleSubmitMaster}>
                       <label>Clave maestra</label>
                       <div className="input-group mb-3">
-                        <input type="text" name='clave_maestra' className='form-control' defaultValue={user.clave_maestra} disabled />
+                        <input type="text" name='clave_maestra' className='form-control' value={user.clave_maestra} disabled />
                         <div className="input-group-append">
                           <button type='submit' className="btn btn-primary"><i className="fa-solid fa-arrow-rotate-right"></i></button>
                         </div>
