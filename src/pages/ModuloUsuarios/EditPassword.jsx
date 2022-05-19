@@ -40,7 +40,7 @@ const EditPassword = () => {
         setShowAlert(<Message message={'Se ha editado correctamente'} className='alert p-1 alert-success' />)
         dispatch({ type: 'update', payload: { ...forms } })
       } else {
-        setShowAlert(<Message message={json.msg} className='alert p-1 alert-danger' />)
+        setShowAlert(<Message message={json.message} className='alert p-1 alert-danger' />)
       }
     } catch (error) {
       setShowAlert(<Message message='Error' className='col-2 alert alert-danger' />)

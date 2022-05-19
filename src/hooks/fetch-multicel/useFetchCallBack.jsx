@@ -38,7 +38,7 @@ const useFetchCallBack = () => {
       if (response?.status === 401) {
         await SwalError.fire({
           timer: 2000,
-          title: <p className='h3 text-danger'>{response.json.msg}</p>
+          title: <p className='h3 text-danger'>{response.json.message}</p>
         })
         dispatch({ type: 'logout' })
         navigate('login')
