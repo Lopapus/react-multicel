@@ -18,11 +18,11 @@ const Login = () => {
 
   const handleShowAlert = async (response) => {
     if (response.ok) {
-      login({ type: 'login', payload: response.json.user })
-      await SwalTimer.success({ title: <p className='h3 text-success'>{response.json.message}</p> })
+      login({ type: 'login', payload: response.syncJson().user })
+      await SwalTimer.success({ title: <p className='h3 text-success'>{response.syncJson().message}</p> })
       navigate('/')
     } else {
-      await SwalTimer.error({ title: <p className='h3 text-danger'>{response.json.message || 'Ocurrió un error, vuelva a intentarlo'}</p> })
+      await SwalTimer.error({ title: <p className='h3 text-danger'>{response.syncJson().message || 'Ocurrió un error, vuelva a intentarlo'}</p> })
       login({ type: 'logout' })
     }
   }

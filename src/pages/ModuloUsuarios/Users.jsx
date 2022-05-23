@@ -21,7 +21,7 @@ const Users = () => {
   const handleFetch = async () => {
     try {
       const peticion = await fetchToken(`${Server}/usuarios`)
-      const res = peticion.json
+      const res = peticion.syncJson()
       const list = res.filter(element => element.usuario !== session.usuario)
       if (list.length === 0) {
         setMessage(<h5 className="text-center">Aun no hay usuarios</h5>)

@@ -75,11 +75,13 @@ const Sidebar = () => {
             {/* <NavItem label={'Productos'} path={'productos'} iconclass={'fa-solid fa-box'} /> */}
             {
               session.rol === 'admin' &&
-              <NavItem label={'Usuarios'} path={'usuarios'} iconclass={'fa-solid fa-user'} />
+              <>
+                <NavItem label={'Usuarios'} path={'usuarios'} iconclass={'fa-solid fa-user'} />
+                <NavItem label={'Proveedores'} path={'proveedores'} iconclass={'fa-solid fa-users'} />
+              </>
             }
             {/* <NavItem label={'Caja'} path={'caja'} iconclass={'fa-solid fa-cash-register'} /> */}
             {/* <NavItem label={'Ofertas'} path={'ofertas'} iconclass={'fa-solid fa-percent'} /> */}
-            {/* <NavItem label={'Proveedores'} path={'proveedores'} iconclass={'fa-solid fa-users'} /> */}
             {/* <NavItem label={'Reportes'} path={'reportes'} iconclass={'fa-solid fa-chart-pie'} /> */}
             {/* <NavItem label={'Reportes'} path={'reportes'} iconclass={'bi bi-pie-chart-fill'} />
             <NavItem label={'Reportes'} path={'reportes'} iconclass={'bi bi-person-circle'} /> */}

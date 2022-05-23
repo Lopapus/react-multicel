@@ -24,7 +24,7 @@ const CreateUsers = () => {
     const handleFetch = async () => {
       try {
         const peticion = await fetchToken(`${Server}/usuarios/user/${params.id}`)
-        const res = peticion.json
+        const res = peticion.syncJson()
         setStateUsers(res[0])
       } catch (error) {
         // console.log(error)
@@ -68,7 +68,7 @@ const CreateUsers = () => {
 
     try {
       const response = await fetchToken(url, request)
-      const json = response.json
+      const json = response.syncJson()
       if (response.ok) {
         if (method === 'POST') {
           setShowAlert(<Message message={'Usuario agregado correctamente'} className='alert p-1 alert-success text-center' />)
@@ -101,7 +101,7 @@ const CreateUsers = () => {
         setShowAlert(<Message message={'Generando...'} className='alert p-1 alert-info text-center' />)
         try {
           const response = await fetchToken(`${Server}/usuarios/master`, request)
-          const json = response.json
+          const json = response.syncJson()
           setStateUsers({ ...stateUsers, clave_maestra: json.clave_maestra })
           if (response.ok) {
             setShowAlert(<Message message={'Clave maestra actualizada correctamente'} className='alert p-1 alert-success text-center' />)

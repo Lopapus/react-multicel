@@ -27,7 +27,8 @@ const useFetchCallBack = () => {
     try {
       const response = await fetch(url, complete_content)
       const json = await response.json()
-      response.json = json
+      response.json = () => new Promise((resolve) => resolve(json))
+      response.syncJson = () => json
 
       // en caso de que cuente con un callback
       if (callback) {

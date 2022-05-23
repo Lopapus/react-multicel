@@ -21,7 +21,7 @@ const EditUser = () => {
   const handleFetch = async () => {
     try {
       const peticion = await fetchToken(`${Server}/usuarios/user/${params.id}`)
-      const res = peticion.json
+      const res = peticion.syncJson()
       setStateDatos(res)
     } catch (error) {
       console.log(error)
@@ -36,7 +36,7 @@ const EditUser = () => {
     }
     try {
       const response = await fetchToken(`${Server}/usuarios/${params.id}`, request)
-      const json = response.json
+      const json = response.syncJson()
       if (response.ok) {
         setShowAlert(<Message message={'Se ha editado correctamente'} className='alert p-1 alert-success' />)
         dispatch({ type: 'update', payload: { ...forms } })

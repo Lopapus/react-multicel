@@ -28,7 +28,7 @@ const useDeleteUser = () => {
         if (!response.ok) {
           Swal2.fire({
             icon: 'error',
-            title: `${response?.json?.message || 'Ocurrio un fallo vuelva a intentarlo'}`,
+            title: `${response?.syncJson()?.message || 'Ocurrio un fallo vuelva a intentarlo'}`,
             showDenyButton: false,
             showCancelButton: false,
             showConfirmButton: false,

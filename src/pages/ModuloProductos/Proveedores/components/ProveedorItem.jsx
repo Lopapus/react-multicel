@@ -1,0 +1,39 @@
+import React from 'react'
+import img_usuario from '../../../../images/sistema/usuario.png'
+
+const ProveedorItem = ({ data }) => {
+  // const { nombre, cuit, facturado } = data
+  return (
+    <li className="list-group-item px-0 border-bottom">
+      <div className="row align-items-center">
+        <div className="col-auto">
+          {/* <!-- Avatar --> */}
+          <span className="avatar">
+            <img className="rounded" src={img_usuario} alt="user image" />
+          </span>
+        </div>
+        {/* <div className="col-auto ms--2">
+          <h4 className="h6 mb-0">
+            {name}
+          </h4>
+          <div className="d-flex align-items-center text-info">
+            <small>{rol}</small>
+          </div>
+        </div> */}
+        {/* <div className="col d-flex flex-row justify-content-end">
+          <div className='w-auto d-grid gap-2 d-flex'>
+            <Link to={`info/${id}`}>
+              <ButtonIcon btncolor={'btn-info'} btnsize={'btn-sm'} iconclass={'fa-solid fa-eye'} />
+            </Link>
+            <Link to={`/usuarios/${id}`}>
+              <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-pencil'} />
+            </Link>
+            <ButtonIcon btncolor={'btn-danger'} btnsize={'btn-sm'} iconclass={'fa-solid fa-trash'} handler={onDelete} />
+          </div>
+        </div> */}
+      </div>
+    </li>
+  )
+}
+
+export default ProveedorItem
