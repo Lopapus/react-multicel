@@ -33,25 +33,27 @@ const Proveedores = () => {
         )
       }
     } catch (error) {
-      setMessage(<h5>Oc urrió un error, por favor vuelva a intentarlo más tarde, si el error persiste comuniquese con un administrador</h5>)
+      setMessage(<h5>Ocurrió un error, por favor vuelva a intentarlo más tarde, si el error persiste comuniquese con un administrador</h5>)
     }
   }
 
   useEffect(handleFetchProveedores, [])
 
   return (
-    proveedores.length > 0
-      ? <CardComponent>
-        < ul className="list-group list-group-flush list my--3" >
-          {
-            proveedores.map(
-              (proveedor, key) =>
-                <ProveedorItem key={`proveedor-n${key + 1}`} data={proveedor} />
-            )
-          }
-        </ul >
-      </CardComponent>
-      : message
+    <CardComponent title="Proveedores">
+      {
+        proveedores.length > 0
+          ? < ul className="list-group list-group-flush list my--3" >
+            {
+              proveedores.map(
+                (proveedor, key) =>
+                  <ProveedorItem key={`proveedor-n${key + 1}`} data={proveedor} />
+              )
+            }
+          </ul >
+          : message
+      }
+    </CardComponent>
   )
 }
 

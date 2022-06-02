@@ -17,7 +17,7 @@ const useSetForm = (object = {}) => {
     }
   }
 
-  return [form, handleSetForm]
+  return [form, handleSetForm, setForm]
 }
 
 export default useSetForm
