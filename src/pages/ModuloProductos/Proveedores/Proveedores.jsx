@@ -4,10 +4,14 @@ import { useFetchToken } from '../../../hooks/fetch-multicel'
 import CardComponent from '../../../layouts/Card/CardComponent'
 import Server from '../../../services/Server'
 import ProveedorItem from './components/ProveedorItem'
+import ButtonIcon from '../../../components/ButtonIcon'
+import { useNavigate } from 'react-router-dom'
 
 const Proveedores = () => {
   const [proveedores, setProveedores] = useState([])
   const [message, setMessage] = useState(null)
+
+  const navigate = useNavigate()
   const fetchToken = useFetchToken()
 
   const handleFetchProveedores = async () => {
@@ -40,20 +44,25 @@ const Proveedores = () => {
   useEffect(handleFetchProveedores, [])
 
   return (
-    <CardComponent title="Proveedores">
-      {
-        proveedores.length > 0
-          ? < ul className="list-group list-group-flush list my--3" >
-            {
-              proveedores.map(
-                (proveedor, key) =>
-                  <ProveedorItem key={`proveedor-n${key + 1}`} data={proveedor} />
-              )
-            }
-          </ul >
-          : message
-      }
-    </CardComponent>
+    <>
+      <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-plus'} handler={() => navigate('crear')}>
+        Agregar
+      </ButtonIcon>
+      <CardComponent title="Proveedores">
+        {
+          proveedores.length > 0
+            ? < ul className="list-group list-group-flush list my--3" >
+              {
+                proveedores.map(
+                  (proveedor, key) =>
+                    <ProveedorItem key={`proveedor-n${key + 1}`} data={proveedor} />
+                )
+              }
+            </ul >
+            : message
+        }
+      </CardComponent>
+    </>
   )
 }
 

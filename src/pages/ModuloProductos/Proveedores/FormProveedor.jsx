@@ -7,55 +7,91 @@ import Server from '../../../services/Server'
 import InputRegex from './components/InputRegex'
 import proveedorSchema from './schemas/ProveedorSchema'
 import AlertCollapse from './components/AlertCollapse'
+import Loader from '../../../components/Loader'
+import { Alert } from 'react-bootstrap'
 
-const EditProveedor = () => {
+const FormProveedor = () => {
   const [data, setData] = useState()
-  const [alerts, setAlerts] = useState({})
   const [form, setForm, setDataForm] = useSetForm()
+  const [alerts, setAlerts] = useState({})
+  const [listAlerts, setListAlerts] = useState([])
+  const [disabled, setDisabled] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [method, setMethod] = useState('')
+
   const fetchToken = useFetchToken()
   const params = useParams()
   const navigate = useNavigate()
 
   const handleFindProveedor = async () => {
     try {
-      const response = await fetchToken(`${Server}/proveedores/${params.id}`)
-      setDataForm(response.syncJson())
-      setData(response.syncJson())
+      if (params.id) {
+        setLoading(true)
+        const response = await fetchToken(`${Server}/proveedores/${params.id}`)
+        setLoading(false)
+        setDataForm(response.syncJson())
+        setData(response.syncJson())
+        setMethod('PUT')
+      } else {
+        setData({})
+        setLoading(false)
+        setMethod('POST')
+      }
     } catch (error) {
-      console.log('error al buscar')
+      setLoading(false)
     }
+  }
+
+  const handleSetErrors = (list) => {
+    setDisabled(true)
+    const new_errors = {}
+    list.forEach(
+      ({ path, message }) => { new_errors[path] = { message, show: true } }
+    )
+    setAlerts(new_errors)
   }
 
   const handleUploadProveedor = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
       const content = {
-        method: 'PUT',
+        method,
         body: JSON.stringify(form)
       }
+
+      setLoading(true)
       const response = await fetchToken(`${Server}/proveedores`, content)
+      setLoading(false)
+
       if (response.ok) {
         const { message } = response.syncJson()
+        setData({ ...form })
         setAlerts({ general: { message, show: true, type: 'success' } })
       } else {
-        const query_errors = {}
-        response.syncJson().forEach(
-          ({ path, message }) => {
-            query_errors[path] = { message, show: true }
-          }
-        )
-        setAlerts(query_errors)
+        handleSetErrors(response.syncJson())
       }
+    } else {
+      setAlerts({
+        general: {
+          message: (
+            (method === 'POST') ? 'Los datos ingresados ya se guardaron anteriormente' : 'Primero debe realizar alguna modificación'
+          ),
+          show: true,
+          type: 'warning'
+        }
+      })
+      setDisabled(true)
     }
   }
 
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     try {
-      await proveedorSchema.validate(form)
+      await proveedorSchema.validate(form, { abortEarly: false })
       handleUploadProveedor()
-    } catch (error) {
-      const { path, message } = error
-      setAlerts({ [path]: { message, show: true } })
+    } catch (errors) {
+      if (errors?.inner) {
+        handleSetErrors(errors.inner)
+      }
     }
   }
 
@@ -70,6 +106,18 @@ const EditProveedor = () => {
     setForm(e)
   }
 
+  const handleCheckAlerts = () => {
+    if (listAlerts.length > 0) {
+      if (!disabled) {
+        setDisabled(true)
+      }
+    } else {
+      if (disabled) {
+        setDisabled(false)
+      }
+    }
+  }
+
   const handleHideAlert = () => {
     if (alerts?.general) {
       const replace = { ...alerts }
@@ -78,11 +126,18 @@ const EditProveedor = () => {
     }
   }
 
+  const handleSetListAlerts = () => {
+    const new_list = Object.keys(alerts).filter(key => alerts[key].show === true)
+    setListAlerts(new_list)
+  }
+
   useEffect(handleFindProveedor, [])
+  useEffect(handleCheckAlerts, [listAlerts])
+  useEffect(handleSetListAlerts, [alerts])
   useEffect(handleHideAlert, [form])
 
   return (
-    data?.nombre
+    data
       ? <div className="card border-0 shadow mt-3">
         <div className="card-header border-bottom d-flex align-items-center justify-content-between">
           <h2 className="fs-5 fw-bold mb-0">Proveedor</h2>
@@ -127,21 +182,21 @@ const EditProveedor = () => {
 
               <div className='form-group col-12'>
                 <label>Ubicación</label>
-                <textarea name="lugar" id="lugar" defaultValue={data?.lugar} className='form-control' onChange={handleSetForm} cols="30" rows="3"></textarea>
+                <textarea name="lugar" id="lugar" value={form?.lugar || ''} className='form-control' onChange={handleSetForm} cols="30" rows="3"></textarea>
                 <AlertCollapse message={alerts?.lugar?.message} show={alerts?.lugar?.show} />
               </div>
 
             </div>
             <div className='form-group my-3 d-flex justify-content-center justify-content-sm-start'>
               <ButtonIcon type="button" btncolor='btn-secondary me-1' iconclass={'fas fa-arrow-left'} handler={() => navigate('/proveedores')} >Volver</ButtonIcon>
-              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} >Modificar</ButtonIcon>
+              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={disabled || loading} >{!loading ? 'Modificar' : 'Modificando...'}</ButtonIcon>
             </div>
             <AlertCollapse message={alerts?.general?.message} show={alerts?.general?.show} type={alerts?.general?.type} />
           </form>
         </div >
       </div >
-      : <div>No hay nada</div>
+      : loading ? <Loader /> : <Alert variant="danger" className="text-center">No se econtró el proveedor</Alert>
   )
 }
 
-export default EditProveedor
+export default FormProveedor
