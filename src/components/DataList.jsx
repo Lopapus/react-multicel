@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ButtonIcon from './ButtonIcon'
 
 const DataList = ({ list, component: Component, filter = [], keyname = 'data-list' }) => {
-  const [elements, setElements] = useState(list)
+  const [elements, setElements] = useState(list.slice(0, 5))
   const [pagination, setPagination] = useState({
     pages: 1,
     page: 1
@@ -76,27 +76,27 @@ const DataList = ({ list, component: Component, filter = [], keyname = 'data-lis
         </ul>
       </div>
       {
-        elements.length > 0
-          ? <div className='d-flex justify-content-center'>
-          {
-            pagination.pages > 1 &&
-            <div className='d-flex justify-content-between w-25 '>
-            <ButtonIcon
-              disabled={pagination.page === 1}
-              btncolor={'btn-primary'} btnsize={'btn-sm'}
-              iconclass={'fa-solid fa-arrow-left'}
-              handler={() => handleSetPage(pagination.page - 1)}
-            />
-            <ButtonIcon
-              disabled={pagination.page + 1 > pagination.pages}
-              btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-arrow-right'}
-              handler={() => handleSetPage(pagination.page + 1)}
-            />
-          </div>
-          }
+        elements.length === 0 && filters.search !== ''
+          ? <h5 className='text-center'>No se encontraron elementos</h5>
+          : <div className='d-flex justify-content-center'>
+            {
+              pagination.pages > 1 &&
+              <div className='d-flex justify-content-between w-25 '>
+              <ButtonIcon
+                disabled={pagination.page === 1}
+                btncolor={'btn-primary'} btnsize={'btn-sm'}
+                iconclass={'fa-solid fa-arrow-left'}
+                handler={() => handleSetPage(pagination.page - 1)}
+              />
+              <ButtonIcon
+                disabled={pagination.page + 1 > pagination.pages}
+                btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-arrow-right'}
+                handler={() => handleSetPage(pagination.page + 1)}
+              />
+            </div>
+            }
 
-        </div>
-          : <h5 className='text-center'>No se encontraron elementos</h5>
+            </div>
       }
     </div>
     </>
