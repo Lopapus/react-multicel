@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useSetForm } from '../../../hooks'
-import ButtonIcon from '../../../components/ButtonIcon'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useFetchToken } from '../../../hooks/fetch-multicel'
-import Server from '../../../services/Server'
-import InputRegex from './components/InputRegex'
-import proveedorSchema from './schemas/ProveedorSchema'
-import AlertCollapse from './components/AlertCollapse'
-import Loader from '../../../components/Loader'
 import { Alert } from 'react-bootstrap'
+import Loader from '../../../components/Loader'
+import Server from '../../../services/Server'
+import ButtonIcon from '../../../components/ButtonIcon'
+import { useSetForm } from '../../../hooks'
+import { useFetchToken } from '../../../hooks/fetch-multicel'
+import InputRegex from './components/InputRegex'
+import AlertCollapse from './components/AlertCollapse'
+import proveedorSchema from './schemas/ProveedorSchema'
 
 const FormProveedor = () => {
   const [data, setData] = useState()
@@ -23,6 +23,8 @@ const FormProveedor = () => {
   const params = useParams()
   const navigate = useNavigate()
 
+  // Busca al proveedor en caso de ser recibido por params
+  // Modifica el formulario para ser de tipo POST o PUT
   const handleFindProveedor = async () => {
     try {
       if (params.id) {
@@ -51,6 +53,7 @@ const FormProveedor = () => {
     setAlerts(new_errors)
   }
 
+  // Al enviar los datos muestra las alertas
   const handleUploadProveedor = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
       const content = {
@@ -64,7 +67,9 @@ const FormProveedor = () => {
 
       if (response.ok) {
         const { message } = response.syncJson()
-        setData({ ...form })
+        // setData({ ...form })
+        setDataForm({})
+        setData({})
         setAlerts({ general: { message, show: true, type: 'success' } })
       } else {
         handleSetErrors(response.syncJson())
@@ -83,6 +88,7 @@ const FormProveedor = () => {
     }
   }
 
+  // Valida los datos del formulario
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     try {
@@ -149,25 +155,59 @@ const FormProveedor = () => {
 
               <div className='form-group col-12 col-sm-6'>
                 <label>Nombre (requerido)</label>
-                <InputRegex type="text" name="nombre" id="nombre" value={form?.nombre || ''} className='form-control' onChange={handleSetForm} regex={/^(?:[A-z\s])*$/gm} required />
+                <InputRegex
+                  type="text"
+                  name="nombre"
+                  id="nombre"
+                  value={form?.nombre || ''}
+                  className='form-control'
+                  onChange={handleSetForm}
+                  regex={/^(?:[A-z\s])*$/gm}
+                  required
+                />
                 <AlertCollapse message={alerts?.nombre?.message} show={alerts?.nombre?.show} />
               </div>
 
               <div className='form-group col-12 col-sm-6'>
                 <label>Cuit (requerido)</label>
-                <InputRegex type="text" name="cuit" id="cuit" value={form?.cuit || ''} className='form-control' onChange={handleSetForm} regex={/^(?:[0-9])*$/gm} maxLength={11} required />
+                <InputRegex
+                  type="text"
+                  name="cuit"
+                  id="cuit"
+                  value={form?.cuit || ''}
+                  className='form-control'
+                  onChange={handleSetForm}
+                  regex={/^(?:[0-9])*$/gm}
+                  maxLength={11}
+                  required
+                />
                 <AlertCollapse message={alerts?.cuit?.message} show={alerts?.cuit?.show} />
               </div>
 
               <div className='form-group col-12 col-sm-6'>
                 <label>Correo</label>
-                <input type="email" name="correo" id="correo" value={form?.correo || ''} className='form-control' onChange={handleSetForm} ></input>
+                <input
+                  type="email"
+                  name="correo"
+                  id="correo"
+                  value={form?.correo || ''}
+                  className='form-control'
+                  onChange={handleSetForm}
+                />
                 <AlertCollapse message={alerts?.correo?.message} show={alerts?.correo?.show} />
               </div>
 
               <div className='form-group col-12 col-sm-6 col-md-3'>
                 <label>Telefono</label>
-                <InputRegex type="tel" name="telefono" id="telefono" value={form?.telefono || ''} className='form-control' onChange={handleSetForm} regex={/^(?:[0-9+\s])*$/gm} />
+                <InputRegex
+                  type="tel"
+                  name="telefono"
+                  id="telefono"
+                  value={form?.telefono || ''}
+                  className='form-control'
+                  onChange={handleSetForm}
+                  regex={/^(?:[0-9+\s])*$/gm}
+                />
                 <AlertCollapse message={alerts?.telefono?.message} show={alerts?.telefono?.show} />
               </div>
 
@@ -182,16 +222,35 @@ const FormProveedor = () => {
 
               <div className='form-group col-12'>
                 <label>Ubicación</label>
-                <textarea name="lugar" id="lugar" value={form?.lugar || ''} className='form-control' onChange={handleSetForm} cols="30" rows="3"></textarea>
+                <textarea
+                  name="lugar"
+                  id="lugar"
+                  value={form?.lugar || ''}
+                  className='form-control'
+                  onChange={handleSetForm}
+                  cols="30"
+                  rows="3"
+                />
                 <AlertCollapse message={alerts?.lugar?.message} show={alerts?.lugar?.show} />
               </div>
 
             </div>
             <div className='form-group my-3 d-flex justify-content-center justify-content-sm-start'>
-              <ButtonIcon type="button" btncolor='btn-secondary me-1' iconclass={'fas fa-arrow-left'} handler={() => navigate('/proveedores')} >Volver</ButtonIcon>
-              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={disabled || loading} >{!loading ? 'Modificar' : 'Modificando...'}</ButtonIcon>
+              <ButtonIcon type="button" btncolor='btn-secondary me-1' iconclass={'fas fa-arrow-left'} handler={() => navigate('/proveedores')} >
+                Volver
+              </ButtonIcon>
+
+              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={disabled || loading} >
+                {
+                  !loading
+                    ? (method === 'POST' ? 'Agregar' : 'Modificar')
+                    : (method === 'POST' ? 'Agregando...' : 'Modificando...')
+                }
+              </ButtonIcon>
             </div>
+
             <AlertCollapse message={alerts?.general?.message} show={alerts?.general?.show} type={alerts?.general?.type} />
+
           </form>
         </div >
       </div >
