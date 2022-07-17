@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import img_usuario from '../../../../images/sistema/usuario.png'
 import { Link } from 'react-router-dom'
 import DropdownButtonIcon from '../../../../components/DropdownButtonIcon'
+import ProovedorContext from '../contexts/ProovedorContext'
+import parseCuit from '../../../../helpers/parseCuit'
 
 const ProveedorItem = ({ data }) => {
+  const action = useContext(ProovedorContext)
   const { id, nombre, cuit } = data
+
   return (
     <li className="list-group-item px-0 border-bottom">
       <div className="row align-items-center">
@@ -19,11 +23,8 @@ const ProveedorItem = ({ data }) => {
             {nombre}
           </h4>
           <div>
-            <small>cuit: {cuit}</small>
+            <small>cuit: {parseCuit(cuit)}</small>
           </div>
-          {/* <div className="d-flex align-items-center text-info">
-            <small>{inscripto ? 'inscripto' : 'no inscripto'}</small>
-          </div> */}
         </div>
         <div className="col d-flex flex-row justify-content-end">
           <div className='w-auto'>
@@ -32,9 +33,9 @@ const ProveedorItem = ({ data }) => {
 
                 <>
                   <li><Link to={`/productos/${id}`} className="dropdown-item text-primary"><i className="fa-solid fa-list me-2"></i>Productos</Link></li>
-                  <li><Link to={`informacion/${id}`} className="dropdown-item text-info"><i className="fa-solid fa-eye me-2"></i>Información</Link></li>
+                  <li><Link to={`info/${nombre.toLowerCase()}`} state={data} className="dropdown-item text-info"><i className="fa-solid fa-eye me-2"></i>Información</Link></li>
                   <li><Link to={`/proveedores/${id}`} className="dropdown-item text-primary"><i className="fa-solid fa-pencil me-2"></i>Editar</Link></li>
-                  <li><Link to={`/proveedores/eliminar/${id}`} className="dropdown-item text-danger"><i className="fa-solid fa-trash me-2"></i>Eliminar</Link></li>
+                  <li><button type='button' className="dropdown-item text-danger" onClick={() => action(data)}><i className="fa-solid fa-trash me-2"></i>Eliminar</button></li>
                 </>
               }
             </DropdownButtonIcon>

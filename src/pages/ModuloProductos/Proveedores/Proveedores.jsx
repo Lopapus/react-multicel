@@ -1,31 +1,43 @@
 import React, { useEffect, useState } from 'react'
-import Loader from '../../../components/Loader'
-import { useFetchToken } from '../../../hooks/fetch-multicel'
-import CardComponent from '../../../layouts/Card/CardComponent'
-import Server from '../../../services/Server'
-import ProveedorItem from './components/ProveedorItem'
-import ButtonIcon from '../../../components/ButtonIcon'
-import { useNavigate } from 'react-router-dom'
-import DataList from '../../../components/DataList'
 import { useQuery } from 'react-query'
+import { useNavigate } from 'react-router-dom'
+import Loader from '../../../components/Loader'
+import Server from '../../../services/Server'
+import DataList from '../../../components/DataList'
+import ButtonIcon from '../../../components/ButtonIcon'
+import CardComponent from '../../../layouts/Card/CardComponent'
+import { useFetchToken } from '../../../hooks/fetch-multicel'
+import ProveedorItem from './components/ProveedorItem'
+import useDeleteProveedor from './hooks/useDeleteProveedor'
+import ProovedorContext from './contexts/ProovedorContext'
 
 const Proveedores = () => {
-  // const [proveedores, setProveedores] = useState([])
   const [message, setMessage] = useState(null)
+  const [proveedores, setProovedores] = useState([])
+  const { data, isLoading, isError } = useQuery(['proovedores'], handleGetProveedores)
+  const deleteProveedor = useDeleteProveedor()
 
   const navigate = useNavigate()
   const fetchToken = useFetchToken()
 
-  const handeGetProveedores = async () => {
+  const handleDelete = async (data) => {
+    const deleted = await deleteProveedor(data)
+    if (deleted) {
+      const new_proveedores = proveedores.filter(proovedor => proovedor.id !== data.id)
+      setProovedores(new_proveedores)
+    }
+  }
+
+  async function handleGetProveedores () {
     const url = `${Server}/proveedores`
     const response = await fetchToken(url)
     if (response.ok) {
       const json = response.syncJson()
       if (json?.length <= 0) {
         setMessage(
-            <div className="alert alert-info text-center" role="alert">
-              No hay proveedores
-            </div>
+          <div className="alert alert-info text-center" role="alert">
+            No hay proveedores
+          </div>
         )
       }
       return json
@@ -38,42 +50,19 @@ const Proveedores = () => {
     }
   }
 
-  // const handleFetchProveedores = async () => {
-  //   setMessage(<Loader />)
-  //   try {
-  //     const url = `${Server}/proveedores`
-  //     const response = await fetchToken(url)
-  //     if (response.ok) {
-  //       const json = response.syncJson()
-  //       if (json.length <= 0) {
-  //         setMessage(
-  //           <div className="alert alert-info text-center" role="alert">
-  //             No hay proveedores
-  //           </div>
-  //         )
-  //       }
-  //       setProveedores(json)
-  //     } else {
-  //       setMessage(
-  //         <div className="alert alert-danger text-center" role="alert">
-  //           {response.syncJson().message}
-  //         </div>
-  //       )
-  //     }
-  //   } catch (error) {
-  //     setMessage(<h5>Ocurrió un error, por favor vuelva a intentarlo más tarde, si el error persiste comuniquese con un administrador</h5>)
-  //   }
-  // }
-
-  const { data: proveedores, isLoading, isError } = useQuery(['proovedores'], handeGetProveedores)
+  useEffect(() => {
+    setProovedores(data)
+  }, [data])
 
   useEffect(() => {
     if (isError) {
-      setMessage(<h5>Ocurrió un error, por favor vuelva a intentarlo más tarde, si el error persiste comuniquese con un administrador</h5>)
+      setMessage(
+        <h5>
+          Ocurrió un error, por favor vuelva a intentarlo más tarde, si el error persiste comuniquese con un administrador
+        </h5>
+      )
     }
   }, [isError])
-
-  // useEffect(handleFetchProveedores, [])
 
   return (
     <>
@@ -85,7 +74,9 @@ const Proveedores = () => {
           isLoading
             ? <Loader />
             : proveedores?.length > 0
-              ? <DataList list={proveedores} component={ProveedorItem} filter={['nombre', 'cuit']} keyname={'proveedor'} />
+              ? <ProovedorContext.Provider value={handleDelete}>
+                  <DataList list={proveedores} component={ProveedorItem} filter={['nombre', 'cuit']} keyname={'proveedor'} />
+                </ProovedorContext.Provider>
               : message
         }
       </CardComponent>

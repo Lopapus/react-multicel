@@ -8,7 +8,7 @@ import { CreateUsers, Home, Login, Page404, Test, UserAccount, Users, EditUser, 
 import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
-import { FormProveedor, Proveedores } from './pages/ModuloProductos'
+import { FormProveedor, InfoProveedor, Proveedores } from './pages/ModuloProductos'
 
 const Rutas = () => {
   const session = useContext(SessionContext)[0]
@@ -42,6 +42,8 @@ const Rutas = () => {
                   <Route path="proveedores">
                     <Route index element={<Proveedores/>} />
                     <Route path=":id" element={<FormProveedor />} />
+                    <Route path='info/' element={<Navigate to='../' />} />
+                    <Route path='info/:id' element={<InfoProveedor />} />
                     <Route path="crear" element={<FormProveedor />} />
                   </Route>
                 </>

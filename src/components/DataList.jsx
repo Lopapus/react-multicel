@@ -50,7 +50,7 @@ const DataList = ({ list, component: Component, filter = [], keyname = 'data-lis
     setElements(filter_list)
   }
 
-  useEffect(handleFilterList, [filters])
+  useEffect(handleFilterList, [filters, list])
 
   return (
     <>

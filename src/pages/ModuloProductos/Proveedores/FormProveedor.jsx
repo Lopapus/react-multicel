@@ -67,9 +67,12 @@ const FormProveedor = () => {
 
       if (response.ok) {
         const { message } = response.syncJson()
-        // setData({ ...form })
-        setDataForm({})
-        setData({})
+        if (method === 'POST') {
+          setDataForm({})
+          setData({})
+        } else {
+          setData({ ...form })
+        }
         setAlerts({ general: { message, show: true, type: 'success' } })
       } else {
         handleSetErrors(response.syncJson())
