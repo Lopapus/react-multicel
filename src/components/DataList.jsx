@@ -80,21 +80,21 @@ const DataList = ({ list, component: Component, filter = [], keyname = 'data-lis
       {
         elements.length === 0 && filters.search !== ''
           ? <h5 className='text-center'>No se encontraron elementos</h5>
-          : <div className='d-flex justify-content-center'>
+          : <div className='d-flex justify-content-center justify-content-md-end'>
             {
               pagination.pages > 1 &&
-              <div className='d-flex justify-content-between w-25 '>
+              <div>
               <ButtonIcon
                 disabled={pagination.page === 1}
-                btncolor={'btn-primary'} btnsize={'btn-sm'}
+                btncolor={'btn-outline-primary me-2'} btnsize={'btn-sm'}
                 iconclass={'fa-solid fa-arrow-left'}
                 handler={() => handleSetPage(pagination.page - 1)}
-              />
+              >Anterior</ButtonIcon>
               <ButtonIcon
                 disabled={pagination.page + 1 > pagination.pages}
-                btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-arrow-right'}
+                btncolor={'btn-outline-primary ms-2'} btnsize={'btn-sm'} iconclass={'fa-solid fa-arrow-right'}
                 handler={() => handleSetPage(pagination.page + 1)}
-              />
+              >Siguiente</ButtonIcon>
             </div>
             }
 
