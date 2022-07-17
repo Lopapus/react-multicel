@@ -32,9 +32,9 @@ const ProveedorItem = ({ data }) => {
               {
 
                 <>
-                  <li><Link to={`/productos/${id}`} className="dropdown-item text-primary"><i className="fa-solid fa-list me-2"></i>Productos</Link></li>
-                  <li><Link to={`info/${nombre.toLowerCase()}`} state={data} className="dropdown-item text-info"><i className="fa-solid fa-eye me-2"></i>Información</Link></li>
-                  <li><Link to={`/proveedores/${id}`} className="dropdown-item text-primary"><i className="fa-solid fa-pencil me-2"></i>Editar</Link></li>
+                  <li><Link to={`productos/${id}`} className="dropdown-item text-primary"><i className="fa-solid fa-list me-2"></i>Productos</Link></li>
+                  <li><Link to={`info/${id}`} state={data} className="dropdown-item text-info"><i className="fa-solid fa-eye me-2"></i>Información</Link></li>
+                  <li><Link to={`${id}`} className="dropdown-item text-primary"><i className="fa-solid fa-pencil me-2"></i>Editar</Link></li>
                   <li><button type='button' className="dropdown-item text-danger" onClick={() => action(data)}><i className="fa-solid fa-trash me-2"></i>Eliminar</button></li>
                 </>
               }

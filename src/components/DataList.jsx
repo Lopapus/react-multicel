@@ -55,15 +55,17 @@ const DataList = ({ list, component: Component, filter = [], keyname = 'data-lis
   return (
     <>
     <div>
-      <div className='d-flex justify-content-end'>
-        <div className='d-flex w-50'>
-          <select name='rows' className='form-select w-25' onChange={handleSetFilter}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-          </select>
-          <input name='search' className='form-control w-75' type='search' onChange={handleSetFilter} autoComplete="off" />
-        </div>
+      <div className='row d-flex justify-content-between'>
+          <div className="col-8 col-md-5">
+            <input name='search' placeholder='Buscar...' className='form-control rounded-pill' type='search' onChange={handleSetFilter} autoComplete="off" />
+          </div>
+          <div className="col-4 col-md-2 col-xl-1">
+              <select name='rows' className='form-select' onChange={handleSetFilter}>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+              </select>
+          </div>
       </div>
       <div className='my-3'>
         < ul className="list-group list-group-flush list my--3" >
