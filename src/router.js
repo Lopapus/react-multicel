@@ -8,7 +8,7 @@ import { CreateUsers, Home, Login, Page404, Test, UserAccount, Users, EditUser, 
 import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
-import { FormProveedor, InfoProveedor, ProductosProveedor, Proveedores } from './pages/ModuloProductos'
+import { FormProveedor, InfoProveedor, ProductosProveedor, Proveedores, Categorias, Subcategorias, Marcas, Modelos, FormCategorias, FormSubcategorias, FormMarcas, FormModelos } from './pages/ModuloProductos'
 
 const Rutas = () => {
   const session = useContext(SessionContext)[0]
@@ -40,13 +40,30 @@ const Rutas = () => {
                     <Route path=":id" element={<CreateUsers />} />
                   </Route>
                   <Route path="proveedores">
-                    <Route index element={<Proveedores/>} />
+                    <Route index element={<Proveedores />} />
                     <Route path=":id" element={<FormProveedor />} />
                     <Route path='info/' element={<Navigate to='../' />} />
                     <Route path='info/:id' element={<InfoProveedor />} />
                     <Route path='productos/' element={<Navigate to='../' />} />
                     <Route path='productos/:id' element={<ProductosProveedor />} />
                     <Route path="crear" element={<FormProveedor />} />
+                  </Route>
+                  <Route path='parametros' element={<Navigate to='../' />} />
+                  <Route path="parametros/categorias">
+                    <Route index element={<Categorias />} />
+                    <Route path=':id' element={<FormCategorias />} />
+                  </Route>
+                  <Route path="parametros/subcategorias">
+                    <Route index element={<Subcategorias />} />
+                    <Route path=':id' element={<FormSubcategorias />} />
+                  </Route>
+                  <Route path="parametros/marcas">
+                    <Route index element={<Marcas />} />
+                    <Route path=':id' element={<FormMarcas />} />
+                  </Route>
+                  <Route path="parametros/modelos">
+                    <Route index element={<Modelos />} />
+                    <Route path=':id' element={<FormModelos />} />
                   </Route>
                 </>
               }
@@ -64,7 +81,7 @@ const Rutas = () => {
 const Routing = () => {
   return (
     <SessionProvider>
-      <Rutas/>
+      <Rutas />
     </SessionProvider>
   )
 }

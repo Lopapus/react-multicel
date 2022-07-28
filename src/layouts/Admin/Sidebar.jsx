@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { SessionContext } from '../../contexts/SessionProvider'
 import NavItem from '../Sidebar/NavItem'
 // import NavItemBadge from '../Sidebar/NavItemBadge'
-// import NavItemMultilevel from '../Sidebar/NavItemMultilevel'
+import NavItemMultilevel from '../Sidebar/NavItemMultilevel'
 import NavSeparator from '../Sidebar/NavSeparator'
 // import ButtonIcon from '../../components/ButtonIcon'
 import img_multicel from '../../images/logo/Multicel.png'
@@ -72,12 +72,21 @@ const Sidebar = () => {
             <NavSeparator colorclass={'border-gray-700'} />
 
             <NavItem label={'Inicio'} path={''} iconclass={'fa-solid fa-home'} />
-            {/* <NavItem label={'Productos'} path={'productos'} iconclass={'fa-solid fa-box'} /> */}
+            <NavItem label={'Productos'} path={'productos'} iconclass={'fa-solid fa-box'} />
             {
               session.rol === 'admin' &&
               <>
                 <NavItem label={'Usuarios'} path={'usuarios'} iconclass={'fa-solid fa-user'} />
                 <NavItem label={'Proveedores'} path={'proveedores'} iconclass={'fa-solid fa-users'} />
+                <NavItemMultilevel label={'Parametros'} iconclass={'fa-solid fa-gear'} >
+                  <NavItem label={'Metodos de pago'} path={'parametros/methodos-de-pago'} iconclass={'fa-solid fa-credit-card'} />
+                  <NavItemMultilevel label={'Productos'} iconclass={'fa-regular fa-clipboard'} >
+                    <NavItem label={'Categoria'} path={'parametros/categorias'} iconclass={'fa-solid fa-list'} />
+                    <NavItem label={'Subcategoria'} path={'parametros/subcategorias'} iconclass={'fa-solid fa-list'} />
+                    <NavItem label={'Marcas'} path={'parametros/marcas'} iconclass={'fa-solid fa-list'} />
+                    <NavItem label={'Modelos'} path={'parametros/modelos'} iconclass={'fa-solid fa-list'} />
+                  </NavItemMultilevel>
+                </NavItemMultilevel>
               </>
             }
             {/* <NavItem label={'Caja'} path={'caja'} iconclass={'fa-solid fa-cash-register'} /> */}
@@ -87,15 +96,6 @@ const Sidebar = () => {
             <NavItem label={'Reportes'} path={'reportes'} iconclass={'bi bi-person-circle'} /> */}
             {/* <NavItemBadge label={'Alertas'} path={'alertas'} iconclass={'fa-solid fa-circle-exclamation'} badgelabel={1} badgetxtcolor={'text-white'} badgebgcolor={'bg-danger'} /> */}
 
-            {/* <NavItemMultilevel label={'Parametros'} iconclass={'fa-solid fa-gear'} >
-              <NavItem label={'Metodos de pago'} path={'parametros/methodos-de-pago'} iconclass={'fa-solid fa-credit-card'} />
-              <NavItemMultilevel label={'Productos'} iconclass={'fa-regular fa-clipboard'} >
-                <NavItem label={'Categoria'} path={'parametros/categorias'} iconclass={'fa-solid fa-list'} />
-                <NavItem label={'Subcategoria'} path={'parametros/subcategorias'} iconclass={'fa-solid fa-list'} />
-                <NavItem label={'Marcas'} path={'parametros/marcas'} iconclass={'fa-solid fa-list'} />
-                <NavItem label={'Modelos'} path={'parametros/modelos'} iconclass={'fa-solid fa-list'} />
-              </NavItemMultilevel>
-            </NavItemMultilevel> */}
           </ul>
         </div>
       </nav>
