@@ -23,7 +23,7 @@ const useDeleteCategoria = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetchToken(`${Server}/proveedores`, content)
+        const response = await fetchToken(`${Server}/categorias`, content)
 
         if (!response.ok) {
           Swal2.fire({
