@@ -6,29 +6,29 @@ import CardComponent from '../../../layouts/Card/CardComponent'
 import Loader from '../../../components/Loader'
 import ActionDeleteContext from '../../../contexts/ActionDeleteContext'
 import DataList from '../../../components/DataList'
-import useDeleteCategoria from './hooks/useDeleteCategoria'
-import CategoriaItem from './components/CategoriaItem'
+import useDeleteMarca from './hooks/useDeleteMarca'
+import MarcaItem from './components/MarcaItem'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { useNavigate } from 'react-router-dom'
 
 const Marcas = () => {
   const [message, setMessage] = useState(null)
-  const [categorias, setCategorias] = useState([])
-  const { data, isLoading, isError } = useQuery(['categorias'], handleGetCategorias)
+  const [marcas, setMarcas] = useState([])
+  const { data, isLoading, isError } = useQuery(['marcas'], handleGetMarcas)
 
   const fetchToken = useFetchToken()
-  const deleteCategoria = useDeleteCategoria()
+  const deleteMarca = useDeleteMarca()
   const navigate = useNavigate()
 
   const handleDelete = async (data) => {
-    const deleted = await deleteCategoria(data)
+    const deleted = await deleteMarca(data)
     if (deleted) {
-      const new_categorias = categorias.filter(categoria => categoria.id !== data.id)
-      setCategorias(new_categorias)
+      const new_marcas = marcas.filter(marca => marca.id !== data.id)
+      setMarcas(new_marcas)
     }
   }
 
-  async function handleGetCategorias () {
+  async function handleGetMarcas () {
     const url = `${Server}/marcas`
     const response = await fetchToken(url)
     if (response.ok) {
@@ -36,7 +36,7 @@ const Marcas = () => {
       if (json?.length <= 0) {
         setMessage(
           <div className="alert alert-info text-center" role="alert">
-            No hay categorias
+            No hay marcas
           </div>
         )
       }
@@ -51,7 +51,7 @@ const Marcas = () => {
   }
 
   useEffect(() => {
-    setCategorias(data)
+    setMarcas(data)
   }, [data])
 
   useEffect(() => {
@@ -68,13 +68,13 @@ const Marcas = () => {
     <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-plus'} handler={() => navigate('crear')}>
         Agregar
       </ButtonIcon>
-      <CardComponent title="Categorias">
+      <CardComponent title="Marcas">
         {
           isLoading
             ? <Loader />
-            : categorias?.length > 0
+            : marcas?.length > 0
               ? <ActionDeleteContext.Provider value={handleDelete}>
-                  <DataList list={categorias} component={CategoriaItem} filter={['nombre']} keyname={'categoria'} />
+                  <DataList list={marcas} component={MarcaItem} filter={['nombre']} keyname={'marcas'} />
                 </ActionDeleteContext.Provider>
               : message
         }

@@ -6,29 +6,29 @@ import CardComponent from '../../../layouts/Card/CardComponent'
 import Loader from '../../../components/Loader'
 import ActionDeleteContext from '../../../contexts/ActionDeleteContext'
 import DataList from '../../../components/DataList'
-import useDeleteCategoria from './hooks/useDeleteCategoria'
-import CategoriaItem from './components/CategoriaItem'
+import useDeleteModelo from './hooks/useDeleteModelo'
+import ModeloItem from './components/ModeloItem'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { useNavigate } from 'react-router-dom'
 
 const Modelos = () => {
   const [message, setMessage] = useState(null)
-  const [categorias, setCategorias] = useState([])
-  const { data, isLoading, isError } = useQuery(['categorias'], handleGetCategorias)
+  const [modelos, setModelos] = useState([])
+  const { data, isLoading, isError } = useQuery(['modelos'], handleGetModelos)
 
   const fetchToken = useFetchToken()
-  const deleteCategoria = useDeleteCategoria()
+  const deleteModelo = useDeleteModelo()
   const navigate = useNavigate()
 
   const handleDelete = async (data) => {
-    const deleted = await deleteCategoria(data)
+    const deleted = await deleteModelo(data)
     if (deleted) {
-      const new_categorias = categorias.filter(categoria => categoria.id !== data.id)
-      setCategorias(new_categorias)
+      const new_modelos = modelos.filter(modelo => modelo.id !== data.id)
+      setModelos(new_modelos)
     }
   }
 
-  async function handleGetCategorias () {
+  async function handleGetModelos () {
     const url = `${Server}/modelos`
     const response = await fetchToken(url)
     if (response.ok) {
@@ -36,7 +36,7 @@ const Modelos = () => {
       if (json?.length <= 0) {
         setMessage(
           <div className="alert alert-info text-center" role="alert">
-            No hay categorias
+            No hay modelos
           </div>
         )
       }
@@ -51,7 +51,7 @@ const Modelos = () => {
   }
 
   useEffect(() => {
-    setCategorias(data)
+    setModelos(data)
   }, [data])
 
   useEffect(() => {
@@ -68,13 +68,13 @@ const Modelos = () => {
     <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-plus'} handler={() => navigate('crear')}>
         Agregar
       </ButtonIcon>
-      <CardComponent title="Categorias">
+      <CardComponent title="Modelos">
         {
           isLoading
             ? <Loader />
-            : categorias?.length > 0
+            : modelos?.length > 0
               ? <ActionDeleteContext.Provider value={handleDelete}>
-                  <DataList list={categorias} component={CategoriaItem} filter={['nombre']} keyname={'categoria'} />
+                  <DataList list={modelos} component={ModeloItem} filter={['nombre']} keyname={'modelo'} />
                 </ActionDeleteContext.Provider>
               : message
         }

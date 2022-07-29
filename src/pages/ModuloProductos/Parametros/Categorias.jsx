@@ -65,7 +65,7 @@ const Categorias = () => {
   }, [isError])
   return (
     <>
-    <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-plus'} handler={() => navigate('crear')}>
+      <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-plus'} handler={() => navigate('crear')}>
         Agregar
       </ButtonIcon>
       <CardComponent title="Categorias">

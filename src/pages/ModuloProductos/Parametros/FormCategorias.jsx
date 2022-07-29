@@ -6,8 +6,8 @@ import Server from '../../../services/Server'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { useSetForm } from '../../../hooks'
 import { useFetchToken } from '../../../hooks/fetch-multicel'
-import InputRegex from '../Proveedores/components/InputRegex'
-import AlertCollapse from '../Proveedores/components/AlertCollapse'
+import InputRegex from '../../../components/InputRegex'
+import AlertCollapse from '../../../components/AlertCollapse'
 import CategoriaSchema from './schemas/CategoriaSchema'
 
 const FormCategorias = () => {
@@ -23,21 +23,19 @@ const FormCategorias = () => {
   const params = useParams()
   const navigate = useNavigate()
 
-  // Busca al proveedor en caso de ser recibido por params
-  // Modifica el formulario para ser de tipo POST o PUT
-  const handleFindProveedor = async () => {
+  const handleFindCategoria = async () => {
     try {
-      if (params.id) {
+      if (params.id === 'crear' || params.id == null) {
+        setData({})
+        setLoading(false)
+        setMethod('POST')
+      } else {
         setLoading(true)
         const response = await fetchToken(`${Server}/categorias/${params.id}`)
         setLoading(false)
         setDataForm(response.syncJson())
         setData(response.syncJson())
         setMethod('PUT')
-      } else {
-        setData({})
-        setLoading(false)
-        setMethod('POST')
       }
     } catch (error) {
       setLoading(false)
@@ -54,7 +52,7 @@ const FormCategorias = () => {
   }
 
   // Al enviar los datos muestra las alertas
-  const handleUploadProveedor = async () => {
+  const handleUploadCategoria = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
       const content = {
         method,
@@ -96,7 +94,7 @@ const FormCategorias = () => {
     e.preventDefault()
     try {
       await CategoriaSchema.validate(form, { abortEarly: false })
-      handleUploadProveedor()
+      handleUploadCategoria()
     } catch (errors) {
       if (errors?.inner) {
         handleSetErrors(errors.inner)
@@ -112,7 +110,6 @@ const FormCategorias = () => {
         setAlerts({ ...alerts, [name]: { message, show: false } })
       }
     }
-    console.log(form)
     setForm(e)
   }
 
@@ -141,7 +138,7 @@ const FormCategorias = () => {
     setListAlerts(new_list)
   }
 
-  useEffect(handleFindProveedor, [])
+  useEffect(handleFindCategoria, [])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
   useEffect(handleHideAlert, [form])
@@ -192,7 +189,7 @@ const FormCategorias = () => {
           </form>
         </div >
       </div >
-      : loading ? <Loader /> : <Alert variant="danger" className="text-center">No se econtró la categoría</Alert>
+      : loading ? <Loader /> : <Alert variant="danger" className="text-center">No se encontró la categoría</Alert>
   )
 }
 

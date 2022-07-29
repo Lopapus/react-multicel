@@ -6,7 +6,7 @@ import CardComponent from '../../../layouts/Card/CardComponent'
 import Loader from '../../../components/Loader'
 import ActionDeleteContext from '../../../contexts/ActionDeleteContext'
 import DataList from '../../../components/DataList'
-import useDeleteCategoria from './hooks/useDeleteCategoria'
+import useDeleteSubcategoria from './hooks/useDeleteSubcategoria'
 import SubcategoriaItem from './components/SubcategoriaItem'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { useNavigate } from 'react-router-dom'
@@ -17,11 +17,11 @@ const Subcategorias = () => {
   const { data, isLoading, isError } = useQuery(['subcategorias'], handleGetSubcategorias)
 
   const fetchToken = useFetchToken()
-  const deleteCategoria = useDeleteCategoria()
+  const deleteSubcategoria = useDeleteSubcategoria()
   const navigate = useNavigate()
 
   const handleDelete = async (data) => {
-    const deleted = await deleteCategoria(data)
+    const deleted = await deleteSubcategoria(data)
     if (deleted) {
       const new_subcategorias = subcategorias.filter(subcategoria => subcategoria.id !== data.id)
       setSubcategorias(new_subcategorias)
@@ -36,7 +36,7 @@ const Subcategorias = () => {
       if (json?.length <= 0) {
         setMessage(
           <div className="alert alert-info text-center" role="alert">
-            No hay categorias
+            No hay subcategorias
           </div>
         )
       }
@@ -68,7 +68,7 @@ const Subcategorias = () => {
     <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-plus'} handler={() => navigate('crear')}>
         Agregar
       </ButtonIcon>
-      <CardComponent title="Categorias">
+      <CardComponent title="Subcategorias">
         {
           isLoading
             ? <Loader />
