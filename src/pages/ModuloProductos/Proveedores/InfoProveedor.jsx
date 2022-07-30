@@ -39,6 +39,10 @@ const InfoProveedor = () => {
               <h6>Cuit: { parseCuit(data?.cuit)}</h6>
               <h6>Telefono: {data?.telefono}</h6>
               <h6>Correo: {data?.correo}</h6>
+              {
+                data?.lugar &&
+                <h6>Ubicación: {data.lugar}</h6>
+              }
               <h6>
                 {
                   data?.inscripto

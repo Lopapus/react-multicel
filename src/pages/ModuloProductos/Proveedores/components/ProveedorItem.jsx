@@ -2,11 +2,11 @@ import React, { useContext } from 'react'
 import img_usuario from '../../../../images/sistema/usuario.png'
 import { Link } from 'react-router-dom'
 import DropdownButtonIcon from '../../../../components/DropdownButtonIcon'
-import ProovedorContext from '../contexts/ProovedorContext'
+import ActionDeleteContext from '../../../../contexts/ActionDeleteContext'
 import parseCuit from '../../../../helpers/parseCuit'
 
 const ProveedorItem = ({ data }) => {
-  const action = useContext(ProovedorContext)
+  const action = useContext(ActionDeleteContext)
   const { id, nombre, cuit } = data
 
   return (
