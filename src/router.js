@@ -8,7 +8,7 @@ import { CreateUsers, Home, Login, Page404, Test, UserAccount, Users, EditUser, 
 import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
-import { FormProveedor, InfoProveedor, ProductosProveedor, Proveedores, Categorias, Subcategorias, Marcas, Modelos, FormCategorias, FormSubcategorias, FormMarcas, FormModelos } from './pages/ModuloProductos'
+import { FormProveedor, InfoProveedor, ProductosProveedor, Proveedores, Categorias, Subcategorias, Marcas, FormCategorias, FormSubcategorias, FormMarcas, Productos, FormProductos } from './pages/ModuloProductos'
 
 const Rutas = () => {
   const session = useContext(SessionContext)[0]
@@ -48,23 +48,39 @@ const Rutas = () => {
                     <Route path='productos/:id' element={<ProductosProveedor />} />
                     <Route path="crear" element={<FormProveedor />} />
                   </Route>
-                  <Route path='parametros' element={<Navigate to='../' />} />
-                  <Route path="parametros/categorias">
+                  <Route path="parametros">
+                    <Route index element={<Home />} />
+                    <Route path='categorias' element={<Categorias />} />
+                    <Route path='categorias/:id' element={<FormCategorias />} />
+                    <Route path='subcategorias' element={<Subcategorias />} />
+                    <Route path='subcategorias/:id' element={<FormSubcategorias />} />
+                    <Route path='marcas' element={<Marcas />} />
+                    <Route path='marcas/:id' element={<FormMarcas />} />
+                  </Route>
+                  <Route path="productos">
+                    <Route index element={<Productos />} />
+                    <Route path="crear" element={<FormProductos />} />
+                    <Route path=":id" element={<FormProductos />} />
+                  </Route>
+
+                  {/* <Route path='parametros' element={<Navigate to='../' />} /> */}
+                  {/* <Route path="parametros/categorias">
                     <Route index element={<Categorias />} />
                     <Route path=':id' element={<FormCategorias />} />
-                  </Route>
-                  <Route path="parametros/subcategorias">
+                  </Route> */}
+                  {/* <Route path="parametros/subcategorias">
                     <Route index element={<Subcategorias />} />
                     <Route path=':id' element={<FormSubcategorias />} />
-                  </Route>
-                  <Route path="parametros/marcas">
+                  </Route> */}
+                  {/* <Route path="parametros/marcas">
                     <Route index element={<Marcas />} />
                     <Route path=':id' element={<FormMarcas />} />
-                  </Route>
-                  <Route path="parametros/modelos">
+                  </Route> */}
+                  {/* <Route path="parametros/modelos">
                     <Route index element={<Modelos />} />
                     <Route path=':id' element={<FormModelos />} />
-                  </Route>
+                  </Route> */}
+
                 </>
               }
             </Route>
