@@ -9,12 +9,12 @@ import CardComponent from '../../../layouts/Card/CardComponent'
 import { useFetchToken } from '../../../hooks/fetch-multicel'
 import ProveedorItem from './components/ProveedorItem'
 import useDeleteProveedor from './hooks/useDeleteProveedor'
-import ProovedorContext from './contexts/ProovedorContext'
+import ActionDeleteContext from '../../../contexts/ActionDeleteContext'
 
 const Proveedores = () => {
   const [message, setMessage] = useState(null)
   const [proveedores, setProovedores] = useState([])
-  const { data, isLoading, isError } = useQuery(['proovedores'], handleGetProveedores)
+  const { data, isLoading, isError } = useQuery(['proovedores'], handleGetProveedores, { refetchOnWindowFocus: false })
   const deleteProveedor = useDeleteProveedor()
 
   const navigate = useNavigate()
@@ -74,9 +74,9 @@ const Proveedores = () => {
           isLoading
             ? <Loader />
             : proveedores?.length > 0
-              ? <ProovedorContext.Provider value={handleDelete}>
+              ? <ActionDeleteContext.Provider value={handleDelete}>
                   <DataList list={proveedores} component={ProveedorItem} filter={['nombre', 'cuit']} keyname={'proveedor'} />
-                </ProovedorContext.Provider>
+                </ActionDeleteContext.Provider>
               : message
         }
       </CardComponent>

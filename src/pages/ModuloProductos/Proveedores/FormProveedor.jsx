@@ -6,8 +6,8 @@ import Server from '../../../services/Server'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { useSetForm } from '../../../hooks'
 import { useFetchToken } from '../../../hooks/fetch-multicel'
-import InputRegex from './components/InputRegex'
-import AlertCollapse from './components/AlertCollapse'
+import InputRegex from '../../../components/InputRegex'
+import AlertCollapse from '../../../components/AlertCollapse'
 import proveedorSchema from './schemas/ProveedorSchema'
 
 const FormProveedor = () => {
