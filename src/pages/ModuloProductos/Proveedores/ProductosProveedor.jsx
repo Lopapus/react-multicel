@@ -8,6 +8,18 @@ import parseCuit from '../../../helpers/parseCuit'
 import Loader from '../../../components/Loader'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { Card } from 'react-bootstrap'
+import DataTable from '../../../components/DataTable'
+
+const ItemProducto = () => {
+  return (
+    <tr>
+      <td>Telefono Samsung J4 PrimeSex</td>
+      <td>5</td>
+      <td><input type="number" className="form-control text-center" style={{ width: '100px' }} /></td>
+      <td>10</td>
+    </tr>
+  )
+}
 
 const ProductosProveedor = () => {
   const [data, setData] = useState({})
@@ -62,6 +74,7 @@ const ProductosProveedor = () => {
               </div>
             </Card.Header>
             <Card.Body>
+              <DataTable list={['a', 'a', 'a', 'a', 'a', 'a', 'a']} tableClass="table-hover" component={ItemProducto} header={['producto', 'stock', 'entrada', 'nuevo stock']} />
               {/* <img src="https://memegenerator.net/img/instances/85594412/aqu-pondra-mis-productos-si-tuvera-stock.jpg" alt="" /> */}
               {/* <h5>Aqui irian los productos</h5> */}
             </Card.Body>
