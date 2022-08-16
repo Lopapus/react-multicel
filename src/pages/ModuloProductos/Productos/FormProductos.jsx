@@ -85,6 +85,7 @@ const FormProductoss = () => {
       }
 
       setLoading(true)
+      console.log('fetcheando')
       const response = await fetchToken(`${Server}/productos`, content)
       setLoading(false)
 
@@ -121,6 +122,8 @@ const FormProductoss = () => {
       await ProductoSchema.validate(form, { abortEarly: false })
       handleUploadProducto()
     } catch (errors) {
+      console.log({ ...errors })
+      setDisabled(true)
       if (errors?.inner) {
         handleSetErrors(errors.inner)
       }
@@ -129,12 +132,14 @@ const FormProductoss = () => {
 
   const handleSetForm = (e) => {
     const { name } = e.target
+    console.log(alerts)
     if (alerts[name]) {
       const { message, show } = alerts[name]
       if (show) {
         setAlerts({ ...alerts, [name]: { message, show: false } })
       }
     }
+    e.target.value = e.target.value.toString()
     setForm(e)
   }
 
@@ -163,8 +168,6 @@ const FormProductoss = () => {
     setListAlerts(new_list)
   }
 
-  console.log(form)
-
   useEffect(handleFindCategorias, [])
   useEffect(handleFindSubcategorias, [])
   useEffect(handleFindMarcas, [])
@@ -178,9 +181,6 @@ const FormProductoss = () => {
         <div className="card-header border-bottom d-flex align-items-center justify-content-between">
           <h2 className="fs-5 fw-bold mb-0">Producto</h2>
         </div>
-        <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#categoriasModal">
-          ADD CATEG
-        </button>
         <div className="card-body">
           <form onSubmit={handleSubmitForm}>
             <div className='row g-3'>
@@ -190,14 +190,14 @@ const FormProductoss = () => {
                 <InputRegex
                   type="text"
                   name="modelo"
-                  id="nombre"
+                  id="modelo"
                   value={form?.modelo || ''}
                   className='form-control'
                   onChange={handleSetForm}
-                  regex={/^(?:[A-z\s])*$/gm}
+                  regex={/^(?:[A-z0-9\s])*$/gm}
                   required
                 />
-                <AlertCollapse message={alerts?.nombre?.message} show={alerts?.nombre?.show} />
+                <AlertCollapse message={alerts?.modelo?.message} show={alerts?.modelo?.show} />
               </div>
 
               <div className='form-group col-12 col-sm-6 col-md-4'>
@@ -206,18 +206,18 @@ const FormProductoss = () => {
                   type="number"
                   name="precio"
                   id="precio"
-                  defaultValue={form?.modelo || ''}
+                  value={form?.precio || ''}
                   className='form-control'
                   onChange={handleSetForm}
                   regex={/^(?:[0-9])*$/gm}
                   required
                 />
-                <AlertCollapse message={alerts?.nombre?.message} show={alerts?.nombre?.show} />
+                <AlertCollapse message={alerts?.precio?.message} show={alerts?.precio?.show} />
               </div>
 
               <div className='form-group col-12 col-sm-6 col-md-4'>
                 <label>Facturable</label>
-                <select defaultValue={form?.facturado || '-'} name="facturado" id="facturado" className='form-control' onChange={handleSetForm}>
+                <select value={form?.facturado || '-'} name="facturado" id="facturado" className='form-control' onChange={handleSetForm}>
                   <option value="-" className='form-control' disabled> - Seleccione - </option>
                   <option value="1" className="form-control">Si</option>
                   <option value="2" className="form-control">No</option>
@@ -230,7 +230,7 @@ const FormProductoss = () => {
                   type="number"
                   name="stock"
                   id="stock"
-                  defaultValue={form?.stock || ''}
+                  value={form?.stock || ''}
                   className='form-control'
                   onChange={handleSetForm}
                   regex={/^(?:[0-9])*$/gm}
@@ -244,7 +244,7 @@ const FormProductoss = () => {
                   type="number"
                   name="stock_min"
                   id="stock_min"
-                  defaultValue={form?.stock_min || ''}
+                  value={form?.stock_min || ''}
                   className='form-control'
                   onChange={handleSetForm}
                   regex={/^(?:[0-9])*$/gm}
@@ -258,7 +258,7 @@ const FormProductoss = () => {
                   type="number"
                   name="imei"
                   id="imei"
-                  defaultValue={form?.imei || ''}
+                  value={form?.imei || ''}
                   className='form-control'
                   onChange={handleSetForm}
                   regex={/^(?:[0-9])*$/gm}
@@ -268,7 +268,7 @@ const FormProductoss = () => {
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Categoria</label>
-                <select className='form-control' name="id_categoria" id="id_categoria" defaultValue={form?.id_categoria || '-'} onChange={handleSetForm} required>
+                <select className='form-control' name="id_categoria" id="id_categoria" value={form?.id_categoria || '-'} onChange={handleSetForm} required>
                   <option value='-' disabled> - Seleccione - </option>
                   {
                     categorias.length > 0
@@ -283,7 +283,7 @@ const FormProductoss = () => {
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Subcategoria</label>
-                <select className='form-control' name="id_subcategoria" id="id_subcategoria" defaultValue={form?.id_subcategoria || '-'} onChange={handleSetForm} required>
+                <select className='form-control' name="id_subcategoria" id="id_subcategoria" value={form?.id_subcategoria || '-'} onChange={handleSetForm} required>
                   <option value="-" disabled> - Seleccione - </option>
                   {
                     subcategorias.length > 0
@@ -298,7 +298,7 @@ const FormProductoss = () => {
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Marca</label>
-                <select className='form-control' name="id_marca" id="id_marca" defaultValue={form?.id_marca || '-'} onChange={handleSetForm} required>
+                <select className='form-control' name="id_marca" id="id_marca" value={form?.id_marca || '-'} onChange={handleSetForm} required>
                   <option value='-' disabled> - Seleccione - </option>
                   {
                     marcas.length > 0
@@ -313,7 +313,7 @@ const FormProductoss = () => {
 
               <div className="form-group col-12 col-sm-9 col-md-12">
                 <label>Observaciones</label>
-                <textarea defaultValue={form?.observaciones || ''}
+                <textarea value={form?.observaciones || ''}
                   name="observaciones"
                   id="observaciones"
                   className='form-control'
@@ -340,26 +340,6 @@ const FormProductoss = () => {
             <AlertCollapse message={alerts?.general?.message} show={alerts?.general?.show} type={alerts?.general?.type} />
 
           </form>
-          <div className="modal fade" id="categoriasModal" tabIndex="-1" role="dialog" aria-labelledby="categoriasModalLabel" aria-hidden="true">
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="categoriasModalLabel">Nueva Categoría</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  aaaaaa
-                  {/* <FormCategorias /> */}
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal">GUARDAR</button>
-                  <button type="button" className="btn btn-primary">CERRAR</button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div >
       </div >
       : loading ? <Loader /> : <Alert variant="danger" className="text-center">No se encontró la marca</Alert>

@@ -2,9 +2,9 @@ import * as yup from 'yup'
 
 const proveedorSchema = yup.object().shape({
   nombre: yup.string()
-    .trim('No debe contener espacios innesesarios')
+    .trim('No debe contener espacios innecesarios')
     .min(5, 'Mínimo 5 caracteres')
-    .max(15, 'Excedió el maximo de 15 caracteres')
+    .max(15, 'Excedió el máximo de 15 caracteres')
     .matches(/^[A-z\s]+$/, 'Sólo se permiten letras')
     .strict(true),
   cuit: yup.string()
