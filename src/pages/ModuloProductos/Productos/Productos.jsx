@@ -6,37 +6,37 @@ import CardComponent from '../../../layouts/Card/CardComponent'
 import Loader from '../../../components/Loader'
 import ActionDeleteContext from '../../../contexts/ActionDeleteContext'
 import DataList from '../../../components/DataList'
-import useDeleteModelo from './hooks/useDeleteModelo'
-import ModeloItem from './components/ModeloItem'
+import useDeleteProducto from './hooks/useDeleteProducto'
+import ProductoItem from './components/ProductoItem'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { useNavigate } from 'react-router-dom'
 
-const Modelos = () => {
+const Productos = () => {
   const [message, setMessage] = useState(null)
-  const [modelos, setModelos] = useState([])
-  const { data, isLoading, isError } = useQuery(['modelos'], handleGetModelos)
+  const [productos, setProductos] = useState([])
+  const { data, isLoading, isError } = useQuery(['productos'], handleGetProductos)
 
   const fetchToken = useFetchToken()
-  const deleteModelo = useDeleteModelo()
+  const deleteProducto = useDeleteProducto()
   const navigate = useNavigate()
 
   const handleDelete = async (data) => {
-    const deleted = await deleteModelo(data)
+    const deleted = await deleteProducto(data)
     if (deleted) {
-      const new_modelos = modelos.filter(modelo => modelo.id !== data.id)
-      setModelos(new_modelos)
+      const new_productos = productos.filter(producto => producto.id !== data.id)
+      setProductos(new_productos)
     }
   }
 
-  async function handleGetModelos () {
-    const url = `${Server}/modelos`
+  async function handleGetProductos () {
+    const url = `${Server}/productos`
     const response = await fetchToken(url)
     if (response.ok) {
       const json = response.syncJson()
       if (json?.length <= 0) {
         setMessage(
           <div className="alert alert-info text-center" role="alert">
-            No hay modelos
+            No hay productos
           </div>
         )
       }
@@ -51,7 +51,7 @@ const Modelos = () => {
   }
 
   useEffect(() => {
-    setModelos(data)
+    setProductos(data)
   }, [data])
 
   useEffect(() => {
@@ -65,16 +65,16 @@ const Modelos = () => {
   }, [isError])
   return (
     <>
-    <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-plus'} handler={() => navigate('crear')}>
+      <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-plus'} handler={() => navigate('crear')}>
         Agregar
       </ButtonIcon>
-      <CardComponent title="Modelos">
+      <CardComponent title="Productos">
         {
           isLoading
             ? <Loader />
-            : modelos?.length > 0
+            : productos?.length > 0
               ? <ActionDeleteContext.Provider value={handleDelete}>
-                  <DataList list={modelos} component={ModeloItem} filter={['nombre']} keyname={'modelo'} />
+                  <DataList list={productos} component={ProductoItem} filter={['nombre']} keyname={'productos'} />
                 </ActionDeleteContext.Provider>
               : message
         }
@@ -83,4 +83,4 @@ const Modelos = () => {
   )
 }
 
-export default Modelos
+export default Productos

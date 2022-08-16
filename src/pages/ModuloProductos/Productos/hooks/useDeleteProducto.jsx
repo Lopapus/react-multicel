@@ -2,17 +2,17 @@ import Swal2 from '../../../../components/SweetAlert2'
 import Server from '../../../../services/Server'
 import { useFetchToken } from '../../../../hooks/fetch-multicel'
 
-const useDeleteModelo = () => {
+const useDeleteProducto = () => {
   const fetchToken = useFetchToken()
 
-  const deleteModelo = async ({ id, nombre }) => {
+  const deteleProducto = async ({ id }) => {
     const content = {
       method: 'DELETE',
       body: JSON.stringify({ id })
     }
 
     const result = await Swal2.fire({
-      title: `¿Está seguro de eliminar el modelo "${nombre}"?`,
+      title: '¿Está seguro de eliminar el producto?',
       showDenyButton: false,
       confirmButtonColor: '#E11D48',
       timer: 5000,
@@ -23,7 +23,7 @@ const useDeleteModelo = () => {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetchToken(`${Server}/modelos`, content)
+        const response = await fetchToken(`${Server}/productos`, content)
 
         if (!response.ok) {
           Swal2.fire({
@@ -44,7 +44,7 @@ const useDeleteModelo = () => {
     return null
   }
 
-  return deleteModelo
+  return deteleProducto
 }
 
-export default useDeleteModelo
+export default useDeleteProducto

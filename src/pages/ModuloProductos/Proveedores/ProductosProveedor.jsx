@@ -9,8 +9,9 @@ import Loader from '../../../components/Loader'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { Card } from 'react-bootstrap'
 import ModalProveedor from './components/ModalProveedor'
-import DataList from '../../../components/DataList'
+// import DataList from '../../../components/DataList'
 import ProductoItem from './components/ProductoItem'
+import DataTable from '../../../components/DataTable'
 
 const ProductosProveedor = () => {
   const [data, setData] = useState({})
@@ -82,7 +83,7 @@ const ProductosProveedor = () => {
               <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-box'} handler={() => setShowModal(true)}>Agregar</ButtonIcon>
             </Card.Header>
             <Card.Body>
-              <DataList list={productos} component={ProductoItem} filter={['modelo']} />
+              <DataTable list={productos} tableClass="table-hover" component={ProductoItem} header={['producto', 'stock', 'entrada', 'nuevo stock']} />
               {/* <img src="https://memegenerator.net/img/instances/85594412/aqu-pondra-mis-productos-si-tuvera-stock.jpg" alt="" /> */}
               {/* <h5>Aqui irian los productos</h5> */}
             </Card.Body>

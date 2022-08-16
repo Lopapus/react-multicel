@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ButtonIcon from './ButtonIcon'
 
-const DataList = ({ list, component: Component, filter = [], keyname = 'data-list' }) => {
+const DataList = ({ list = [], component: Component, filter = [], keyname = 'data-list' }) => {
   const [elements, setElements] = useState(list.slice(0, 5))
   const [pagination, setPagination] = useState({
     pages: 1,

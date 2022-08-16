@@ -79,12 +79,12 @@ const Sidebar = () => {
                 <NavItem label={'Usuarios'} path={'usuarios'} iconclass={'fa-solid fa-user'} />
                 <NavItem label={'Proveedores'} path={'proveedores'} iconclass={'fa-solid fa-users'} />
                 <NavItemMultilevel label={'Parametros'} iconclass={'fa-solid fa-gear'} >
-                  <NavItem label={'Metodos de pago'} path={'parametros/methodos-de-pago'} iconclass={'fa-solid fa-credit-card'} />
+                  {/* <NavItem label={'Metodos de pago'} path={'parametros/methodos-de-pago'} iconclass={'fa-solid fa-credit-card'} /> */}
                   <NavItemMultilevel label={'Productos'} iconclass={'fa-regular fa-clipboard'} >
                     <NavItem label={'Categoria'} path={'parametros/categorias'} iconclass={'fa-solid fa-list'} />
                     <NavItem label={'Subcategoria'} path={'parametros/subcategorias'} iconclass={'fa-solid fa-list'} />
                     <NavItem label={'Marcas'} path={'parametros/marcas'} iconclass={'fa-solid fa-list'} />
-                    <NavItem label={'Modelos'} path={'parametros/modelos'} iconclass={'fa-solid fa-list'} />
+                    {/* <NavItem label={'Modelos'} path={'parametros/modelos'} iconclass={'fa-solid fa-list'} /> */}
                   </NavItemMultilevel>
                 </NavItemMultilevel>
               </>
