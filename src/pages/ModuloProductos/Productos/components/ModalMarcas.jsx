@@ -1,11 +1,11 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
 
-const ModalCategorias = ({ show, handleShow }) => {
+const ModalMarcas = ({ show, handleShow }) => {
   return (
     <Modal show={show}>
       <Modal.Header>
-        Nueva categoría
+        Nueva marca
       </Modal.Header>
       <Modal.Body>
         Form
@@ -17,4 +17,4 @@ const ModalCategorias = ({ show, handleShow }) => {
   )
 }
 
-export default ModalCategorias
+export default ModalMarcas

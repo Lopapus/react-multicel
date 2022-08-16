@@ -9,7 +9,10 @@ import { useFetchToken } from '../../../hooks/fetch-multicel'
 import InputRegex from '../../../components/InputRegex'
 import AlertCollapse from '../../../components/AlertCollapse'
 import ProductoSchema from './schemas/ProductoSchema'
-// import FormCategorias from '../Parametros/FormCategorias'
+import ModalCategorias from './components/ModalCategorias'
+import ModalSubcategorias from './components/ModalSubcategorias'
+import ModalMarcas from './components/ModalMarcas'
+import ModalProveedores from './components/ModalProveedores'
 
 const FormProductoss = () => {
   const [data, setData] = useState()
@@ -22,6 +25,10 @@ const FormProductoss = () => {
   const [categorias, setCategorias] = useState({})
   const [subcategorias, setSubcategorias] = useState({})
   const [marcas, setMarcas] = useState({})
+  const [showModalCategoria, setShowModalCategoria] = useState(false)
+  const [showModalSubcategoria, setShowModalSubcategoria] = useState(false)
+  const [showModalMarcas, setShowModalMarcas] = useState(false)
+  const [showModalProv, setShowModalProv] = useState(false)
 
   const fetchToken = useFetchToken()
   const params = useParams()
@@ -85,7 +92,6 @@ const FormProductoss = () => {
       }
 
       setLoading(true)
-      console.log('fetcheando')
       const response = await fetchToken(`${Server}/productos`, content)
       setLoading(false)
 
@@ -122,7 +128,6 @@ const FormProductoss = () => {
       await ProductoSchema.validate(form, { abortEarly: false })
       handleUploadProducto()
     } catch (errors) {
-      console.log({ ...errors })
       setDisabled(true)
       if (errors?.inner) {
         handleSetErrors(errors.inner)
@@ -132,7 +137,6 @@ const FormProductoss = () => {
 
   const handleSetForm = (e) => {
     const { name } = e.target
-    console.log(alerts)
     if (alerts[name]) {
       const { message, show } = alerts[name]
       if (show) {
@@ -215,15 +219,6 @@ const FormProductoss = () => {
                 <AlertCollapse message={alerts?.precio?.message} show={alerts?.precio?.show} />
               </div>
 
-              <div className='form-group col-12 col-sm-6 col-md-4'>
-                <label>Facturable</label>
-                <select value={form?.facturado || '-'} name="facturado" id="facturado" className='form-control' onChange={handleSetForm}>
-                  <option value="-" className='form-control' disabled> - Seleccione - </option>
-                  <option value="1" className="form-control">Si</option>
-                  <option value="2" className="form-control">No</option>
-                </select>
-              </div>
-
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Stock</label>
                 <InputRegex
@@ -268,7 +263,8 @@ const FormProductoss = () => {
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Categoria</label>
-                <select className='form-control' name="id_categoria" id="id_categoria" value={form?.id_categoria || '-'} onChange={handleSetForm} required>
+                <div className="input-group mb-3">
+                  <select className='form-control' name="id_categoria" id="id_categoria" value={form?.id_categoria || '-'} onChange={handleSetForm} required>
                   <option value='-' disabled> - Seleccione - </option>
                   {
                     categorias.length > 0
@@ -278,37 +274,64 @@ const FormProductoss = () => {
                       )
                       : <option value="-" disabled>No hay categorias</option>
                   }
-                </select>
+                  </select>
+                  <button className='btn btn-primary' onClick={() => setShowModalCategoria(true)}>+</button>
+                </div>
               </div>
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Subcategoria</label>
-                <select className='form-control' name="id_subcategoria" id="id_subcategoria" value={form?.id_subcategoria || '-'} onChange={handleSetForm} required>
-                  <option value="-" disabled> - Seleccione - </option>
-                  {
-                    subcategorias.length > 0
-                      ? subcategorias.map(
-                        (subcategoria, key) =>
-                          <option key={'scat-' + key} value={subcategoria.id}>{ subcategoria.nombre}</option>
-                      )
-                      : <option value="-" disabled>No hay subcategorias</option>
-                  }
-                </select>
+                <div className="input-group mb-3">
+                  <select className='form-control' name="id_subcategoria" id="id_subcategoria" value={form?.id_subcategoria || '-'} onChange={handleSetForm} required>
+                    <option value="-" disabled> - Seleccione - </option>
+                    {
+                      subcategorias.length > 0
+                        ? subcategorias.map(
+                          (subcategoria, key) =>
+                            <option key={'scat-' + key} value={subcategoria.id}>{ subcategoria.nombre}</option>
+                        )
+                        : <option value="-" disabled>No hay subcategorias</option>
+                    }
+                  </select>
+                  <button className='btn btn-primary' onClick={() => setShowModalSubcategoria(true)}>+</button>
+              </div>
+
               </div>
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Marca</label>
-                <select className='form-control' name="id_marca" id="id_marca" value={form?.id_marca || '-'} onChange={handleSetForm} required>
-                  <option value='-' disabled> - Seleccione - </option>
-                  {
-                    marcas.length > 0
-                      ? marcas.map(
-                        (marca, key) =>
-                          <option key={'marc-' + key} value={marca.id}>{ marca.nombre}</option>
-                      )
-                      : <option value="-" disabled>No hay ninguna marca</option>
-                  }
-                </select>
+                <div className="input-group mb-3">
+                  <select className='form-control' name="id_marca" id="id_marca" value={form?.id_marca || '-'} onChange={handleSetForm} required>
+                    <option value='-' disabled> - Seleccione - </option>
+                    {
+                      marcas.length > 0
+                        ? marcas.map(
+                          (marca, key) =>
+                            <option key={'marc-' + key} value={marca.id}>{ marca.nombre}</option>
+                        )
+                        : <option value="-" disabled>No hay ninguna marca</option>
+                    }
+                  </select>
+                  <button className='btn btn-primary' onClick={() => setShowModalMarcas(true)}>+</button>
+                </div>
+              </div>
+
+              <div className="form-group col-12 col-sm-6 col-md-4">
+                <label>Proveedor</label>
+                <div className="input-group mb-3">
+                  <select className='form-control' name="proveedor" id="proveedor">
+                    <option value="-"> - Seleccione - </option>
+                  </select>
+                  <button className='btn btn-primary' onClick={() => setShowModalProv(true)}>+</button>
+                </div>
+              </div>
+
+              <div className="form-group col-12 col-sm-6 col-md-4">
+                <label>Código de barras</label>
+                <div className="input-group mb-3">
+                  <input className='form-control' type="number" defaultValue={'012345678'} disabled />
+                  <button className='btn btn-primary'>+</button>
+                </div>
               </div>
 
               <div className="form-group col-12 col-sm-9 col-md-12">
@@ -340,6 +363,10 @@ const FormProductoss = () => {
             <AlertCollapse message={alerts?.general?.message} show={alerts?.general?.show} type={alerts?.general?.type} />
 
           </form>
+          <ModalCategorias show={showModalCategoria} handleShow={setShowModalCategoria} />
+          <ModalSubcategorias show={showModalSubcategoria} handleShow={setShowModalSubcategoria} />
+          <ModalMarcas show={showModalMarcas} handleShow={setShowModalMarcas} />
+          <ModalProveedores show={showModalProv} handleShow={setShowModalProv} />
         </div >
       </div >
       : loading ? <Loader /> : <Alert variant="danger" className="text-center">No se encontró la marca</Alert>
