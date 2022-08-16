@@ -9,6 +9,7 @@ import { useFetchToken } from '../../../hooks/fetch-multicel'
 import InputRegex from '../../../components/InputRegex'
 import AlertCollapse from '../../../components/AlertCollapse'
 import ProductoSchema from './schemas/ProductoSchema'
+// import FormCategorias from '../Parametros/FormCategorias'
 
 const FormProductoss = () => {
   const [data, setData] = useState()
@@ -177,7 +178,9 @@ const FormProductoss = () => {
         <div className="card-header border-bottom d-flex align-items-center justify-content-between">
           <h2 className="fs-5 fw-bold mb-0">Producto</h2>
         </div>
-
+        <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#categoriasModal">
+          ADD CATEG
+        </button>
         <div className="card-body">
           <form onSubmit={handleSubmitForm}>
             <div className='row g-3'>
@@ -337,6 +340,26 @@ const FormProductoss = () => {
             <AlertCollapse message={alerts?.general?.message} show={alerts?.general?.show} type={alerts?.general?.type} />
 
           </form>
+          <div className="modal fade" id="categoriasModal" tabIndex="-1" role="dialog" aria-labelledby="categoriasModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="categoriasModalLabel">Nueva Categoría</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  aaaaaa
+                  {/* <FormCategorias /> */}
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal">GUARDAR</button>
+                  <button type="button" className="btn btn-primary">CERRAR</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div >
       </div >
       : loading ? <Loader /> : <Alert variant="danger" className="text-center">No se encontró la marca</Alert>
