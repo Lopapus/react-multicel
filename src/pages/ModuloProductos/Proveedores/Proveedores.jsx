@@ -14,7 +14,7 @@ import ActionDeleteContext from '../../../contexts/ActionDeleteContext'
 const Proveedores = () => {
   const [message, setMessage] = useState(null)
   const [proveedores, setProovedores] = useState([])
-  const { data, isLoading, isError } = useQuery(['proovedores'], handleGetProveedores, { refetchOnWindowFocus: false })
+  const { data, isLoading, isFetching, isError } = useQuery(['proovedores'], handleGetProveedores, { refetchOnWindowFocus: false })
   const deleteProveedor = useDeleteProveedor()
 
   const navigate = useNavigate()
@@ -71,7 +71,7 @@ const Proveedores = () => {
       </ButtonIcon>
       <CardComponent title="Proveedores">
         {
-          isLoading
+          isLoading || isFetching
             ? <Loader />
             : proveedores?.length > 0
               ? <ActionDeleteContext.Provider value={handleDelete}>

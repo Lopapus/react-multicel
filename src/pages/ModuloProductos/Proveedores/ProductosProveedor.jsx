@@ -8,11 +8,33 @@ import parseCuit from '../../../helpers/parseCuit'
 import Loader from '../../../components/Loader'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { Card } from 'react-bootstrap'
+import ModalProveedor from './components/ModalProveedor'
+import DataList from '../../../components/DataList'
+import ProductoItem from './components/ProductoItem'
 
 const ProductosProveedor = () => {
   const [data, setData] = useState({})
+  const [showModal, setShowModal] = useState(false)
   const params = useParams()
   const fetchToken = useFetchToken()
+
+  const productos = [
+    {
+      modelo: 'A21',
+      precio: 15000,
+      observaciones: '',
+      stock: 5,
+      stock_min: 5,
+      imei: null,
+      estado: true,
+      fecha_ingreso: '12-02-2002',
+      codigo_barras: '123120044232312',
+      categoria: { nombre: 'Dispositivo' },
+      subcategoria: { nombre: 'Celular' },
+      marca: { nombre: 'Samsung' },
+      proveedor: { nombre: 'Hector', id: 5 }
+    }
+  ]
 
   const handleGetProveedor = async () => {
     try {
@@ -30,6 +52,7 @@ const ProductosProveedor = () => {
   return (
     data?.nombre
       ? <div>
+          <ModalProveedor show={showModal} handleShow={setShowModal} items={productos}/>
           <Card className="animate__animated animate__fadeInLeft mb-4">
             <Card.Body>
               <div>
@@ -56,15 +79,16 @@ const ProductosProveedor = () => {
           <Card className='animate__animated animate__fadeIn'>
             <Card.Header className='d-flex justify-content-between align-items-center'>
               <h5 className='m-0'>Productos</h5>
-              <div className='d-flex gap-2'>
-                <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-box'}>Agregar</ButtonIcon>
-                <ButtonIcon btncolor={'btn-secondary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-cart-flatbed'}>Reponer Stock</ButtonIcon>
-              </div>
+              <ButtonIcon btncolor={'btn-primary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-box'} handler={() => setShowModal(true)}>Agregar</ButtonIcon>
             </Card.Header>
             <Card.Body>
+              <DataList list={productos} component={ProductoItem} filter={['modelo']} />
               {/* <img src="https://memegenerator.net/img/instances/85594412/aqu-pondra-mis-productos-si-tuvera-stock.jpg" alt="" /> */}
               {/* <h5>Aqui irian los productos</h5> */}
             </Card.Body>
+            <Card.Footer className='d-flex justify-content-end'>
+              <ButtonIcon btncolor={'btn-secondary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-cart-flatbed'} >Reponer Stock</ButtonIcon>
+            </Card.Footer>
           </Card>
         </div>
       : <Loader />

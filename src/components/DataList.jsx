@@ -59,7 +59,7 @@ const DataList = ({ list, component: Component, filter = [], keyname = 'data-lis
           <div className="col-8 col-md-5">
             <input name='search' placeholder='Buscar...' className='form-control rounded-pill' type='search' onChange={handleSetFilter} autoComplete="off" />
           </div>
-          <div className="col-4 col-md-2 col-xl-1">
+          <div className="col-4 col-md-2">
               <select name='rows' className='form-select' onChange={handleSetFilter}>
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -79,7 +79,7 @@ const DataList = ({ list, component: Component, filter = [], keyname = 'data-lis
       </div>
       {
         elements.length === 0 && filters.search !== ''
-          ? <h5 className='text-center'>No se encontraron elementos</h5>
+          ? <h5 className='text-center'>No se encontraron coincidencias</h5>
           : <div className='d-flex justify-content-center justify-content-md-end'>
             {
               pagination.pages > 1 &&

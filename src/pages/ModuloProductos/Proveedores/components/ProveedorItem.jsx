@@ -10,7 +10,7 @@ const ProveedorItem = ({ data }) => {
   const { id, nombre, cuit } = data
 
   return (
-    <li className="list-group-item px-0 border-bottom">
+    <li className="list-group-item list-group-item-action px-2 border-bottom">
       <div className="row align-items-center">
         <div className="col-auto">
           {/* <!-- Avatar --> */}
