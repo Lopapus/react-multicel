@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Server from '../../../../services/Server'
 import ButtonIcon from '../../../../components/ButtonIcon'
@@ -7,7 +7,7 @@ import { useSetForm } from '../../../../hooks'
 import { useFetchToken } from '../../../../hooks/fetch-multicel'
 import InputRegex from '../../../../components/InputRegex'
 import AlertCollapse from '../../../../components/AlertCollapse'
-import SubcategoriaSchema from '../../Parametros/schemas/SubcategoriaSchema'
+import CategoriaSchema from '../../Parametros/schemas/CategoriaSchema'
 
 const ModalSubcategorias = ({ show, handleShow }) => {
   const [data, setData] = useState()
@@ -20,9 +20,8 @@ const ModalSubcategorias = ({ show, handleShow }) => {
 
   const fetchToken = useFetchToken()
   const params = useParams()
-  const navigate = useNavigate()
 
-  const handleFindSubcategoria = async () => {
+  const handleFindCategoria = async () => {
     try {
       if (params.id === 'crear' || params.id == null) {
         setData({})
@@ -51,7 +50,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   }
 
   // Al enviar los datos muestra las alertas
-  const handleUploadSubcategoria = async () => {
+  const handleUploadCategoria = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
       const content = {
         method,
@@ -92,8 +91,8 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     try {
-      await SubcategoriaSchema.validate(form, { abortEarly: false })
-      handleUploadSubcategoria()
+      await CategoriaSchema.validate(form, { abortEarly: false })
+      handleUploadCategoria()
     } catch (errors) {
       if (errors?.inner) {
         handleSetErrors(errors.inner)
@@ -137,23 +136,20 @@ const ModalSubcategorias = ({ show, handleShow }) => {
     setListAlerts(new_list)
   }
 
-  useEffect(handleFindSubcategoria, [])
+  useEffect(handleFindCategoria, [])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
   useEffect(handleHideAlert, [form])
 
   return (
-    <Modal show={show}>
-      <div className="card border-0 shadow mt-3">
-        <div className="card-header border-bottom d-flex align-items-center justify-content-between">
-          <h2 className="fs-5 fw-bold mb-0">Modelo</h2>
-        </div>
-
-        <div className="card-body">
-          <form onSubmit={handleSubmitForm}>
-            <div className='row g-3'>
-
-              <div className='form-group col-12 col-sm-6'>
+     <Modal show={show}>
+      <Modal.Header>
+        <h2 className="fs-5 fw-bold mb-0">Nueva subcategoría</h2>
+      </Modal.Header>
+      <Modal.Body>
+        <form onSubmit={handleSubmitForm} className='mx-5'>
+            <div className='row'>
+              <div className='form-group col-12 justify-content-center'>
                 <label>Nombre (requerido)</label>
                 <InputRegex
                   type="text"
@@ -167,28 +163,22 @@ const ModalSubcategorias = ({ show, handleShow }) => {
                 />
                 <AlertCollapse message={alerts?.nombre?.message} show={alerts?.nombre?.show} />
               </div>
-
             </div>
-            <div className='form-group my-3 d-flex justify-content-center justify-content-sm-start'>
-              <ButtonIcon type="button" btncolor='btn-secondary me-1' iconclass={'fas fa-arrow-left'} handler={() => navigate('/parametros/subcategorias')} >
-                Volver
-              </ButtonIcon>
 
-              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={disabled || loading} >
+            <div className='form-group my-3 d-flex justify-content-center'>
+              <ButtonIcon btncolor='btn-primary mx-3' iconclass={'fas fa-save'} disabled={disabled || loading} >
                 {
                   !loading
                     ? (method === 'POST' ? 'Agregar' : 'Modificar')
                     : (method === 'POST' ? 'Agregando...' : 'Modificando...')
                 }
               </ButtonIcon>
+              <button className='btn btn-secondary mx-3' onClick={() => handleShow(false)}>Cerrar</button>
             </div>
-
             <AlertCollapse message={alerts?.general?.message} show={alerts?.general?.show} type={alerts?.general?.type} />
-
           </form>
-        </div >
-      </div >
-    </Modal>
+      </Modal.Body>
+     </Modal>
   )
 }
 
