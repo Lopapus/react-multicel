@@ -14,7 +14,7 @@ import ModalSubcategorias from './components/ModalSubcategorias'
 import ModalMarcas from './components/ModalMarcas'
 import ModalProveedores from './components/ModalProveedores'
 
-const FormProductoss = () => {
+const FormProductos = () => {
   const [data, setData] = useState()
   const [form, setForm, setDataForm] = useSetForm()
   const [alerts, setAlerts] = useState({})
@@ -172,9 +172,9 @@ const FormProductoss = () => {
     setListAlerts(new_list)
   }
 
-  useEffect(handleFindCategorias, [])
-  useEffect(handleFindSubcategorias, [])
-  useEffect(handleFindMarcas, [])
+  useEffect(handleFindCategorias, [showModalCategoria])
+  useEffect(handleFindSubcategorias, [showModalSubcategoria])
+  useEffect(handleFindMarcas, [showModalMarcas])
   useEffect(handleFindProducto, [])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
@@ -325,15 +325,13 @@ const FormProductoss = () => {
                   <button className='btn btn-primary' onClick={() => setShowModalProv(true)}>+</button>
                 </div>
               </div>
-
-              <div className="form-group col-12 col-sm-6 col-md-4">
+              {/* <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Código de barras</label>
                 <div className="input-group mb-3">
                   <input className='form-control' type="number" defaultValue={'012345678'} disabled />
                   <button className='btn btn-primary'>+</button>
                 </div>
-              </div>
-
+              </div> */}
               <div className="form-group col-12 col-sm-9 col-md-12">
                 <label>Observaciones</label>
                 <textarea value={form?.observaciones || ''}
@@ -347,7 +345,7 @@ const FormProductoss = () => {
               </div>
             </div>
             <div className='form-group my-3 d-flex justify-content-center justify-content-sm-start'>
-              <ButtonIcon type="button" btncolor='btn-secondary me-1' iconclass={'fas fa-arrow-left'} handler={() => navigate('/parametros/marcas')} >
+              <ButtonIcon type="button" btncolor='btn-secondary me-1' iconclass={'fas fa-arrow-left'} handler={() => navigate('/productos')} >
                 Volver
               </ButtonIcon>
 
@@ -373,4 +371,4 @@ const FormProductoss = () => {
   )
 }
 
-export default FormProductoss
+export default FormProductos

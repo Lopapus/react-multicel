@@ -60,7 +60,7 @@ const Rutas = () => {
                   <Route path="productos">
                     <Route index element={<Productos />} />
                     <Route path="crear" element={<FormProductos />} />
-                    <Route path=":id" element={<FormProductos />} />
+                    <Route path="editar/:id" element={<FormProductos />} />
                   </Route>
 
                   {/* <Route path='parametros' element={<Navigate to='../' />} /> */}
