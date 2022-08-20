@@ -13,7 +13,7 @@ const ProductoItem = ({ data }) => {
 
   return (
     <tr>
-      <td>{data.modelo}</td>
+      <td>{`${data?.subcategoria?.nombre} ${data?.marca?.nombre} ${data?.modelo}`}</td>
       <td>{data.stock}</td>
       <td><input type="number" className="form-control text-center" style={{ width: '100px' }} onChange={changeNewStock} /></td>
       <td className='text-success'>{newStock}</td>

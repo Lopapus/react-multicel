@@ -50,7 +50,12 @@ const DataList = ({ list = [], component: Component, filter = [], keyname = 'dat
     setElements(filter_list)
   }
 
-  useEffect(handleFilterList, [filters, list])
+  useEffect(() => {
+    if (list.length > 0) {
+      handleFilterList()
+    }
+  }
+  , [filters, list])
 
   return (
     <>
