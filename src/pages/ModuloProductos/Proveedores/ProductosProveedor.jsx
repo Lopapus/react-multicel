@@ -7,9 +7,9 @@ import ModalProveedor from './components/ModalProveedor'
 import CardProveedor from './layouts/CardProveedor'
 import TableProductosProveedor from './components/TableProductosProveedor'
 import ProveedorContext from './contexts/ProveedorContex'
+import { useQuery } from 'react-query'
 
 const ProductosProveedor = () => {
-  const [data, setData] = useState({})
   const [showModal, setShowModal] = useState(false)
   const params = useParams()
   const fetchToken = useFetchToken()
@@ -17,15 +17,16 @@ const ProductosProveedor = () => {
   const handleGetProveedor = async () => {
     try {
       const response = await fetchToken(`${Server}/proveedores/${params.id}?productos=1`)
-      const res_data = response.syncJson()
-      setData(res_data)
+      return response.syncJson()
     } catch (error) {
       console.log(error)
     }
   }
 
+  const { data, refetch } = useQuery([`productos-proveedor-${params.id}`], handleGetProveedor, { refetchOnWindowFocus: false })
+
   useEffect(() => {
-    showModal === false && handleGetProveedor()
+    showModal === false && refetch()
   }, [showModal])
 
   return (

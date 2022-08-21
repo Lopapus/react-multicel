@@ -1,5 +1,4 @@
 export default (proveedor, producto) => {
-  console.log(producto)
   const { id, codigo_barras, subcategoria, marca, modelo, proveedores } = producto
   return {
     id,
