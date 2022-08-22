@@ -37,6 +37,10 @@ const TableProductosProveedor = () => {
     }
   }
 
+  // const handleUpdateStock = () => {
+  //   console.log('actualizando')
+  // }
+
   useEffect(handleListProductos, [proveedor])
   return (
     <Card className='animate__animated animate__fadeIn'>

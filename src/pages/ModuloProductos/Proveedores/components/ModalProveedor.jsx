@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import DataList from '../../../../components/DataList'
 import ProveedorContext from '../contexts/ProveedorContex'
@@ -7,10 +7,12 @@ import Server from '../../../../services/Server'
 import { useFetchToken } from '../../../../hooks/fetch-multicel'
 import { useQuery } from 'react-query'
 import ProductoModalFormatter from '../formatter/ProductoModalFormatter'
+import ActionsContext from '../../../../contexts/ActionsContext'
 
 const ModalProveedor = () => {
   const { proveedor, modal } = useContext(ProveedorContext)
   const [show, setShow] = modal
+  const [itemStack, setItemStack] = useState([])
   const fetchToken = useFetchToken()
 
   const handleGetProductos = async () => {
@@ -36,11 +38,13 @@ const ModalProveedor = () => {
       <Modal.Body>
         {
           !isLoading && !isError &&
-          <DataList list={data} component={ProductoItemModal} filter={['text']}/>
+          <ActionsContext.Provider value={{ stack: itemStack, setStack: setItemStack }}>
+            <DataList list={data} component={ProductoItemModal} filter={['text']}/>
+          </ActionsContext.Provider>
         }
       </Modal.Body>
       <Modal.Footer className='d-flex justify-content-center'>
-        <button className='btn btn-primary' onClick={() => setShow(false)}>Volver</button>
+        <button disabled={ itemStack.length > 0 } className='btn btn-primary' onClick={() => itemStack.length === 0 && setShow(false)}>Volver</button>
       </Modal.Footer>
     </Modal>
   )

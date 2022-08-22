@@ -3,15 +3,28 @@ import ButtonIcon from '../../../../components/ButtonIcon'
 import { useFetchToken } from '../../../../hooks/fetch-multicel'
 import ProveedorContext from '../contexts/ProveedorContex'
 import Server from '../../../../services/Server'
+import ActionsContext from '../../../../contexts/ActionsContext'
 
 const ProductoItemModal = ({ data }) => {
   const { proveedor } = useContext(ProveedorContext)
+  const { stack, setStack } = useContext(ActionsContext)
   const [loading, setLoading] = useState(false)
   const fetchToken = useFetchToken()
+
+  const handleAddToStack = () => {
+    const { id, text } = data
+    setStack([...stack, { id, text }])
+  }
+
+  const handleRemoveToStack = () => {
+    const update_stack = stack.filter(element => element.id !== data.id)
+    setStack(update_stack)
+  }
 
   const handleChange = async () => {
     try {
       setLoading(true)
+      handleAddToStack()
       const endpoint = !data.aggregate ? 'addproducto' : 'removeproducto'
 
       const content = {
@@ -23,6 +36,7 @@ const ProductoItemModal = ({ data }) => {
       if (response.ok) {
         data.aggregate = !data.aggregate
       }
+      handleRemoveToStack()
       setLoading(false)
     } catch (error) {
       console.log(error)

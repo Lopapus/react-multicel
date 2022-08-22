@@ -23,7 +23,7 @@ const ProductosProveedor = () => {
     }
   }
 
-  const { data, refetch } = useQuery([`productos-proveedor-${params.id}`], handleGetProveedor, { refetchOnWindowFocus: false })
+  const { data, refetch, isFetching } = useQuery([`productos-proveedor-${params.id}`], handleGetProveedor, { refetchOnWindowFocus: false })
 
   useEffect(() => {
     showModal === false && refetch()
@@ -35,7 +35,11 @@ const ProductosProveedor = () => {
           <CardProveedor data={data} />
           <ProveedorContext.Provider value={{ proveedor: data, modal: [showModal, setShowModal] }}>
             <ModalProveedor />
-            <TableProductosProveedor />
+            {
+              !isFetching
+                ? <TableProductosProveedor />
+                : <h4 className='text-center'>Comprobando actualizaciones...</h4>
+            }
           </ProveedorContext.Provider>
         </div>
       : <Loader />
