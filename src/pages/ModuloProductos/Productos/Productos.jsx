@@ -33,6 +33,14 @@ const Productos = () => {
     const response = await fetchToken(url)
     if (response.ok) {
       const json = response.syncJson()
+
+      const producto = json.map((producto) => {
+        producto.categoria = producto.categoria.nombre
+        producto.subcategoria = producto.subcategoria.nombre
+        producto.marca = producto.marca.nombre
+        return producto
+      })
+
       if (json?.length <= 0) {
         setMessage(
           <div className="alert alert-info text-center" role="alert">
@@ -40,7 +48,7 @@ const Productos = () => {
           </div>
         )
       }
-      return json
+      return producto
     } else {
       setMessage(
           <div className="alert alert-danger text-center" role="alert">
@@ -74,7 +82,7 @@ const Productos = () => {
             ? <Loader />
             : productos?.length > 0
               ? <ActionDeleteContext.Provider value={handleDelete}>
-                  <DataList list={productos} component={ProductoItem} filter={['nombre']} keyname={'productos'} />
+                  <DataList list={productos} component={ProductoItem} filter={['categoria', 'subcategoria', 'marca', 'modelo']} keyname={'productos'} />
                 </ActionDeleteContext.Provider>
               : message
         }

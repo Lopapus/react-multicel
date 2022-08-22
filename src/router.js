@@ -8,7 +8,7 @@ import { CreateUsers, Home, Login, Page404, Test, UserAccount, Users, EditUser, 
 import Workspace from './layouts/Admin/Workspace'
 import SessionProvider, { SessionContext } from './contexts/SessionProvider'
 import { useContext } from 'react'
-import { FormProveedor, InfoProveedor, ProductosProveedor, Proveedores, Categorias, Subcategorias, Marcas, FormCategorias, FormSubcategorias, FormMarcas, Productos, FormProductos } from './pages/ModuloProductos'
+import { FormProveedor, InfoProveedor, ProductosProveedor, Proveedores, Categorias, Subcategorias, Marcas, FormCategorias, FormSubcategorias, FormMarcas, Productos, FormProductos, DetalleProducto } from './pages/ModuloProductos'
 
 const Rutas = () => {
   const session = useContext(SessionContext)[0]
@@ -49,7 +49,7 @@ const Rutas = () => {
                     <Route path="crear" element={<FormProveedor />} />
                   </Route>
                   <Route path="parametros">
-                    <Route index element={<Home />} />
+                    <Route index element={<Navigate to='/' />} />
                     <Route path='categorias' element={<Categorias />} />
                     <Route path='categorias/:id' element={<FormCategorias />} />
                     <Route path='subcategorias' element={<Subcategorias />} />
@@ -61,6 +61,9 @@ const Rutas = () => {
                     <Route index element={<Productos />} />
                     <Route path="crear" element={<FormProductos />} />
                     <Route path="editar/:id" element={<FormProductos />} />
+                    <Route path="editar" element={<Navigate to='../' />} />
+                    <Route path="detalle/:id" element={<DetalleProducto />} />
+                    <Route path="detalle" element={<Navigate to='../' />} />
                   </Route>
 
                   {/* <Route path='parametros' element={<Navigate to='../' />} /> */}

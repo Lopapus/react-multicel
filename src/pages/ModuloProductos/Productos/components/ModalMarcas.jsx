@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Server from '../../../../services/Server'
 import ButtonIcon from '../../../../components/ButtonIcon'
@@ -16,29 +15,8 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   const [listAlerts, setListAlerts] = useState([])
   const [disabled, setDisabled] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [method, setMethod] = useState('')
 
   const fetchToken = useFetchToken()
-  const params = useParams()
-
-  const handleFindCategoria = async () => {
-    try {
-      if (params.id === 'crear' || params.id == null) {
-        setData({})
-        setLoading(false)
-        setMethod('POST')
-      } else {
-        setLoading(true)
-        const response = await fetchToken(`${Server}/marcas/${params.id}`)
-        setLoading(false)
-        setDataForm(response.syncJson())
-        setData(response.syncJson())
-        setMethod('PUT')
-      }
-    } catch (error) {
-      setLoading(false)
-    }
-  }
 
   const handleSetErrors = (list) => {
     setDisabled(true)
@@ -52,6 +30,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   // Al enviar los datos muestra las alertas
   const handleUploadCategoria = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
+      const method = 'POST'
       const content = {
         method,
         body: JSON.stringify(form)
@@ -76,9 +55,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
     } else {
       setAlerts({
         general: {
-          message: (
-            (method === 'POST') ? 'Los datos ingresados ya se guardaron anteriormente' : 'Primero debe realizar alguna modificación'
-          ),
+          message: ('Los datos ingresados ya se guardaron anteriormente'),
           show: true,
           type: 'warning'
         }
@@ -136,7 +113,6 @@ const ModalSubcategorias = ({ show, handleShow }) => {
     setListAlerts(new_list)
   }
 
-  useEffect(handleFindCategoria, [])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
   useEffect(handleHideAlert, [form])
@@ -169,8 +145,8 @@ const ModalSubcategorias = ({ show, handleShow }) => {
               <ButtonIcon btncolor='btn-primary mx-3' iconclass={'fas fa-save'} disabled={disabled || loading} >
                 {
                   !loading
-                    ? (method === 'POST' ? 'Agregar' : 'Modificar')
-                    : (method === 'POST' ? 'Agregando...' : 'Modificando...')
+                    ? 'Agregar'
+                    : 'Agregando...'
                 }
               </ButtonIcon>
               <button className='btn btn-secondary mx-3' onClick={() => handleShow(false)}>Cerrar</button>

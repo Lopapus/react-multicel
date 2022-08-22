@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Server from '../../../../services/Server'
 import ButtonIcon from '../../../../components/ButtonIcon'
@@ -10,35 +9,14 @@ import AlertCollapse from '../../../../components/AlertCollapse'
 import proveedorSchema from '../../Proveedores/schemas/ProveedorSchema'
 
 const ModalProveedores = ({ show, handleShow }) => {
-  const [data, setData] = useState()
+  const [data, setData] = useState({})
   const [form, setForm, setDataForm] = useSetForm()
   const [alerts, setAlerts] = useState({})
   const [listAlerts, setListAlerts] = useState([])
   const [disabled, setDisabled] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [method, setMethod] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const fetchToken = useFetchToken()
-  const params = useParams()
-
-  const handleFindProveedor = async () => {
-    try {
-      if (params.id) {
-        setLoading(true)
-        const response = await fetchToken(`${Server}/proveedores/${params.id}`)
-        setLoading(false)
-        setDataForm(response.syncJson())
-        setData(response.syncJson())
-        setMethod('PUT')
-      } else {
-        setData({})
-        setLoading(false)
-        setMethod('POST')
-      }
-    } catch (error) {
-      setLoading(false)
-    }
-  }
 
   const handleSetErrors = (list) => {
     setDisabled(true)
@@ -52,6 +30,7 @@ const ModalProveedores = ({ show, handleShow }) => {
   // Al enviar los datos muestra las alertas
   const handleUploadProveedor = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
+      const method = 'POST'
       const content = {
         method,
         body: JSON.stringify(form)
@@ -77,7 +56,7 @@ const ModalProveedores = ({ show, handleShow }) => {
       setAlerts({
         general: {
           message: (
-            (method === 'POST') ? 'Los datos ingresados ya se guardaron anteriormente' : 'Primero debe realizar alguna modificación'
+            'Los datos ingresados ya se guardaron anteriormente'
           ),
           show: true,
           type: 'warning'
@@ -136,7 +115,6 @@ const ModalProveedores = ({ show, handleShow }) => {
     setListAlerts(new_list)
   }
 
-  useEffect(handleFindProveedor, [])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
   useEffect(handleHideAlert, [form])
@@ -239,8 +217,8 @@ const ModalProveedores = ({ show, handleShow }) => {
                   <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={disabled || loading} >
                     {
                       !loading
-                        ? (method === 'POST' ? 'Agregar' : 'Modificar')
-                        : (method === 'POST' ? 'Agregando...' : 'Modificando...')
+                        ? ('Agregar')
+                        : ('Agregando...')
                     }
                   </ButtonIcon>
                   <button className='btn btn-secondary mx-3' onClick={() => handleShow(false)}>Cerrar</button>
