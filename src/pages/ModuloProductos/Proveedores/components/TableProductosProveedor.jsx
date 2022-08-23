@@ -7,11 +7,14 @@ import DataTable from '../../../../components/DataTable'
 import ProveedorContext from '../contexts/ProveedorContex'
 import ProductoTableFormatter from '../formatter/ProductoTableFormatter'
 import ActionsContext from '../../../../contexts/ActionsContext'
+import useFetchToken from '../../../../hooks/fetch-multicel/useFetchToken'
+import Server from '../../../../services/Server'
 
 const TableProductosProveedor = () => {
   const { proveedor, modal } = useContext(ProveedorContext)
   const [listProductos, setListProductos] = useState([])
   const setShow = modal[1]
+  const fetchToken = useFetchToken()
 
   const handleListProductos = () => {
     const { productos } = proveedor
@@ -37,9 +40,22 @@ const TableProductosProveedor = () => {
     }
   }
 
-  // const handleUpdateStock = () => {
-  //   console.log('actualizando')
-  // }
+  const handleUpdateStock = async () => {
+    console.log('actualizando')
+    const updates = listProductos.filter(producto => producto.entrada > 0).map(({ id, entrada }) => ({ id, entrada }))
+
+    const content = {
+      method: 'PUT',
+      body: JSON.stringify({ productos: updates })
+    }
+    console.log('pasando')
+    const response = await fetchToken(`${Server}/productos/proveedor`, content)
+    if (response.ok) {
+      console.log('todo good')
+    } else {
+      console.log('todo bad')
+    }
+  }
 
   useEffect(handleListProductos, [proveedor])
   return (
@@ -54,7 +70,7 @@ const TableProductosProveedor = () => {
         </ActionsContext.Provider>
       </Card.Body>
       <Card.Footer className='d-flex justify-content-end'>
-        <ButtonIcon btncolor={'btn-secondary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-cart-flatbed'} >Reponer Stock</ButtonIcon>
+        <ButtonIcon btncolor={'btn-secondary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-cart-flatbed'} handler={handleUpdateStock} >Reponer Stock</ButtonIcon>
       </Card.Footer>
     </Card>
   )
