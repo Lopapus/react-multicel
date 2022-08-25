@@ -25,6 +25,7 @@ const FormProductos = () => {
   const [categorias, setCategorias] = useState({})
   const [subcategorias, setSubcategorias] = useState({})
   const [marcas, setMarcas] = useState({})
+  const [proveedores, setProveedores] = useState({})
   const [showModalCategoria, setShowModalCategoria] = useState(false)
   const [showModalSubcategoria, setShowModalSubcategoria] = useState(false)
   const [showModalMarcas, setShowModalMarcas] = useState(false)
@@ -55,6 +56,13 @@ const FormProductos = () => {
     setMarcas(response.syncJson)
   }
 
+  const handleFindProveedores = async () => {
+    setLoading(true)
+    const response = await fetchToken(`${Server}/proveedores`)
+    setLoading(false)
+    setProveedores(response.syncJson)
+  }
+
   const handleFindProducto = async () => {
     try {
       if (params.id === 'crear' || params.id == null) {
@@ -65,7 +73,7 @@ const FormProductos = () => {
         setLoading(true)
         const response = await fetchToken(`${Server}/productos/${params.id}`)
         setLoading(false)
-        setDataForm(response.syncJson())
+        setDataForm(response.syncJson()[0])
         setData(response.syncJson())
         setMethod('PUT')
       }
@@ -175,6 +183,7 @@ const FormProductos = () => {
   useEffect(handleFindCategorias, [showModalCategoria])
   useEffect(handleFindSubcategorias, [showModalSubcategoria])
   useEffect(handleFindMarcas, [showModalMarcas])
+  useEffect(handleFindProveedores, [showModalProv])
   useEffect(handleFindProducto, [])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
@@ -264,8 +273,8 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Categoria</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_categoria" id="id_categoria" value={form?.id_categoria || '-'} onChange={handleSetForm} required>
-                  <option value='-' disabled> - Seleccione - </option>
+                  <select className='form-control' name="id_categoria" id="id_categoria" defaultValue={form?.categoria.id || ''} onChange={handleSetForm} required>
+                  <option value='' disabled> - Seleccione - </option>
                   {
                     categorias.length > 0
                       ? categorias.map(
@@ -282,8 +291,8 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Subcategoria</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_subcategoria" id="id_subcategoria" value={form?.id_subcategoria || '-'} onChange={handleSetForm} required>
-                    <option value="-" disabled> - Seleccione - </option>
+                  <select className='form-control' name="id_subcategoria" id="id_subcategoria" defaultValue={form?.subcategoria.id || ''} onChange={handleSetForm} required>
+                    <option value="" disabled> - Seleccione - </option>
                     {
                       subcategorias.length > 0
                         ? subcategorias.map(
@@ -301,8 +310,8 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Marca</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_marca" id="id_marca" value={form?.id_marca || '-'} onChange={handleSetForm} required>
-                    <option value='-' disabled> - Seleccione - </option>
+                  <select className='form-control' name="id_marca" id="id_marca" defaultValue={form?.marca.id || ''} onChange={handleSetForm} required>
+                    <option value='' disabled> - Seleccione - </option>
                     {
                       marcas.length > 0
                         ? marcas.map(
@@ -319,8 +328,16 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Proveedor</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="proveedor" id="proveedor">
-                    <option value="-"> - Seleccione - </option>
+                  <select className='form-control' name="proveedor" id="proveedor" defaultVlalue={form?.proveedores.id || ''}>
+                    <option value=""> - Seleccione - </option>
+                    {
+                      proveedores.length > 0
+                        ? proveedores.map(
+                          (prov, key) =>
+                            <option key={'marc-' + key} value={prov.id}>{ prov.nombre}</option>
+                        )
+                        : <option value="-" disabled>No hay ningun proveedor</option>
+                    }
                   </select>
                   <button className='btn btn-primary' onClick={() => setShowModalProv(true)}>+</button>
                 </div>
@@ -328,7 +345,7 @@ const FormProductos = () => {
               {/* <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Código de barras</label>
                 <div className="input-group mb-3">
-                  <input className='form-control' type="number" defaultValue={'012345678'} disabled />
+                  <input className='form-control' type="number" value={'012345678'} disabled />
                   <button className='btn btn-primary'>+</button>
                 </div>
               </div> */}
@@ -367,7 +384,7 @@ const FormProductos = () => {
           <ModalProveedores show={showModalProv} handleShow={setShowModalProv} />
         </div >
       </div >
-      : loading ? <Loader /> : <Alert variant="danger" className="text-center">No se encontró la marca</Alert>
+      : loading ? <Loader /> : <Alert variant="danger" className="text-center">No se encontró ningún producto</Alert>
   )
 }
 
