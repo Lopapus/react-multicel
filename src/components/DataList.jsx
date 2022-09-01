@@ -59,53 +59,68 @@ const DataList = ({ list = [], component: Component, filter = [], keyname = 'dat
 
   return (
     <>
-    <div>
-      <div className='row d-flex justify-content-between'>
+      <div>
+        <div className="row d-flex justify-content-between">
           <div className="col-8 col-md-5">
-            <input name='search' placeholder='Buscar...' className='form-control rounded-pill' type='search' onChange={handleSetFilter} autoComplete="off" />
+            <input
+              name="search"
+              placeholder="Buscar..."
+              className="form-control rounded-pill"
+              type="search"
+              onChange={handleSetFilter}
+              autoComplete="off"
+            />
           </div>
           <div className="col-4 col-md-2">
-              <select name='rows' className='form-select' onChange={handleSetFilter}>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-              </select>
+            <select
+              name="rows"
+              className="form-select"
+              onChange={handleSetFilter}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
           </div>
-      </div>
-      <div className='my-3'>
-        < ul className="list-group list-group-flush list my--3" >
-          {
-            elements.map(
-              (element, key) =>
-                <Component key={`${keyname}-n${key + 1}`} data={element} />
+        </div>
+        <div className="my-3">
+          <ul className="list-group list-group-flush list my--3">
+            {elements.map((element, key) => (
+              <Component key={`${keyname}-n${key + 1}`} data={element} />
+            ))}
+          </ul>
+        </div>
+        {elements.length === 0 && filters.search !== ''
+          ? (
+          <h5 className="text-center">No se encontraron coincidencias</h5>
             )
-          }
-        </ul>
-      </div>
-      {
-        elements.length === 0 && filters.search !== ''
-          ? <h5 className='text-center'>No se encontraron coincidencias</h5>
-          : <div className='d-flex justify-content-center justify-content-md-end'>
-            {
-              pagination.pages > 1 &&
+          : (
+          <div className="d-flex justify-content-center justify-content-md-end">
+            {pagination.pages > 1 && (
               <div>
-              <ButtonIcon
-                disabled={pagination.page === 1}
-                btncolor={'btn-outline-primary me-2'} btnsize={'btn-sm'}
-                iconclass={'fa-solid fa-arrow-left'}
-                handler={() => handleSetPage(pagination.page - 1)}
-              >Anterior</ButtonIcon>
-              <ButtonIcon
-                disabled={pagination.page + 1 > pagination.pages}
-                btncolor={'btn-outline-primary ms-2'} btnsize={'btn-sm'} iconclass={'fa-solid fa-arrow-right'}
-                handler={() => handleSetPage(pagination.page + 1)}
-              >Siguiente</ButtonIcon>
-            </div>
-            }
-
-            </div>
-      }
-    </div>
+                <ButtonIcon
+                  disabled={pagination.page === 1}
+                  btncolor={'btn-outline-primary me-2'}
+                  btnsize={'btn-sm'}
+                  iconclass={'fa-solid fa-arrow-left'}
+                  handler={() => handleSetPage(pagination.page - 1)}
+                >
+                  Anterior
+                </ButtonIcon>
+                <ButtonIcon
+                  disabled={pagination.page + 1 > pagination.pages}
+                  btncolor={'btn-outline-primary ms-2'}
+                  btnsize={'btn-sm'}
+                  iconclass={'fa-solid fa-arrow-right'}
+                  handler={() => handleSetPage(pagination.page + 1)}
+                >
+                  Siguiente
+                </ButtonIcon>
+              </div>
+            )}
+          </div>
+            )}
+      </div>
     </>
   )
 }

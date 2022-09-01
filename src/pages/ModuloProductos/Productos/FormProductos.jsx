@@ -65,17 +65,17 @@ const FormProductos = () => {
 
   const handleFindProducto = async () => {
     try {
-      if (params.id === 'crear' || params.id == null) {
-        setData({})
-        setLoading(false)
-        setMethod('POST')
-      } else {
+      if (params.id) {
         setLoading(true)
         const response = await fetchToken(`${Server}/productos/${params.id}`)
         setLoading(false)
         setDataForm(response.syncJson()[0])
         setData(response.syncJson())
         setMethod('PUT')
+      } else {
+        setData({})
+        setLoading(false)
+        setMethod('POST')
       }
     } catch (error) {
       setLoading(false)
@@ -273,7 +273,7 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Categoria</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_categoria" id="id_categoria" defaultValue={form?.categoria.id || ''} onChange={handleSetForm} required>
+                  <select className='form-control' name="id_categoria" id="id_categoria" defaultValue={form?.id_categoria || ''} onChange={handleSetForm} required>
                   <option value='' disabled> - Seleccione - </option>
                   {
                     categorias.length > 0
@@ -291,7 +291,7 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Subcategoria</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_subcategoria" id="id_subcategoria" defaultValue={form?.subcategoria.id || ''} onChange={handleSetForm} required>
+                  <select className='form-control' name="id_subcategoria" id="id_subcategoria" defaultValue={form?.id_subcategoria || ''} onChange={handleSetForm} required>
                     <option value="" disabled> - Seleccione - </option>
                     {
                       subcategorias.length > 0
@@ -310,7 +310,7 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Marca</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_marca" id="id_marca" defaultValue={form?.marca.id || ''} onChange={handleSetForm} required>
+                  <select className='form-control' name="id_marca" id="id_marca" defaultValue={form?.id_marca || ''} onChange={handleSetForm} required>
                     <option value='' disabled> - Seleccione - </option>
                     {
                       marcas.length > 0
@@ -328,7 +328,7 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Proveedor</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="proveedor" id="proveedor" defaultVlalue={form?.proveedores.id || ''}>
+                  <select className='form-control' name="proveedor" id="proveedor" defaultValue={form?.id_proveedores || ''}>
                     <option value=""> - Seleccione - </option>
                     {
                       proveedores.length > 0
