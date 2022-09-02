@@ -11,12 +11,13 @@ import ProductoItem from './components/ProductoItem'
 import ButtonIcon from '../../../components/ButtonIcon'
 import { useNavigate } from 'react-router-dom'
 
-const Productos = () => {
+const ProductosStock = () => {
   const [message, setMessage] = useState(null)
   const [productos, setProductos] = useState([])
-  const { data, isLoading, isError } = useQuery(['productos'], handleGetProductos)
-  const [check, setCheck] = useState(false)
-  const [stock, setStock] = useState([])
+  const { data, isLoading, isError } = useQuery(
+    ['productos'],
+    handleGetProductos
+  )
 
   const fetchToken = useFetchToken()
   const deleteProducto = useDeleteProducto()
@@ -25,7 +26,9 @@ const Productos = () => {
   const handleDelete = async (data) => {
     const deleted = await deleteProducto(data)
     if (deleted) {
-      const new_productos = productos.filter(producto => producto.id !== data.id)
+      const new_productos = productos.filter(
+        (producto) => producto.id !== data.id
+      )
       setProductos(new_productos)
     }
   }
@@ -53,34 +56,23 @@ const Productos = () => {
       return producto
     } else {
       setMessage(
-          <div className="alert alert-danger text-center" role="alert">
-            {response.syncJson().message}
-          </div>
+        <div className="alert alert-danger text-center" role="alert">
+          {response.syncJson().message}
+        </div>
       )
     }
   }
 
   useEffect(() => {
-    if (productos.length > 0) {
-      setStock(productos.filter(
-        (element) => element.stock <= element.stock_min
-      ))
-      stock.length === 0 &&
-      setMessage('No hay productos con stock bajo')
-    }
-  }, [productos])
-
-  useEffect(() => {
-    if (data) {
-      setProductos(data)
-    }
+    setProductos(data)
   }, [data])
 
   useEffect(() => {
     if (isError) {
       setMessage(
         <h5>
-          Ocurrió un error, por favor vuelva a intentarlo más tarde, si el error persiste comuniquese con un administrador
+          Ocurrió un error, por favor vuelva a intentarlo más tarde, si el error
+          persiste comuniquese con un administrador
         </h5>
       )
     }
@@ -96,31 +88,27 @@ const Productos = () => {
         Agregar
       </ButtonIcon>
       <CardComponent title="Productos">
-        <div className='form-group'>
-          <input
-            type="checkbox"
-            value={check}
-            onClick={() => setCheck((prev) => !prev)}
-           />
-          <label>Stock bajo</label>
-        </div>
-        {
-          isLoading
-            ? <Loader />
-            : (check ? stock : productos).length > 0
-                ? <ActionDeleteContext.Provider value={handleDelete}>
-                    <DataList
-                      list={check ? stock : productos}
-                      component={ProductoItem}
-                      filter={['categoria', 'subcategoria', 'marca', 'modelo']}
-                      keyname={'productos'}
-                    />
-                  </ActionDeleteContext.Provider>
-                : message
-          }
+        {isLoading
+          ? (
+          <Loader />
+            )
+          : productos?.length > 0
+            ? (
+          <ActionDeleteContext.Provider value={handleDelete}>
+            <DataList
+              list={productos}
+              component={ProductoItem}
+              filter={['categoria', 'subcategoria', 'marca', 'modelo']}
+              keyname={'productos'}
+            />
+          </ActionDeleteContext.Provider>
+              )
+            : (
+                message
+              )}
       </CardComponent>
     </>
   )
 }
 
-export default Productos
+export default ProductosStock

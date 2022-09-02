@@ -12,7 +12,7 @@ const ProductoItem = ({ data }) => {
       <div className="row align-items-center">
         <div className="col-5 col-auto text-wrap ms-2">
           <h4 className="h6 mb-0">
-            {categoria.nombre} {subcategoria.nombre} {marca.nombre} {modelo} {'$' + precio}
+            {categoria} {subcategoria} {marca} {modelo} {'$' + precio}
           </h4>
         </div>
         <div className="col d-flex flex-row justify-content-end">
@@ -20,6 +20,7 @@ const ProductoItem = ({ data }) => {
             <DropdownButtonIcon icon="fa-solid fa-ellipsis-v" className="btn btn-sm d-flex" >
               {
                 <>
+                  <li><Link to={`/productos/detalle/${id}`} className="dropdown-item text-primary"><i className="fa-solid fa-eye me-2"></i>Detalle</Link></li>
                   <li><Link to={`/productos/editar/${id}`} className="dropdown-item text-primary"><i className="fa-solid fa-pencil me-2"></i>Editar</Link></li>
                   <li><button type='button' className="dropdown-item text-danger" onClick={() => action(data)}><i className="fa-solid fa-trash me-2"></i>Eliminar</button></li>
                 </>
