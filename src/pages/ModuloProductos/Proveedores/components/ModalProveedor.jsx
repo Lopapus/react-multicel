@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import DataList from '../../../../components/DataList'
 import ProveedorContext from '../contexts/ProveedorContex'
@@ -10,18 +10,17 @@ import ProductoModalFormatter from '../formatter/ProductoModalFormatter'
 import ActionsContext from '../../../../contexts/ActionsContext'
 
 const ModalProveedor = () => {
-  const { proveedor, modal, reloadProductos } = useContext(ProveedorContext)
+  const { proveedor, modal, reloadProductos } = useContext(ProveedorContext) // , reloadProductos
   const [show, setShow] = modal
-  const [disabled, setDisabled] = useState(false)
-  const [itemStack, setItemStack] = useState([])
   const fetchToken = useFetchToken()
+  const [loading, setLoading] = useState(false)
+  const [productos, setProductos] = useState([])
 
   const handleGetProductos = async () => {
     const url = `${Server}/productos`
     const response = await fetchToken(url)
     if (response.ok) {
       const json = response.syncJson()
-      // console.log(json)
       const productos = json.map(
         producto => ProductoModalFormatter(proveedor, producto)
       )
@@ -29,25 +28,31 @@ const ModalProveedor = () => {
     }
   }
 
-  const handleVerifyStack = () => {
-    const verify = itemStack.filter(stack => stack.completed === false)
-    console.log(verify)
-    return verify.length > 0
+  const handleSaveChanges = async () => {
+    const updatesProductos = productos.filter(producto => producto.update === true)
+
+    if (updatesProductos.length > 0) {
+      const url = `${Server}/proveedores/updateproductos`
+      const content = {
+        method: 'POST',
+        body: JSON.stringify(updatesProductos)
+      }
+      setLoading(true)
+      const response = await fetchToken(url, content)
+      setLoading(false)
+      if (response.ok) {
+        refetch()
+        reloadProductos()
+        setShow(false)
+      }
+    }
   }
 
-  const handleHideModal = () => {
-    console.log(itemStack)
-    itemStack.length > 0 && reloadProductos()
-    setItemStack([])
-    setShow(false)
-  }
-
-  const { data, isLoading, isError } = useQuery(['productos'], handleGetProductos)
+  const { data, isLoading, refetch, isError } = useQuery(['productos'], handleGetProductos)
 
   useEffect(() => {
-    console.log('modificando')
-    setDisabled(handleVerifyStack())
-  }, [itemStack])
+    setProductos(data)
+  }, [data])
 
   return (
     <Modal show={show}>
@@ -57,13 +62,14 @@ const ModalProveedor = () => {
       <Modal.Body>
         {
           !isLoading && !isError &&
-          <ActionsContext.Provider value={{ stack: itemStack, setStack: setItemStack }}>
+          <ActionsContext.Provider value={{ productos, setProductos }}>
             <DataList list={data} component={ProductoItemModal} filter={['text']}/>
           </ActionsContext.Provider>
         }
       </Modal.Body>
       <Modal.Footer className='d-flex justify-content-center'>
-        <button disabled={ disabled } className='btn btn-primary' onClick={() => !disabled && handleHideModal()}>Volver</button>
+        <button disabled={ loading } className='btn btn-primary' onClick={() => setShow(false)}>Volver</button>
+        <button disabled={ loading } className='btn btn-primary' onClick={handleSaveChanges}>{loading ? 'Guardando...' : 'Guardar'}</button>
       </Modal.Footer>
     </Modal>
   )

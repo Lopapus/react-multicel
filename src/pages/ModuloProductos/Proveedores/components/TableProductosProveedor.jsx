@@ -6,32 +6,11 @@ import DataTable from '../../../../components/DataTable'
 
 import ProveedorContext from '../contexts/ProveedorContex'
 import ActionsContext from '../../../../contexts/ActionsContext'
-import useFetchToken from '../../../../hooks/fetch-multicel/useFetchToken'
-import Server from '../../../../services/Server'
 
 const TableProductosProveedor = () => {
-  const { modal, productos, updateProducto } = useContext(ProveedorContext)
+  const { modal, productos, loading, updateStock, updateProducto } = useContext(ProveedorContext)
   const setShow = modal[1]
-  const fetchToken = useFetchToken()
 
-  const handleUpdateStock = async () => {
-    console.log('actualizando')
-    const updates = productos.filter(producto => producto.entrada > 0).map(({ id, entrada }) => ({ id, entrada }))
-
-    const content = {
-      method: 'PUT',
-      body: JSON.stringify({ productos: updates })
-    }
-    console.log('pasando')
-    const response = await fetchToken(`${Server}/productos/proveedor`, content)
-    if (response.ok) {
-      console.log('todo good')
-    } else {
-      console.log('todo bad')
-    }
-  }
-
-  // useEffect(handleListProductos, [proveedor])
   return (
     <Card className='animate__animated animate__fadeIn'>
       <Card.Header className='d-flex justify-content-between align-items-center'>
@@ -44,7 +23,7 @@ const TableProductosProveedor = () => {
         </ActionsContext.Provider>
       </Card.Body>
       <Card.Footer className='d-flex justify-content-end'>
-        <ButtonIcon btncolor={'btn-secondary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-cart-flatbed'} handler={handleUpdateStock} >Reponer Stock</ButtonIcon>
+        <ButtonIcon btncolor={'btn-secondary'} btnsize={'btn-sm'} iconclass={'fa-solid fa-cart-flatbed'} handler={updateStock} disabled={loading} >{loading ? 'Guardando cambios...' : 'Reponer Stock'}</ButtonIcon>
       </Card.Footer>
     </Card>
   )

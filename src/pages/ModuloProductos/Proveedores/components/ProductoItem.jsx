@@ -8,7 +8,7 @@ const ProductoItem = ({ data }) => {
   const { update } = useContext(ActionsContext)
 
   const changeNewStock = (e) => {
-    const value = parseInt(e.target.value) || 0
+    const value = Math.abs(parseInt(e.target.value)) || 0
     update(data.id, value)
   }
 
