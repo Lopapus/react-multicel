@@ -11,20 +11,23 @@ const ProductoItemModal = ({ data }) => {
   const [loading, setLoading] = useState(false)
   const fetchToken = useFetchToken()
 
-  const handleAddToStack = () => {
+  const handleUpdateToStack = (completed) => {
     const { id, text } = data
-    setStack([...stack, { id, text }])
-  }
-
-  const handleRemoveToStack = () => {
-    const update_stack = stack.filter(element => element.id !== data.id)
-    setStack(update_stack)
+    const findStack = stack.findIndex(element => element.id === data.id)
+    console.log(findStack)
+    if (findStack !== -1) {
+      const prevStack = [...stack]
+      prevStack[findStack] = { id, text, completed }
+      setStack(prevStack)
+    } else {
+      setStack(stack => [...stack, { id, text, completed }])
+    }
   }
 
   const handleChange = async () => {
     try {
       setLoading(true)
-      handleAddToStack()
+      handleUpdateToStack(false)
       const endpoint = !data.aggregate ? 'addproducto' : 'removeproducto'
 
       const content = {
@@ -36,7 +39,7 @@ const ProductoItemModal = ({ data }) => {
       if (response.ok) {
         data.aggregate = !data.aggregate
       }
-      handleRemoveToStack()
+      handleUpdateToStack(true)
       setLoading(false)
     } catch (error) {
       console.log(error)

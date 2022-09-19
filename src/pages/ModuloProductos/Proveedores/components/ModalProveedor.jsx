@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import DataList from '../../../../components/DataList'
 import ProveedorContext from '../contexts/ProveedorContex'
@@ -10,8 +10,9 @@ import ProductoModalFormatter from '../formatter/ProductoModalFormatter'
 import ActionsContext from '../../../../contexts/ActionsContext'
 
 const ModalProveedor = () => {
-  const { proveedor, modal } = useContext(ProveedorContext)
+  const { proveedor, modal, reloadProductos } = useContext(ProveedorContext)
   const [show, setShow] = modal
+  const [disabled, setDisabled] = useState(false)
   const [itemStack, setItemStack] = useState([])
   const fetchToken = useFetchToken()
 
@@ -28,7 +29,25 @@ const ModalProveedor = () => {
     }
   }
 
+  const handleVerifyStack = () => {
+    const verify = itemStack.filter(stack => stack.completed === false)
+    console.log(verify)
+    return verify.length > 0
+  }
+
+  const handleHideModal = () => {
+    console.log(itemStack)
+    itemStack.length > 0 && reloadProductos()
+    setItemStack([])
+    setShow(false)
+  }
+
   const { data, isLoading, isError } = useQuery(['productos'], handleGetProductos)
+
+  useEffect(() => {
+    console.log('modificando')
+    setDisabled(handleVerifyStack())
+  }, [itemStack])
 
   return (
     <Modal show={show}>
@@ -44,7 +63,7 @@ const ModalProveedor = () => {
         }
       </Modal.Body>
       <Modal.Footer className='d-flex justify-content-center'>
-        <button disabled={ itemStack.length > 0 } className='btn btn-primary' onClick={() => itemStack.length === 0 && setShow(false)}>Volver</button>
+        <button disabled={ disabled } className='btn btn-primary' onClick={() => !disabled && handleHideModal()}>Volver</button>
       </Modal.Footer>
     </Modal>
   )
