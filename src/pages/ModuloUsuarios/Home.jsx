@@ -1,11 +1,11 @@
-import { useContext } from 'react'
-import { SessionContext } from '../../contexts/SessionProvider'
+// import { useContext } from 'react'
+// import { SessionContext } from '../../contexts/SessionProvider'
 import CardComponent from '../../layouts/Card/CardComponent'
-import img_usuario from '../../images/sistema/usuario.png'
+// import img_usuario from '../../images/sistema/usuario.png'
 import svg_woman from '../../images/svg/at-work.svg'
 
 const Home = () => {
-  const session = useContext(SessionContext)[0]
+  // const session = useContext(SessionContext)[0]
   return (
     <CardComponent>
       <div className="row align-items-center">
@@ -14,7 +14,7 @@ const Home = () => {
           <div className="text-start mb-4 mb-xl-0 mb-xxl-4">
             <h1 className="text-info">Biénvenido al Sistema de <b>Multicel</b></h1>
 
-            <section className="text-gray-700 text-start">
+            {/* <section className="text-gray-700 text-start">
               <b>En esta versión del sistema podrás realizar las siguientes acciones:</b>
               <ol>
                 <li className="mt-2">
@@ -51,12 +51,12 @@ const Home = () => {
                   </>
                 }
               </ol>
-            </section>
+            </section> */}
 
           </div>
         </div>
 
-        <div className="col-xl-5 col-xxl-12 text-center animate__animated animate__fadeInRight">
+        <div className="col-xl-5 col-xxl-12 my-6 text-center animate__animated animate__fadeInRight">
           <img className="img-fluid" src={svg_woman} style={{ maxWidth: '26rem' }} />
         </div>
       </div>
