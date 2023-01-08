@@ -35,32 +35,48 @@ const FormProductos = () => {
   const params = useParams()
   const navigate = useNavigate()
 
+  // const arrayOrder = async (arrayy) => {
+  //   const pasar = arrayy.sort(
+  //     (c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0)
+  //   )
+  //   setOrden(pasar)
+  //   // console.log(pasar)
+  // }
+
   const handleFindCategorias = async () => {
     setLoading(true)
     const response = await fetchToken(`${Server}/categorias`)
     setLoading(false)
-    setCategorias(response.syncJson)
+    const lasCategorias = response.syncJson()
+    const ordenarArray = lasCategorias.sort((c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0))
+    setCategorias(ordenarArray)
   }
 
   const handleFindSubcategorias = async () => {
     setLoading(true)
     const response = await fetchToken(`${Server}/subcategorias`)
     setLoading(false)
-    setSubcategorias(response.syncJson)
+    const lasSubcategorias = response.syncJson()
+    const ordenarArray = lasSubcategorias.sort((c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0))
+    setSubcategorias(ordenarArray)
   }
 
   const handleFindMarcas = async () => {
     setLoading(true)
     const response = await fetchToken(`${Server}/marcas`)
     setLoading(false)
-    setMarcas(response.syncJson)
+    const lasMarcas = response.syncJson()
+    const ordenarArray = lasMarcas.sort((c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0))
+    setMarcas(ordenarArray)
   }
 
   const handleFindProveedores = async () => {
     setLoading(true)
     const response = await fetchToken(`${Server}/proveedores`)
     setLoading(false)
-    setProveedores(response.syncJson)
+    const losProv = response.syncJson()
+    const ordenarArray = losProv.sort((c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0))
+    setProveedores(ordenarArray)
   }
 
   const handleFindProducto = async () => {
@@ -273,7 +289,7 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Categoria</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_categoria" id="id_categoria" defaultValue={form?.id_categoria || ''} onChange={handleSetForm} required>
+                  <select className='form-select' name="id_categoria" id="id_categoria" defaultValue={form?.id_categoria || ''} onChange={handleSetForm} required>
                   <option value='' disabled> - Seleccione - </option>
                   {
                     categorias.length > 0
@@ -291,7 +307,7 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Subcategoria</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_subcategoria" id="id_subcategoria" defaultValue={form?.id_subcategoria || ''} onChange={handleSetForm} required>
+                  <select className='form-select' name="id_subcategoria" id="id_subcategoria" defaultValue={form?.id_subcategoria || ''} onChange={handleSetForm} required>
                     <option value="" disabled> - Seleccione - </option>
                     {
                       subcategorias.length > 0
@@ -310,7 +326,7 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Marca</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="id_marca" id="id_marca" defaultValue={form?.id_marca || ''} onChange={handleSetForm} required>
+                  <select className='form-select' name="id_marca" id="id_marca" defaultValue={form?.id_marca || ''} onChange={handleSetForm} required>
                     <option value='' disabled> - Seleccione - </option>
                     {
                       marcas.length > 0
@@ -328,7 +344,7 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Proveedor</label>
                 <div className="input-group mb-3">
-                  <select className='form-control' name="proveedor" id="proveedor" defaultValue={form?.id_proveedores || ''}>
+                  <select className='form-select' name="proveedor" id="proveedor" defaultValue={form?.id_proveedores || ''} required>
                     <option value=""> - Seleccione - </option>
                     {
                       proveedores.length > 0
@@ -342,13 +358,31 @@ const FormProductos = () => {
                   <button className='btn btn-primary' onClick={() => setShowModalProv(true)}>+</button>
                 </div>
               </div>
-              {/* <div className="form-group col-12 col-sm-6 col-md-4">
+
+              <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Código de barras</label>
+                  <InputRegex
+                  type="number"
+                  name="codigo_barras"
+                  id="codigo_barras"
+                  value={form?.codigo_barras || ''}
+                  className='form-control'
+                  onChange={handleSetForm}
+                  regex={/^(?:[0-9])*$/gm}
+                />
+              </div>
+
+              <div className="form-group col-12 col-sm-6 col-md-4">
+                <label>Facturado</label>
                 <div className="input-group mb-3">
-                  <input className='form-control' type="number" value={'012345678'} disabled />
-                  <button className='btn btn-primary'>+</button>
+                  <select className='form-select' name="facturado" id="facturado" defaultValue={form?.facturado || ''} required>
+                    <option value=""> - Seleccione - </option>
+                    <option value="">SI</option>
+                    <option value="">NO</option>
+                  </select>
                 </div>
-              </div> */}
+              </div>
+
               <div className="form-group col-12 col-sm-9 col-md-12">
                 <label>Observaciones</label>
                 <textarea value={form?.observaciones || ''}
@@ -366,7 +400,7 @@ const FormProductos = () => {
                 Volver
               </ButtonIcon>
 
-              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={disabled || loading} >
+              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={loading || disabled} >
                 {
                   !loading
                     ? (method === 'POST' ? 'Agregar' : 'Modificar')

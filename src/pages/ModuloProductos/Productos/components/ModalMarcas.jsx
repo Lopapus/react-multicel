@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Server from '../../../../services/Server'
 import ButtonIcon from '../../../../components/ButtonIcon'
@@ -6,7 +7,7 @@ import { useSetForm } from '../../../../hooks'
 import { useFetchToken } from '../../../../hooks/fetch-multicel'
 import InputRegex from '../../../../components/InputRegex'
 import AlertCollapse from '../../../../components/AlertCollapse'
-import CategoriaSchema from '../../Parametros/schemas/CategoriaSchema'
+import MarcaSchema from '../../Parametros/schemas/MarcaSchema'
 
 const ModalSubcategorias = ({ show, handleShow }) => {
   const [data, setData] = useState()
@@ -15,8 +16,29 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   const [listAlerts, setListAlerts] = useState([])
   const [disabled, setDisabled] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [method, setMethod] = useState('')
 
   const fetchToken = useFetchToken()
+  const params = useParams()
+
+  const handleFindMarca = async () => {
+    try {
+      if (params.id === 'crear' || params.id == null) {
+        setData({})
+        setLoading(false)
+        setMethod('POST')
+      } else {
+        setLoading(true)
+        const response = await fetchToken(`${Server}/marcas/${params.id}`)
+        setLoading(false)
+        setDataForm(response.syncJson())
+        setData(response.syncJson())
+        setMethod('PUT')
+      }
+    } catch (error) {
+      setLoading(false)
+    }
+  }
 
   const handleSetErrors = (list) => {
     setDisabled(true)
@@ -28,9 +50,8 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   }
 
   // Al enviar los datos muestra las alertas
-  const handleUploadCategoria = async () => {
+  const handleUploadMarca = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
-      const method = 'POST'
       const content = {
         method,
         body: JSON.stringify(form)
@@ -55,7 +76,9 @@ const ModalSubcategorias = ({ show, handleShow }) => {
     } else {
       setAlerts({
         general: {
-          message: ('Los datos ingresados ya se guardaron anteriormente'),
+          message: (
+            (method === 'POST') ? 'Los datos ingresados ya se guardaron anteriormente' : 'Primero debe realizar alguna modificación'
+          ),
           show: true,
           type: 'warning'
         }
@@ -68,8 +91,8 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     try {
-      await CategoriaSchema.validate(form, { abortEarly: false })
-      handleUploadCategoria()
+      await MarcaSchema.validate(form, { abortEarly: false })
+      handleUploadMarca()
     } catch (errors) {
       if (errors?.inner) {
         handleSetErrors(errors.inner)
@@ -113,6 +136,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
     setListAlerts(new_list)
   }
 
+  useEffect(handleFindMarca, [])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
   useEffect(handleHideAlert, [form])
@@ -124,7 +148,8 @@ const ModalSubcategorias = ({ show, handleShow }) => {
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={handleSubmitForm} className='mx-5'>
-            <div className='row'>
+            <div className='row g-3'>
+
               <div className='form-group col-12 justify-content-center'>
                 <label>Nombre (requerido)</label>
                 <InputRegex
@@ -134,24 +159,26 @@ const ModalSubcategorias = ({ show, handleShow }) => {
                   value={form?.nombre || ''}
                   className='form-control'
                   onChange={handleSetForm}
-                  regex={/^(?:[A-z\s])*$/gm}
+                  regex={/^(?:[A-z0-9\s])*$/gm}
                   required
                 />
                 <AlertCollapse message={alerts?.nombre?.message} show={alerts?.nombre?.show} />
               </div>
-            </div>
 
+            </div>
             <div className='form-group my-3 d-flex justify-content-center'>
-              <ButtonIcon btncolor='btn-primary mx-3' iconclass={'fas fa-save'} disabled={disabled || loading} >
+              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={disabled || loading} >
                 {
                   !loading
-                    ? 'Agregar'
-                    : 'Agregando...'
+                    ? (method === 'POST' ? 'Agregar' : 'Modificar')
+                    : (method === 'POST' ? 'Agregando...' : 'Modificando...')
                 }
               </ButtonIcon>
               <button className='btn btn-secondary mx-3' onClick={() => handleShow(false)}>Cerrar</button>
             </div>
+
             <AlertCollapse message={alerts?.general?.message} show={alerts?.general?.show} type={alerts?.general?.type} />
+
           </form>
       </Modal.Body>
      </Modal>

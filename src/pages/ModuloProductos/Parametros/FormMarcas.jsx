@@ -163,7 +163,7 @@ const FormMarcas = () => {
                   value={form?.nombre || ''}
                   className='form-control'
                   onChange={handleSetForm}
-                  regex={/^(?:[A-z\s])*$/gm}
+                  regex={/^(?:[A-z0-9\s])*$/gm}
                   required
                 />
                 <AlertCollapse message={alerts?.nombre?.message} show={alerts?.nombre?.show} />
