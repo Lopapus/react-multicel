@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Server from '../../../../services/Server'
 import ButtonIcon from '../../../../components/ButtonIcon'
@@ -9,7 +8,7 @@ import InputRegex from '../../../../components/InputRegex'
 import AlertCollapse from '../../../../components/AlertCollapse'
 import CategoriaSchema from '../../Parametros/schemas/CategoriaSchema'
 
-const ModalCategorias = ({ show, handleShow }) => {
+const ModalSubcategorias = ({ show, handleShow }) => {
   const [data, setData] = useState()
   const [form, setForm, setDataForm] = useSetForm()
   const [alerts, setAlerts] = useState({})
@@ -19,22 +18,12 @@ const ModalCategorias = ({ show, handleShow }) => {
   const [method, setMethod] = useState('')
 
   const fetchToken = useFetchToken()
-  const params = useParams()
 
   const handleFindCategoria = async () => {
     try {
-      if (params.id === 'crear' || params.id == null) {
-        setData({})
-        setLoading(false)
-        setMethod('POST')
-      } else {
-        setLoading(true)
-        const response = await fetchToken(`${Server}/categorias/${params.id}`)
-        setLoading(false)
-        setDataForm(response.syncJson())
-        setData(response.syncJson())
-        setMethod('PUT')
-      }
+      setData({})
+      setLoading(false)
+      setMethod('POST')
     } catch (error) {
       setLoading(false)
     }
@@ -58,7 +47,7 @@ const ModalCategorias = ({ show, handleShow }) => {
       }
 
       setLoading(true)
-      const response = await fetchToken(`${Server}/categorias`, content)
+      const response = await fetchToken(`${Server}/marcas`, content)
       setLoading(false)
 
       if (response.ok) {
@@ -144,7 +133,7 @@ const ModalCategorias = ({ show, handleShow }) => {
   return (
      <Modal show={show}>
       <Modal.Header>
-        <h2 className="fs-5 fw-bold mb-0">Nueva categoría</h2>
+        <h2 className="fs-5 fw-bold mb-0">Nueva marca</h2>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={handleSubmitForm} className='mx-5'>
@@ -182,4 +171,4 @@ const ModalCategorias = ({ show, handleShow }) => {
   )
 }
 
-export default ModalCategorias
+export default ModalSubcategorias

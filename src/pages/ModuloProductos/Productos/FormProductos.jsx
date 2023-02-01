@@ -13,6 +13,7 @@ import ModalCategorias from './components/ModalCategorias'
 import ModalSubcategorias from './components/ModalSubcategorias'
 import ModalMarcas from './components/ModalMarcas'
 import ModalProveedores from './components/ModalProveedores'
+import Select from 'react-select'
 
 const FormProductos = () => {
   const [data, setData] = useState()
@@ -22,10 +23,10 @@ const FormProductos = () => {
   const [disabled, setDisabled] = useState(false)
   const [loading, setLoading] = useState(true)
   const [method, setMethod] = useState('')
-  const [categorias, setCategorias] = useState({})
-  const [subcategorias, setSubcategorias] = useState({})
-  const [marcas, setMarcas] = useState({})
-  const [proveedores, setProveedores] = useState({})
+  const [marcas, setMarcas] = useState([])
+  const [categorias, setCategorias] = useState([])
+  const [subcategorias, setSubcategorias] = useState([])
+  const [proveedores, setProveedores] = useState([])
   const [showModalCategoria, setShowModalCategoria] = useState(false)
   const [showModalSubcategoria, setShowModalSubcategoria] = useState(false)
   const [showModalMarcas, setShowModalMarcas] = useState(false)
@@ -35,48 +36,40 @@ const FormProductos = () => {
   const params = useParams()
   const navigate = useNavigate()
 
-  // const arrayOrder = async (arrayy) => {
-  //   const pasar = arrayy.sort(
-  //     (c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0)
-  //   )
-  //   setOrden(pasar)
-  //   // console.log(pasar)
-  // }
-
-  const handleFindCategorias = async () => {
-    setLoading(true)
-    const response = await fetchToken(`${Server}/categorias`)
-    setLoading(false)
-    const lasCategorias = response.syncJson()
-    const ordenarArray = lasCategorias.sort((c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0))
-    setCategorias(ordenarArray)
-  }
-
-  const handleFindSubcategorias = async () => {
-    setLoading(true)
-    const response = await fetchToken(`${Server}/subcategorias`)
-    setLoading(false)
-    const lasSubcategorias = response.syncJson()
-    const ordenarArray = lasSubcategorias.sort((c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0))
-    setSubcategorias(ordenarArray)
-  }
-
   const handleFindMarcas = async () => {
     setLoading(true)
     const response = await fetchToken(`${Server}/marcas`)
     setLoading(false)
-    const lasMarcas = response.syncJson()
-    const ordenarArray = lasMarcas.sort((c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0))
-    setMarcas(ordenarArray)
+    response.syncJson().map((element) => (
+      setMarcas(options => [...options, { value: element.id, label: element.nombre }])
+    ))
+  }
+
+  const handleFindCategorias = async () => {
+    setLoading(true)
+    const response = await fetchToken(`${Server}/categorias`, { method: 'GET' })
+    setLoading(false)
+    response.syncJson().map((element) => (
+      setCategorias(options => [...options, { value: element.id, label: element.nombre }])
+    ))
+  }
+
+  const handleFindSubcategorias = async () => {
+    setLoading(true)
+    const response = await fetchToken(`${Server}/subcategorias`, { method: 'GET' })
+    setLoading(false)
+    response.syncJson().map((element) => (
+      setSubcategorias(options => [...options, { value: element.id, label: element.nombre }])
+    ))
   }
 
   const handleFindProveedores = async () => {
     setLoading(true)
     const response = await fetchToken(`${Server}/proveedores`)
     setLoading(false)
-    const losProv = response.syncJson()
-    const ordenarArray = losProv.sort((c, d) => c.nombre.toLowerCase().charCodeAt(0) - d.nombre.toLowerCase().charCodeAt(0))
-    setProveedores(ordenarArray)
+    response.syncJson().map((element) => (
+      setProveedores(options => [...options, { value: element.id, label: element.nombre }])
+    ))
   }
 
   const handleFindProducto = async () => {
@@ -107,12 +100,11 @@ const FormProductos = () => {
     setAlerts(new_errors)
   }
 
-  // Al enviar los datos muestra las alertas
   const handleUploadProducto = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
       const content = {
         method,
-        body: JSON.stringify(form)
+        body: JSON.stringify({ ...form, id_categoria: form.categoria.id, id_subcategoria: form.subcategoria.id, id_marca: form.marca.id, id_proveedor: form.proveedores.id, facturado: form.facturado })
       }
 
       setLoading(true)
@@ -145,13 +137,13 @@ const FormProductos = () => {
     }
   }
 
-  // Valida los datos del formulario
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     try {
-      await ProductoSchema.validate(form, { abortEarly: false })
+      await ProductoSchema.validate({ ...form, id_categoria: form.categoria.id, id_subcategoria: form.subcategoria.id, id_marca: form.marca.id, id_proveedor: form.proveedores.id }, { abortEarly: false })
       handleUploadProducto()
     } catch (errors) {
+      console.log({ ...errors })
       setDisabled(true)
       if (errors?.inner) {
         handleSetErrors(errors.inner)
@@ -196,14 +188,22 @@ const FormProductos = () => {
     setListAlerts(new_list)
   }
 
+  const selectOnChange = (option, atributo) => {
+    console.log(option)
+    setForm({ target: { name: atributo, value: { id: option.value, nombre: option.label } } })
+  }
+
   useEffect(handleFindCategorias, [showModalCategoria])
   useEffect(handleFindSubcategorias, [showModalSubcategoria])
-  useEffect(handleFindMarcas, [showModalMarcas])
   useEffect(handleFindProveedores, [showModalProv])
-  useEffect(handleFindProducto, [])
+  useEffect(handleFindMarcas, [showModalMarcas])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
-  useEffect(handleHideAlert, [form])
+  useEffect(() => {
+    handleHideAlert()
+    console.log(form)
+  }, [form])
+  useEffect(handleFindProducto, [])
   return (
     data
       ? <div className="card border-0 shadow mt-3">
@@ -288,80 +288,68 @@ const FormProductos = () => {
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Categoria</label>
-                <div className="input-group mb-3">
-                  <select className='form-select' name="id_categoria" id="id_categoria" defaultValue={form?.id_categoria || ''} onChange={handleSetForm} required>
-                  <option value='' disabled> - Seleccione - </option>
-                  {
-                    categorias.length > 0
-                      ? categorias.map(
-                        (categoria, key) =>
-                          <option key={'cat-' + key} value={categoria.id}>{ categoria.nombre}</option>
-                      )
-                      : <option value="-" disabled>No hay categorias</option>
-                  }
-                  </select>
+                <div className="input-group">
+                  <Select
+                    className='w-75'
+                    options={categorias}
+                    placeholder='Seleccione'
+                    defaultValue={params.id !== undefined && { value: form?.categoria.id, label: form?.categoria.nombre }}
+                    onChange={(option) => selectOnChange(option, 'categoria')}
+                    required
+                  />
                   <button className='btn btn-primary' onClick={() => setShowModalCategoria(true)}>+</button>
                 </div>
               </div>
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Subcategoria</label>
-                <div className="input-group mb-3">
-                  <select className='form-select' name="id_subcategoria" id="id_subcategoria" defaultValue={form?.id_subcategoria || ''} onChange={handleSetForm} required>
-                    <option value="" disabled> - Seleccione - </option>
-                    {
-                      subcategorias.length > 0
-                        ? subcategorias.map(
-                          (subcategoria, key) =>
-                            <option key={'scat-' + key} value={subcategoria.id}>{ subcategoria.nombre}</option>
-                        )
-                        : <option value="-" disabled>No hay subcategorias</option>
-                    }
-                  </select>
+                <div className="input-group">
+                  <Select
+                    className='w-75'
+                    options={subcategorias}
+                    placeholder='Seleccione'
+                    defaultValue={params.id !== undefined && { value: form?.subcategoria.id, label: form?.subcategoria.nombre }}
+                    onChange={(option) => selectOnChange(option, 'subcategoria')}
+                    required
+                  />
                   <button className='btn btn-primary' onClick={() => setShowModalSubcategoria(true)}>+</button>
-              </div>
-
+                </div>
               </div>
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Marca</label>
-                <div className="input-group mb-3">
-                  <select className='form-select' name="id_marca" id="id_marca" defaultValue={form?.id_marca || ''} onChange={handleSetForm} required>
-                    <option value='' disabled> - Seleccione - </option>
-                    {
-                      marcas.length > 0
-                        ? marcas.map(
-                          (marca, key) =>
-                            <option key={'marc-' + key} value={marca.id}>{ marca.nombre}</option>
-                        )
-                        : <option value="-" disabled>No hay ninguna marca</option>
-                    }
-                  </select>
+                <div className='input-group'>
+                  <Select
+                    className='w-75'
+                    options={marcas}
+                    placeholder='Seleccione'
+                    defaultValue={params.id !== undefined && { value: form?.marca.id, label: form?.marca.nombre }}
+                    onChange={(option) => selectOnChange(option, 'marca')}
+                    required
+                  />
                   <button className='btn btn-primary' onClick={() => setShowModalMarcas(true)}>+</button>
                 </div>
               </div>
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Proveedor</label>
-                <div className="input-group mb-3">
-                  <select className='form-select' name="proveedor" id="proveedor" defaultValue={form?.id_proveedores || ''} required>
-                    <option value=""> - Seleccione - </option>
-                    {
-                      proveedores.length > 0
-                        ? proveedores.map(
-                          (prov, key) =>
-                            <option key={'marc-' + key} value={prov.id}>{ prov.nombre}</option>
-                        )
-                        : <option value="-" disabled>No hay ningun proveedor</option>
-                    }
-                  </select>
+                <div className="input-group">
+                  <Select
+                    className='w-75'
+                    placeholder='Seleccione'
+                    options={proveedores}
+                    defaultValue={params.id !== undefined && { value: form?.proveedores.id, label: form?.proveedores.nombre }}
+                    onChange={(option) => selectOnChange(option, 'proveedores')}
+                    disabled={method === 'PUT' && true}
+                    required
+                  />
                   <button className='btn btn-primary' onClick={() => setShowModalProv(true)}>+</button>
                 </div>
               </div>
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Código de barras</label>
-                  <InputRegex
+                <InputRegex
                   type="number"
                   name="codigo_barras"
                   id="codigo_barras"
@@ -375,10 +363,10 @@ const FormProductos = () => {
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Facturado</label>
                 <div className="input-group mb-3">
-                  <select className='form-select' name="facturado" id="facturado" defaultValue={form?.facturado || ''} required>
+                  <select className='form-select' onChange={handleSetForm} name="facturado" id="facturado" defaultValue={form?.facturado || null} required>
                     <option value=""> - Seleccione - </option>
-                    <option value="">SI</option>
-                    <option value="">NO</option>
+                    <option value="1">SI</option>
+                    <option value="2">NO</option>
                   </select>
                 </div>
               </div>

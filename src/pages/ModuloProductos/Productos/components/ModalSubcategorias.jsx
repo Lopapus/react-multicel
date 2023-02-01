@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Server from '../../../../services/Server'
 import ButtonIcon from '../../../../components/ButtonIcon'
@@ -7,7 +6,7 @@ import { useSetForm } from '../../../../hooks'
 import { useFetchToken } from '../../../../hooks/fetch-multicel'
 import InputRegex from '../../../../components/InputRegex'
 import AlertCollapse from '../../../../components/AlertCollapse'
-import CategoriaSchema from '../../Parametros/schemas/CategoriaSchema'
+import CategoriaSchema from '../../Parametros/schemas/SubcategoriaSchema'
 
 const ModalSubcategorias = ({ show, handleShow }) => {
   const [data, setData] = useState()
@@ -19,22 +18,12 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   const [method, setMethod] = useState('')
 
   const fetchToken = useFetchToken()
-  const params = useParams()
 
   const handleFindCategoria = async () => {
     try {
-      if (params.id === 'crear' || params.id == null) {
-        setData({})
-        setLoading(false)
-        setMethod('POST')
-      } else {
-        setLoading(true)
-        const response = await fetchToken(`${Server}/subcategorias/${params.id}`)
-        setLoading(false)
-        setDataForm(response.syncJson())
-        setData(response.syncJson())
-        setMethod('PUT')
-      }
+      setData({})
+      setLoading(false)
+      setMethod('POST')
     } catch (error) {
       setLoading(false)
     }

@@ -87,23 +87,27 @@ const Productos = () => {
   }, [isError])
   return (
     <>
-      <ButtonIcon
-        btncolor={'btn-primary'}
-        btnsize={'btn-sm'}
-        iconclass={'fa-solid fa-plus'}
-        handler={() => navigate('crear')}
-      >
-        Agregar
-      </ButtonIcon>
-      <CardComponent title="Productos">
+      <div className='input-group justify-content-between'>
+        <ButtonIcon
+          btncolor={'btn-primary'}
+          btnsize={'btn-sm'}
+          iconclass={'fa-solid fa-plus'}
+          handler={() => navigate('crear')}
+        >
+          Agregar
+        </ButtonIcon>
         <div className='form-group'>
           <input
+            className='form-check-input mx-2 border border-primary'
             type="checkbox"
             value={check}
             onClick={() => setCheck((prev) => !prev)}
-           />
-          <label>Stock bajo</label>
+          />
+          <label>Filtrar por stock bajo</label>
         </div>
+      </div>
+
+      <CardComponent title={check ? 'Productos con stock bajo' : 'Todos los productos'}>
         {
           isLoading
             ? <Loader />

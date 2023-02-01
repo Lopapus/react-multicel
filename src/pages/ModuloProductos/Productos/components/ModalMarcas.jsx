@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { Modal } from 'react-bootstrap'
 import Server from '../../../../services/Server'
 import ButtonIcon from '../../../../components/ButtonIcon'
@@ -7,7 +6,7 @@ import { useSetForm } from '../../../../hooks'
 import { useFetchToken } from '../../../../hooks/fetch-multicel'
 import InputRegex from '../../../../components/InputRegex'
 import AlertCollapse from '../../../../components/AlertCollapse'
-import MarcaSchema from '../../Parametros/schemas/MarcaSchema'
+import CategoriaSchema from '../../Parametros/schemas/MarcaSchema'
 
 const ModalSubcategorias = ({ show, handleShow }) => {
   const [data, setData] = useState()
@@ -19,22 +18,12 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   const [method, setMethod] = useState('')
 
   const fetchToken = useFetchToken()
-  const params = useParams()
 
-  const handleFindMarca = async () => {
+  const handleFindCategoria = async () => {
     try {
-      if (params.id === 'crear' || params.id == null) {
-        setData({})
-        setLoading(false)
-        setMethod('POST')
-      } else {
-        setLoading(true)
-        const response = await fetchToken(`${Server}/marcas/${params.id}`)
-        setLoading(false)
-        setDataForm(response.syncJson())
-        setData(response.syncJson())
-        setMethod('PUT')
-      }
+      setData({})
+      setLoading(false)
+      setMethod('POST')
     } catch (error) {
       setLoading(false)
     }
@@ -50,7 +39,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   }
 
   // Al enviar los datos muestra las alertas
-  const handleUploadMarca = async () => {
+  const handleUploadCategoria = async () => {
     if (JSON.stringify(form) !== JSON.stringify(data)) {
       const content = {
         method,
@@ -91,8 +80,8 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     try {
-      await MarcaSchema.validate(form, { abortEarly: false })
-      handleUploadMarca()
+      await CategoriaSchema.validate(form, { abortEarly: false })
+      handleUploadCategoria()
     } catch (errors) {
       if (errors?.inner) {
         handleSetErrors(errors.inner)
@@ -136,7 +125,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
     setListAlerts(new_list)
   }
 
-  useEffect(handleFindMarca, [])
+  useEffect(handleFindCategoria, [])
   useEffect(handleCheckAlerts, [listAlerts])
   useEffect(handleSetListAlerts, [alerts])
   useEffect(handleHideAlert, [form])
@@ -148,8 +137,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={handleSubmitForm} className='mx-5'>
-            <div className='row g-3'>
-
+            <div className='row'>
               <div className='form-group col-12 justify-content-center'>
                 <label>Nombre (requerido)</label>
                 <InputRegex
@@ -164,10 +152,10 @@ const ModalSubcategorias = ({ show, handleShow }) => {
                 />
                 <AlertCollapse message={alerts?.nombre?.message} show={alerts?.nombre?.show} />
               </div>
-
             </div>
+
             <div className='form-group my-3 d-flex justify-content-center'>
-              <ButtonIcon btncolor='btn-primary ms-1' iconclass={'fas fa-save'} disabled={disabled || loading} >
+              <ButtonIcon btncolor='btn-primary mx-3' iconclass={'fas fa-save'} disabled={disabled || loading} >
                 {
                   !loading
                     ? (method === 'POST' ? 'Agregar' : 'Modificar')
@@ -176,9 +164,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
               </ButtonIcon>
               <button className='btn btn-secondary mx-3' onClick={() => handleShow(false)}>Cerrar</button>
             </div>
-
             <AlertCollapse message={alerts?.general?.message} show={alerts?.general?.show} type={alerts?.general?.type} />
-
           </form>
       </Modal.Body>
      </Modal>

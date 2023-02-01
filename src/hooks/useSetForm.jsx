@@ -6,7 +6,7 @@ const useSetForm = (object = {}) => {
   const handleSetForm = (e) => {
     const { name, value } = e.target
     // validación de campo
-    if (value.trim() !== '') {
+    if ((typeof value === 'string' && value.trim() !== '') || (typeof value === 'object')) {
       setForm({ ...form, [name]: value })
     } else {
       if (form[name]) {

@@ -147,7 +147,7 @@ const FormSubcategorias = () => {
     data
       ? <div className="card border-0 shadow mt-3">
         <div className="card-header border-bottom d-flex align-items-center justify-content-between">
-          <h2 className="fs-5 fw-bold mb-0">Modelo</h2>
+          <h2 className="fs-5 fw-bold mb-0">Subcategoria</h2>
         </div>
 
         <div className="card-body">
