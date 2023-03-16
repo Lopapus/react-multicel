@@ -31,6 +31,13 @@ const FormProductos = () => {
   const [showModalSubcategoria, setShowModalSubcategoria] = useState(false)
   const [showModalMarcas, setShowModalMarcas] = useState(false)
   const [showModalProv, setShowModalProv] = useState(false)
+  const [urlProductos, setUrlProductos] = useState(`${Server}/productos`)
+
+  // const selectCatRef = useRef()
+
+  // const onClearCat = () => {
+  //   selectCatRef.current.select.clearValue()
+  // }
 
   const fetchToken = useFetchToken()
   const params = useParams()
@@ -47,7 +54,7 @@ const FormProductos = () => {
 
   const handleFindCategorias = async () => {
     setLoading(true)
-    const response = await fetchToken(`${Server}/categorias`, { method: 'GET' })
+    const response = await fetchToken(`${Server}/categorias`)
     setLoading(false)
     response.syncJson().map((element) => (
       setCategorias(options => [...options, { value: element.id, label: element.nombre }])
@@ -56,7 +63,7 @@ const FormProductos = () => {
 
   const handleFindSubcategorias = async () => {
     setLoading(true)
-    const response = await fetchToken(`${Server}/subcategorias`, { method: 'GET' })
+    const response = await fetchToken(`${Server}/subcategorias`)
     setLoading(false)
     response.syncJson().map((element) => (
       setSubcategorias(options => [...options, { value: element.id, label: element.nombre }])
@@ -74,9 +81,10 @@ const FormProductos = () => {
 
   const handleFindProducto = async () => {
     try {
-      if (params.id) {
+      if (params.id > 0) {
         setLoading(true)
         const response = await fetchToken(`${Server}/productos/${params.id}`)
+        setUrlProductos(`${Server}/productos/${params.id}`)
         setLoading(false)
         setDataForm(response.syncJson()[0])
         setData(response.syncJson())
@@ -108,18 +116,19 @@ const FormProductos = () => {
       }
 
       setLoading(true)
-      const response = await fetchToken(`${Server}/productos`, content)
+      const response = await fetchToken(urlProductos, content)
       setLoading(false)
 
       if (response.ok) {
         const { message } = response.syncJson()
+        setAlerts({ general: { message, show: true, type: 'success' } })
+
         if (method === 'POST') {
           setDataForm({})
           setData({})
         } else {
           setData({ ...form })
         }
-        setAlerts({ general: { message, show: true, type: 'success' } })
       } else {
         handleSetErrors(response.syncJson())
       }
@@ -189,7 +198,6 @@ const FormProductos = () => {
   }
 
   const selectOnChange = (option, atributo) => {
-    console.log(option)
     setForm({ target: { name: atributo, value: { id: option.value, nombre: option.label } } })
   }
 
@@ -198,10 +206,12 @@ const FormProductos = () => {
   useEffect(handleFindProveedores, [showModalProv])
   useEffect(handleFindMarcas, [showModalMarcas])
   useEffect(handleCheckAlerts, [listAlerts])
-  useEffect(handleSetListAlerts, [alerts])
+  useEffect(() => {
+    handleSetListAlerts()
+    console.log(alerts)
+  }, [alerts])
   useEffect(() => {
     handleHideAlert()
-    console.log(form)
   }, [form])
   useEffect(handleFindProducto, [])
   return (
@@ -288,7 +298,7 @@ const FormProductos = () => {
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Categoria</label>
-                <div className="input-group">
+                <div className='input-group'>
                   <Select
                     className='w-75'
                     options={categorias}
@@ -303,7 +313,7 @@ const FormProductos = () => {
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Subcategoria</label>
-                <div className="input-group">
+                <div className='input-group'>
                   <Select
                     className='w-75'
                     options={subcategorias}
@@ -325,27 +335,30 @@ const FormProductos = () => {
                     placeholder='Seleccione'
                     defaultValue={params.id !== undefined && { value: form?.marca.id, label: form?.marca.nombre }}
                     onChange={(option) => selectOnChange(option, 'marca')}
-                    required
+                    required={true}
                   />
                   <button className='btn btn-primary' onClick={() => setShowModalMarcas(true)}>+</button>
                 </div>
               </div>
 
-              <div className="form-group col-12 col-sm-6 col-md-4">
-                <label>Proveedor</label>
-                <div className="input-group">
-                  <Select
-                    className='w-75'
-                    placeholder='Seleccione'
-                    options={proveedores}
-                    defaultValue={params.id !== undefined && { value: form?.proveedores.id, label: form?.proveedores.nombre }}
-                    onChange={(option) => selectOnChange(option, 'proveedores')}
-                    disabled={method === 'PUT' && true}
-                    required
-                  />
-                  <button className='btn btn-primary' onClick={() => setShowModalProv(true)}>+</button>
+              {
+                method === 'POST' &&
+                <div className="form-group col-12 col-sm-6 col-md-4">
+                  <label>Proveedor</label>
+                  <div className='input-group'>
+                    <Select
+                      className='w-75'
+                      options={proveedores}
+                      placeholder='Seleccione'
+                      defaultValue={params.id !== undefined && { value: form?.proveedores.id, label: form?.proveedores.nombre }}
+                      onChange={(option) => selectOnChange(option, 'proveedores')}
+
+                      required={true}
+                    />
+                    <button className='btn btn-primary' onClick={() => setShowModalProv(true)}>+</button>
+                  </div>
                 </div>
-              </div>
+              }
 
               <div className="form-group col-12 col-sm-6 col-md-4">
                 <label>Código de barras</label>

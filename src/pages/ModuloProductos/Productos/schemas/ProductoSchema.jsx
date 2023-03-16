@@ -17,9 +17,7 @@ const ProductoSchema = yup.object().shape({
   id_subcategoria: yup.number()
     .required('Seleccione una subcategoría'),
   id_marca: yup.number()
-    .required('Seleccione la marca del producto'),
-  id_proveedor: yup.number()
-    .required('Seleccione un proveedor')
+    .required('Seleccione la marca del producto')
 })
 
 export default ProductoSchema

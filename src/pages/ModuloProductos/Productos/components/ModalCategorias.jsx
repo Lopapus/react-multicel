@@ -47,7 +47,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
       }
 
       setLoading(true)
-      const response = await fetchToken(`${Server}/marcas`, content)
+      const response = await fetchToken(`${Server}/categorias`, content)
       setLoading(false)
 
       if (response.ok) {
@@ -133,7 +133,7 @@ const ModalSubcategorias = ({ show, handleShow }) => {
   return (
      <Modal show={show}>
       <Modal.Header>
-        <h2 className="fs-5 fw-bold mb-0">Nueva marca</h2>
+        <h2 className="fs-5 fw-bold mb-0">Nueva Categoria</h2>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={handleSubmitForm} className='mx-5'>

@@ -33,15 +33,16 @@ const DetalleProducto = () => {
       return json
     } else {
       setMessage(
-          <div className="alert alert-danger text-center" role="alert">
-            {response.syncJson().message}
-          </div>
+        <div className="alert alert-danger text-center" role="alert">
+          {response.syncJson().message}
+        </div>
       )
     }
   }
 
   useEffect(() => {
     setProductos(data)
+    console.log()
   }, [data])
 
   useEffect(() => {
@@ -82,10 +83,10 @@ const DetalleProducto = () => {
                       <Accordion.Header>Proveedores</Accordion.Header>
                       <Accordion.Body>
                         {
-                          productos[0].proveedores > 0
-                            ? productos[0].map(
+                          productos[0]?.proveedores.length > 0
+                            ? productos[0].proveedores.map(
                               (item, key) =>
-                              <li key={key}>{item.nombre}</li>
+                               <li key={key}>{item.cuit} - {item.nombre}</li>
                             )
                             : <li>No ha sido asignado a ningún proveedor</li>
                         }
