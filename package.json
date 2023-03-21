@@ -27,7 +27,8 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
-    "eslint-plugin-react": "^7.28.0"
+    "eslint-plugin-react": "^7.28.0",
+    "standard": "^17.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,6 +38,7 @@
   },
   "eslintConfig": {
     "extends": [
+      "./node_modules/standard/eslintrc.json",
       "react-app",
       "react-app/jest"
     ]

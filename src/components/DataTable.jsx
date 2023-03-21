@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ButtonIcon from './ButtonIcon'
 
-const DataTable = ({ list = [], component: Component, header = [], filter = [], keyname = 'data-table', tableClass = '' }) => {
+const DataTable = ({ actions = [], list = [], component: Component, header = [], filter = [], keyname = 'data-table', tableClass = '' }) => {
   const [elements, setElements] = useState(list.slice(0, 5))
   const [pagination, setPagination] = useState({
     pages: 1,
@@ -90,7 +90,7 @@ const DataTable = ({ list = [], component: Component, header = [], filter = [], 
                   {
                     elements.length > 0 && elements.map(
                       (element, key) =>
-                        <Component key={`${keyname}-n${key + 1}`} data={element} />
+                        <Component key={`${keyname}-n${key + 1}`} data={element} actions={actions} />
                     )
                   }
                 </tbody>

@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import ButtonIcon from './ButtonIcon'
 
-const DataList = ({ list = [], component: Component, filter = [], keyname = 'data-list' }) => {
+const DataList = ({
+  actions = {},
+  list = [],
+  component: Component,
+  filter = [],
+  keyname = 'data-list',
+  viewFilter = true,
+  title = '',
+  top = false,
+  children
+}) => {
   const [elements, setElements] = useState(list.slice(0, 5))
   const [pagination, setPagination] = useState({
     pages: 1,
@@ -32,8 +42,10 @@ const DataList = ({ list = [], component: Component, filter = [], keyname = 'dat
 
     if (search !== '') {
       // filter_list = list.filter(element => (element.nombre).toLowerCase().includes(search.toLocaleLowerCase()))
-      filter_list = list.filter(element => {
-        const validation = filter.map(attribute => element[attribute].toLowerCase().includes(search.toLocaleLowerCase()))
+      filter_list = list.filter((element) => {
+        const validation = filter.map((attribute) =>
+          element[attribute].toLowerCase().includes(search.toLocaleLowerCase())
+        )
         return validation.includes(true)
       })
     }
@@ -44,7 +56,10 @@ const DataList = ({ list = [], component: Component, filter = [], keyname = 'dat
       config_page.page = 1
     }
 
-    filter_list = filter_list.slice((rows * (config_page.page - 1)), rows * (config_page.page))
+    filter_list = filter_list.slice(
+      rows * (config_page.page - 1),
+      rows * config_page.page
+    )
 
     setPagination(config_page)
     setElements(filter_list)
@@ -54,23 +69,31 @@ const DataList = ({ list = [], component: Component, filter = [], keyname = 'dat
     if (list.length > 0) {
       handleFilterList()
     }
-  }
-  , [filters, list])
+  }, [filters, list])
 
   return (
     <>
       <div>
         <div className="row d-flex justify-content-between">
-          <div className="col-8 col-md-5">
-            <input
-              name="search"
-              placeholder="Buscar..."
-              className="form-control rounded-pill"
-              type="search"
-              onChange={handleSetFilter}
-              autoComplete="off"
-            />
-          </div>
+          {viewFilter
+            ? (
+            <div className="col-8 col-md-5">
+              <input
+                name="search"
+                placeholder="Buscar..."
+                className="form-control rounded-pill"
+                type="search"
+                onChange={handleSetFilter}
+                autoComplete="off"
+              />
+            </div>
+              )
+            : (
+            <div className="col-8 col-md-5">
+              {top ? <h4>{title}</h4> : { children }}
+            </div>
+              )}
+
           <div className="col-4 col-md-2">
             <select
               name="rows"
@@ -86,7 +109,11 @@ const DataList = ({ list = [], component: Component, filter = [], keyname = 'dat
         <div className="my-3">
           <ul className="list-group list-group-flush list my--3">
             {elements.map((element, key) => (
-              <Component key={`${keyname}-n${key + 1}`} data={element} />
+              <Component
+                key={`${keyname}-n${key + 1}`}
+                data={element}
+                actions={actions}
+              />
             ))}
           </ul>
         </div>

@@ -22865,7 +22865,7 @@ textarea.form-control-lg {
     margin-bottom: 0.2rem;
 }
 
-.sidebar .nav-item.active > .nav-link {
+.sidebar .nav-item .active > .nav-link {
     color: #F2F4F6;
     background-color: #374151;
 }
