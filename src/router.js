@@ -33,7 +33,9 @@ import {
   Productos,
   FormProductos,
   DetalleProducto,
-  Precios
+  Precios,
+  Ofertas,
+  FormOfertas
 } from './pages/ModuloProductos'
 
 const Rutas = () => {
@@ -49,6 +51,10 @@ const Rutas = () => {
             <>
               <Route path="/" element={<Workspace />}>
                 <Route index element={<Home />} />
+                <Route path="ofertas" >
+                  <Route index element={<Ofertas />} />
+                  <Route path="crear" element={<FormOfertas />} />
+                </Route>
                 <Route path="cuenta">
                   <Route index element={<UserAccount />} />
                   <Route path=":id" element={<EditUser />} />

@@ -13,3 +13,7 @@ export { default as FormProductos } from './Productos/FormProductos'
 export { default as VerProducto } from './Productos/VerProducto'
 export { default as DetalleProducto } from './Productos/DetalleProducto'
 export { default as Precios } from './Parametros/Precios'
+
+// Ofertas
+export { default as Ofertas } from './Ofertas/views/ListOfertas'
+export { default as FormOfertas } from './Ofertas/views/FormOfertas'

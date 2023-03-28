@@ -73,6 +73,7 @@ const Sidebar = () => {
 
             <NavItem label={'Inicio'} path={''} iconclass={'fa-solid fa-home'} />
             <NavItem label={'Productos'} path={'productos'} iconclass={'fa-solid fa-box'} />
+            <NavItem label={'Ofertas'} path={'ofertas'} iconclass={'fa-solid fa-percent'} />
             {
               session.rol === 'admin' &&
               <>
