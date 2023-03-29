@@ -11,6 +11,14 @@ const FormOfertas = () => {
   const [form, setForm] = useSetForm({})
   const [alerts, setAlerts] = useState({})
   const productos = [
+    { modelo: 'LGTV', precio: 20000, descuento: 50 },
+    { modelo: 'LGTV', precio: 20000, descuento: 50 },
+    { modelo: 'LGTV', precio: 20000, descuento: 50 },
+    { modelo: 'LGTV', precio: 20000, descuento: 50 },
+    { modelo: 'LGTV', precio: 20000, descuento: 50 },
+    { modelo: 'LGTV', precio: 20000, descuento: 50 },
+    { modelo: 'LGTV', precio: 20000, descuento: 50 },
+    { modelo: 'LGTV', precio: 20000, descuento: 50 },
     { modelo: 'LGTV', precio: 20000, descuento: 50 }
   ]
 
@@ -32,7 +40,7 @@ const FormOfertas = () => {
   return (
     <CardComponent >
       <form className='row g-3'>
-        <div className='form-group col-12 col-sm-6'>
+        <div className='form-group col-12 col-sm-8 col-md-9 col-lg-9 col-xl-10'>
           <label>Descripción</label>
           <InputRegex
             type="text"
@@ -47,7 +55,7 @@ const FormOfertas = () => {
           <AlertCollapse message={alerts?.descripcion?.message} show={alerts?.descripcion?.show} />
         </div>
 
-        <div className='form-group col-12 col-sm-6'>
+        <div className='form-group col-12 col-sm-4 col-md-3 col-lg-3 col-xl-2'>
           <label>Precio de oferta</label>
           <InputRegex
             type="text"
