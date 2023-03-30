@@ -3,23 +3,25 @@ import CardComponent from '../../../../layouts/Card/CardComponent'
 import InputRegex from '../../../../components/InputRegex'
 import AlertCollapse from '../../../../components/AlertCollapse'
 import { useSetForm } from '../../../../hooks'
-import OfertasModalContext from '../contexts/OfertasModalContext'
+// import OfertasModalContext from '../contexts/OfertasModalContext'
 import DataList from '../../../../components/DataList'
 import ItemProducto from '../components/ItemProducto'
+import ModalProductos from '../components/ModalProductos'
 
 const FormOfertas = () => {
+  const [modal, setModal] = useState(false)
   const [form, setForm] = useSetForm({})
   const [alerts, setAlerts] = useState({})
   const productos = [
-    { modelo: 'LGTV', precio: 20000, descuento: 50 },
-    { modelo: 'LGTV', precio: 20000, descuento: 50 },
-    { modelo: 'LGTV', precio: 20000, descuento: 50 },
-    { modelo: 'LGTV', precio: 20000, descuento: 50 },
-    { modelo: 'LGTV', precio: 20000, descuento: 50 },
-    { modelo: 'LGTV', precio: 20000, descuento: 50 },
-    { modelo: 'LGTV', precio: 20000, descuento: 50 },
-    { modelo: 'LGTV', precio: 20000, descuento: 50 },
-    { modelo: 'LGTV', precio: 20000, descuento: 50 }
+    { label: 'LGTV', precio: 20000, descuento: 50 },
+    { label: 'LGTV', precio: 20000, descuento: 50 },
+    { label: 'LGTV', precio: 20000, descuento: 50 },
+    { label: 'LGBT', precio: 20000, descuento: 50 },
+    { label: 'LGTV', precio: 20000, descuento: 50 },
+    { label: 'LGTV', precio: 20000, descuento: 50 },
+    { label: 'LGTV', precio: 20000, descuento: 50 },
+    { label: 'LGTV', precio: 20000, descuento: 50 },
+    { label: 'LGTV', precio: 20000, descuento: 50 }
   ]
 
   const handleSetForm = (e) => {
@@ -70,11 +72,14 @@ const FormOfertas = () => {
           <AlertCollapse message={alerts?.precio_oferta?.message} show={alerts?.precio_oferta?.show} />
         </div>
 
+        <div>
+          <button className='btn btn-primary' type='button' onClick={() => setModal(true)} >Productos</button>
+          <ModalProductos setShow={setModal} show={modal} />
+        </div>
+
         <div className='form-group col-12'>
           <label>Productos</label>
-          <OfertasModalContext.Provider>
-            <DataList list={productos} component={ItemProducto} />
-          </OfertasModalContext.Provider>
+          <DataList list={productos} component={ItemProducto} filter={['label']} />
         </div>
       </form>
     </CardComponent>
