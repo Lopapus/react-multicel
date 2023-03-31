@@ -4,19 +4,18 @@ import InputRegex from '../../../../components/InputRegex'
 import AlertCollapse from '../../../../components/AlertCollapse'
 import { useSetForm } from '../../../../hooks'
 // import OfertasModalContext from '../contexts/OfertasModalContext'
-import DataList from '../../../../components/DataList'
 import ItemProducto from '../components/ItemProducto'
 import ModalProductos from '../components/ModalProductos'
 import OfertasModalContext from '../contexts/OfertasModalContext'
+import DataTable from '../../../../components/DataTable'
 
 const FormOfertas = () => {
   const [productos, setProductos] = useState(null)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useSetForm({})
   const [alerts, setAlerts] = useState({})
-  // const productos = [
-  //   { label: 'LGTV', precio: 20000, descuento: 50 }
-  // ]
+
+  const listProductos = productos ? productos.filter(producto => producto.checked) : []
 
   const handleSetForm = (e) => {
     const { name } = e.target
@@ -94,13 +93,16 @@ const FormOfertas = () => {
             <ModalProductos setShow={setModal} show={modal} />
           </div>
 
-          <div className='form-group col-12'>
-            <label>Productos</label>
-            {
-              productos &&
-              <DataList list={productos.filter(producto => producto.checked)} component={ItemProducto} filter={['label']} />
-            }
-          </div>
+          {
+            listProductos.length > 0 &&
+            <div className='form-group col-12'>
+              <label>Productos</label>
+              {
+                productos &&
+                <DataTable list={listProductos} component={ItemProducto} filter={['label']} tableClass="table-hover" header={['Producto', 'Descuento', 'Precio', 'Con descuento']} />
+              }
+            </div>
+          }
         </OfertasModalContext.Provider>
       </form>
     </CardComponent>

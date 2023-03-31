@@ -41,7 +41,7 @@ const ModalProductos = () => {
       <Modal.Body>
         {
           !isLoading && !isError && productos &&
-          <DataList list={productos} component={ItemModalProducto} filter={['text']} keyname='productos-modal' />
+          <DataList list={productos} component={ItemModalProducto} filter={['label']} keyname='productos-modal' />
         }
       </Modal.Body>
       <Modal.Footer className='d-flex justify-content-center'>
