@@ -7,22 +7,16 @@ import { useSetForm } from '../../../../hooks'
 import DataList from '../../../../components/DataList'
 import ItemProducto from '../components/ItemProducto'
 import ModalProductos from '../components/ModalProductos'
+import OfertasModalContext from '../contexts/OfertasModalContext'
 
 const FormOfertas = () => {
+  const [productos, setProductos] = useState(null)
   const [modal, setModal] = useState(false)
   const [form, setForm] = useSetForm({})
   const [alerts, setAlerts] = useState({})
-  const productos = [
-    { label: 'LGTV', precio: 20000, descuento: 50 },
-    { label: 'LGTV', precio: 20000, descuento: 50 },
-    { label: 'LGTV', precio: 20000, descuento: 50 },
-    { label: 'LGBT', precio: 20000, descuento: 50 },
-    { label: 'LGTV', precio: 20000, descuento: 50 },
-    { label: 'LGTV', precio: 20000, descuento: 50 },
-    { label: 'LGTV', precio: 20000, descuento: 50 },
-    { label: 'LGTV', precio: 20000, descuento: 50 },
-    { label: 'LGTV', precio: 20000, descuento: 50 }
-  ]
+  // const productos = [
+  //   { label: 'LGTV', precio: 20000, descuento: 50 }
+  // ]
 
   const handleSetForm = (e) => {
     const { name } = e.target
@@ -33,6 +27,27 @@ const FormOfertas = () => {
       }
     }
     setForm(e)
+  }
+
+  const handleCheckProducto = (position) => {
+    const update = [...productos]
+    update[position].checked = !update[position].checked
+    setProductos(update)
+  }
+
+  const handleUpdateDescuento = (position, descuento) => {
+    const update = [...productos]
+    update[position].descuento = descuento
+    update[position].precio = parseInt(update[position].precio_real - (update[position].precio_real * (descuento / 100)))
+    setProductos(update)
+  }
+
+  const context = {
+    productos,
+    setProductos,
+    checkProducto: handleCheckProducto,
+    updateDescuento: handleUpdateDescuento,
+    modal: { show: modal, setShow: setModal }
   }
 
   useEffect(() => {
@@ -72,15 +87,21 @@ const FormOfertas = () => {
           <AlertCollapse message={alerts?.precio_oferta?.message} show={alerts?.precio_oferta?.show} />
         </div>
 
-        <div>
-          <button className='btn btn-primary' type='button' onClick={() => setModal(true)} >Productos</button>
-          <ModalProductos setShow={setModal} show={modal} />
-        </div>
+        <OfertasModalContext.Provider value={context}>
+          <div>
+            <button className='btn btn-primary' type='button' onClick={() => setModal(true)} >Productos</button>
 
-        <div className='form-group col-12'>
-          <label>Productos</label>
-          <DataList list={productos} component={ItemProducto} filter={['label']} />
-        </div>
+            <ModalProductos setShow={setModal} show={modal} />
+          </div>
+
+          <div className='form-group col-12'>
+            <label>Productos</label>
+            {
+              productos &&
+              <DataList list={productos.filter(producto => producto.checked)} component={ItemProducto} filter={['label']} />
+            }
+          </div>
+        </OfertasModalContext.Provider>
       </form>
     </CardComponent>
   )

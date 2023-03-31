@@ -68,6 +68,8 @@ const DataList = ({
   useEffect(() => {
     if (list.length > 0) {
       handleFilterList()
+    } else {
+      setElements([])
     }
   }, [filters, list])
 
@@ -77,21 +79,21 @@ const DataList = ({
         <div className="row d-flex justify-content-between">
           {viewFilter
             ? (
-            <div className="col-8 col-md-5">
-              <input
-                name="search"
-                placeholder="Buscar..."
-                className="form-control rounded-pill"
-                type="search"
-                onChange={handleSetFilter}
-                autoComplete="off"
-              />
-            </div>
+              <div className="col-8 col-md-5">
+                <input
+                  name="search"
+                  placeholder="Buscar..."
+                  className="form-control rounded-pill"
+                  type="search"
+                  onChange={handleSetFilter}
+                  autoComplete="off"
+                />
+              </div>
               )
             : (
-            <div className="col-8 col-md-5">
-              {top ? <h4>{title}</h4> : { children }}
-            </div>
+              <div className="col-8 col-md-5">
+                {top ? <h4>{title}</h4> : { children }}
+              </div>
               )}
 
           <div className="col-4 col-md-2">
@@ -119,33 +121,33 @@ const DataList = ({
         </div>
         {elements.length === 0 && filters.search !== ''
           ? (
-          <h5 className="text-center">No se encontraron coincidencias</h5>
+            <h5 className="text-center">No se encontraron coincidencias</h5>
             )
           : (
-          <div className="d-flex justify-content-center justify-content-md-end">
-            {pagination.pages > 1 && (
-              <div>
-                <ButtonIcon
-                  disabled={pagination.page === 1}
-                  btncolor={'btn-outline-primary me-2'}
-                  btnsize={'btn-sm'}
-                  iconclass={'fa-solid fa-arrow-left'}
-                  handler={() => handleSetPage(pagination.page - 1)}
-                >
-                  Anterior
-                </ButtonIcon>
-                <ButtonIcon
-                  disabled={pagination.page + 1 > pagination.pages}
-                  btncolor={'btn-outline-primary ms-2'}
-                  btnsize={'btn-sm'}
-                  iconclass={'fa-solid fa-arrow-right'}
-                  handler={() => handleSetPage(pagination.page + 1)}
-                >
-                  Siguiente
-                </ButtonIcon>
-              </div>
-            )}
-          </div>
+            <div className="d-flex justify-content-center justify-content-md-end">
+              {pagination.pages > 1 && (
+                <div>
+                  <ButtonIcon
+                    disabled={pagination.page === 1}
+                    btncolor={'btn-outline-primary me-2'}
+                    btnsize={'btn-sm'}
+                    iconclass={'fa-solid fa-arrow-left'}
+                    handler={() => handleSetPage(pagination.page - 1)}
+                  >
+                    Anterior
+                  </ButtonIcon>
+                  <ButtonIcon
+                    disabled={pagination.page + 1 > pagination.pages}
+                    btncolor={'btn-outline-primary ms-2'}
+                    btnsize={'btn-sm'}
+                    iconclass={'fa-solid fa-arrow-right'}
+                    handler={() => handleSetPage(pagination.page + 1)}
+                  >
+                    Siguiente
+                  </ButtonIcon>
+                </div>
+              )}
+            </div>
             )}
       </div>
     </>

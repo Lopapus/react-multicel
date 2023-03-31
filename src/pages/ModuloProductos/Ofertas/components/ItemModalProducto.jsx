@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import OfertasModalContext from '../contexts/OfertasModalContext'
 
 const ItemModalProducto = ({ data }) => {
-  console.log(data)
+  const { checkProducto } = useContext(OfertasModalContext)
+
+  const handleCheckItem = () => checkProducto(data.position)
+
   return (
     <div className="form-check">
-      <input className="form-check-input" type="checkbox" value="" id={`checkbox-${data.modelo}`} />
-      <label className="form-check-label" htmlFor={`checkbox-${data.modelo}`}>
+      <input className="form-check-input" type="checkbox" checked={data.checked} id={`checkbox-${data.uid}`} onChange={handleCheckItem} />
+      <label className="form-check-label" htmlFor={`checkbox-${data.uid}`}>
         {data.label}
       </label>
     </div>

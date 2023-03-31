@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { useFetchToken } from '../../../../hooks/fetch-multicel'
+import React, { useContext, useEffect } from 'react'
 import Server from '../../../../services/Server'
-import { useQuery } from 'react-query'
-import { Modal } from 'react-bootstrap'
-import ProductosModalContext from '../contexts/ProductosModalContext'
 import DataList from '../../../../components/DataList'
-import ItemModalProducto from './ItemModalProducto'
 import formatProducto from '../helpers/formatProducto'
+import ItemModalProducto from './ItemModalProducto'
+import { Modal } from 'react-bootstrap'
+import { useQuery } from 'react-query'
+import { useFetchToken } from '../../../../hooks/fetch-multicel'
+import OfertasModalContext from '../contexts/OfertasModalContext'
 
-const ModalProductos = ({ show, setShow }) => {
-  // eslint-disable-next-line no-unused-vars
-  const [productos, setProductos] = useState([])
+const ModalProductos = () => {
+  const { productos, setProductos, modal } = useContext(OfertasModalContext)
+  const { show, setShow } = modal
   const fetchToken = useFetchToken()
 
   const handleGetProductos = async () => {
@@ -19,13 +19,13 @@ const ModalProductos = ({ show, setShow }) => {
     if (response.ok) {
       const json = response.syncJson()
       const productos = json.map(
-        producto => formatProducto(producto)
+        (producto, position) => formatProducto(producto, position)
       )
       return productos
     }
   }
 
-  const { data, isLoading, isError } = useQuery(['modal-productos'], handleGetProductos)
+  const { data, isLoading, isError } = useQuery(['modal-productos'], handleGetProductos, { refetchOnWindowFocus: false })
 
   useEffect(() => {
     if (data) {
@@ -40,10 +40,8 @@ const ModalProductos = ({ show, setShow }) => {
       </Modal.Header>
       <Modal.Body>
         {
-          !isLoading && !isError &&
-          <ProductosModalContext.Provider value={{ productos, setProductos }}>
-            <DataList list={productos} component={ItemModalProducto} filter={['text']} />
-          </ProductosModalContext.Provider>
+          !isLoading && !isError && productos &&
+          <DataList list={productos} component={ItemModalProducto} filter={['text']} keyname='productos-modal' />
         }
       </Modal.Body>
       <Modal.Footer className='d-flex justify-content-center'>
