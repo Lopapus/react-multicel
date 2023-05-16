@@ -37,7 +37,7 @@ const Precios = () => {
                 </option>
                 <option value="marcas">Marca</option>
                 <option value="categorias">Categoria</option>
-                <option value="subcategorias">Sub categoria</option>
+                <option value="subcategorias">Subcategoria</option>
               </select>
             </div>
             <div className="col">
@@ -76,7 +76,7 @@ const Precios = () => {
           </div>
         </div>
 
-        <div className="container-fluid">
+        <div className="container-fluid mt-2">
           <div className="row">
             <div className="col">
               <button
@@ -103,7 +103,6 @@ const Precios = () => {
             actions={{ handleToggleCheck, checks }}
             top={true}
         >
-          <div>hola</div>
           </DataList>
         </CardComponent>)
         : (<CardComponent>
