@@ -33,7 +33,9 @@ import {
   Productos,
   FormProductos,
   DetalleProducto,
-  Precios
+  Precios,
+  FormOfertas,
+  Ofertas
 } from './pages/ModuloProductos'
 
 const Rutas = () => {
@@ -98,6 +100,8 @@ const Rutas = () => {
                         <Route path="marcas" element={<Marcas />} />
                         <Route path="precios" element={<Precios />} />
                         <Route path="marcas/:id" element={<FormMarcas />} />
+                        <Route path="ofertas" element={<Ofertas />} />
+                        <Route path="ofertas/:id" element={<FormOfertas />} />
                       </Route>
                       <Route path="productos">
                         <Route index element={<Productos />} />
@@ -110,24 +114,11 @@ const Rutas = () => {
                         />
                         <Route path="detalle" element={<Navigate to="../" />} />
                       </Route>
-
-                      {/* <Route path='parametros' element={<Navigate to='../' />} /> */}
-                      {/* <Route path="parametros/categorias">
-                    <Route index element={<Categorias />} />
-                    <Route path=':id' element={<FormCategorias />} />
-                  </Route> */}
-                      {/* <Route path="parametros/subcategorias">
-                    <Route index element={<Subcategorias />} />
-                    <Route path=':id' element={<FormSubcategorias />} />
-                  </Route> */}
-                      {/* <Route path="parametros/marcas">
-                    <Route index element={<Marcas />} />
-                    <Route path=':id' element={<FormMarcas />} />
-                  </Route> */}
-                      {/* <Route path="parametros/modelos">
-                    <Route index element={<Modelos />} />
-                    <Route path=':id' element={<FormModelos />} />
-                  </Route> */}
+                      <Route path="ofertas">
+                        <Route index element={<Navigate to="/" />} />
+                        <Route path="crear" element={<FormOfertas />} />
+                        <Route path="editar/:id" element={<FormOfertas />} />
+                      </Route>
                     </>
                   )
                 }

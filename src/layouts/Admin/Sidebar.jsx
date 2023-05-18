@@ -87,6 +87,11 @@ const Sidebar = () => {
                     <NavItem label={'Precios'} path={'parametros/precios'} iconclass={'fa-solid fa-list'} />
                     {/* <NavItem label={'Modelos'} path={'parametros/modelos'} iconclass={'fa-solid fa-list'} /> */}
                   </NavItemMultilevel>
+
+                  <NavItemMultilevel label={'Ofertas'} iconclass={'fa-regular fa-clipboard'} >
+                    <NavItem label={'Ofertas'} path={'parametros/ofertas'} iconclass={'fa-solid fa-list'} />
+                    {/* <NavItem label={'Modelos'} path={'parametros/modelos'} iconclass={'fa-solid fa-list'} /> */}
+                  </NavItemMultilevel>
                 </NavItemMultilevel>
               </>
             }

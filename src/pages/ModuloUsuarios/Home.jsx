@@ -12,7 +12,7 @@ const Home = () => {
 
         <div className="col animate__animated animate__fadeInLeft">
           <div className="text-start mb-4 mb-xl-0 mb-xxl-4">
-            <h1 className="text-info">Biénvenido al Sistema de <b>Multicel</b></h1>
+            <h1 className="text-info">Bienvenido al Sistema de <b>Multicel</b></h1>
 
             {/* <section className="text-gray-700 text-start">
               <b>En esta versión del sistema podrás realizar las siguientes acciones:</b>

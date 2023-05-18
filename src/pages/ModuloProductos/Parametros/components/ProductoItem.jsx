@@ -16,17 +16,15 @@ const ProductoItem = ({ data, actions }) => {
                 actions.handleToggleCheck(id)
               }}
             />
-            <label className="form-check-label" htmlFor={`${'defaultCheck' + id}`}>
-              <span className="text-primary h6 mb-0">
-                {modelo}
-              </span>{' '}
-              <span>
-                <i>
-                  {categoria.nombre} {subcategoria.nombre} {marca.nombre}
-                </i>
-              </span>{' '}
-              <span className="text-info">{'$' + precio}</span>
-            </label>
+            <div className="form-check-label" htmlFor={`${'defaultCheck' + id}`}>
+              <span className='h6'>
+                {categoria.nombre} {subcategoria.nombre} {marca.nombre} {modelo}
+                <span className='text-info' style={{ marginLeft: '3%' }}>
+                  {'$' + precio}
+                </span>
+              </span>
+
+            </div>
           </div>
         </div>
       </div>

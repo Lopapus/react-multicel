@@ -2,6 +2,10 @@ import DataList from '../../../components/DataList'
 import CardComponent from '../../../layouts/Card/CardComponent'
 import ProductoItemSinOpciones from './components/ProductoItem'
 import useGetListFromSelect from './hooks/useGetListFromSelect'
+import InputRegex from '../../../components/InputRegex'
+import { useSetForm } from '../../../hooks'
+import React, { useState } from 'react'
+/* import AlertCollapse from '../../../components/AlertCollapse' */
 
 const Precios = () => {
   const {
@@ -16,6 +20,20 @@ const Precios = () => {
     handleSelectAllProducts,
     checks
   } = useGetListFromSelect()
+  const [form, setForm] = useSetForm()
+  const [alerts, setAlerts] = useState({})
+
+  const handleSetForm = (e) => {
+    const { name } = e.target
+    console.log(name)
+    if (alerts[name]) {
+      const { message, show } = alerts[name]
+      if (show) {
+        setAlerts({ ...alerts, [name]: { message, show: false } })
+      }
+    }
+    setForm(e)
+  }
 
   return (
     <>
@@ -76,7 +94,7 @@ const Precios = () => {
           </div>
         </div>
 
-        <div className="container-fluid mt-2">
+        <div className="container-fluid mt-3">
           <div className="row">
             <div className="col">
               <button
@@ -90,7 +108,45 @@ const Precios = () => {
           </div>
         </div>
 
+        <div className="container-fluid mt-2">
+          <div className="row">
+            <div className="col-sm-2">
+              <label>Monto (requerido)</label>
+              <div className='form-group col-12'>
+                <InputRegex
+                  type="number"
+                  name="nombre"
+                  id="nombre"
+                  value={form?.nombre || ''}
+                  className='form-control'
+                  onChange={handleSetForm}
+                  regex={/^(?:[A-z0-9\s])*$/gm}
+                  required
+                />
+             {/*    <AlertCollapse message={alerts?.nombre?.message} show={alerts?.nombre?.show} /> */}
+              </div>
+            </div>
+
+            <div className='form-group col-sm-4'>
+            <label>Aplicar...</label>
+              <select
+                className="form-select"
+                id="typeOfFilter"
+                aria-label="Default select example"
+                onChange={(e) => console.log(e.target.value)}
+              >
+                <option selected value="">
+                  Seleccione una opción
+                </option>
+                <option value="1">Porcentaje</option>
+                <option value="2">Monto fijo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
       </CardComponent>
+
       {filteredProductos?.length > 0
         ? (<CardComponent>
           <DataList
@@ -102,7 +158,7 @@ const Precios = () => {
             title="Productos"
             actions={{ handleToggleCheck, checks }}
             top={true}
-        >
+          >
           </DataList>
         </CardComponent>)
         : (<CardComponent>

@@ -10,9 +10,12 @@ const ProductoItem = ({ data }) => {
   return (
     <li className="list-group-item list-group-item-action px-0 border-bottom">
       <div className="row align-items-center" >
-        <div className="col-5 col-auto text-wrap ms-2 flex align-items-center">
+        <div className="col-5 col-auto text-wrap ms-2 flex align-items-center ">
           <span className='h6'>
-            {categoria} {subcategoria} {marca} {modelo} {'$' + precio}
+            {categoria} {subcategoria} {marca} {modelo}
+            <span className='text-info' style={ { marginLeft: '5%' } }>
+              {'$' + precio}
+            </span>
           </span>
           <div className="input-group mb-3"></div>
         </div>
