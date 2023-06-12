@@ -22865,7 +22865,7 @@ textarea.form-control-lg {
     margin-bottom: 0.2rem;
 }
 
-.sidebar .nav-item.active > .nav-link {
+.sidebar .nav-item .active > .nav-link {
     color: #F2F4F6;
     background-color: #374151;
 }
@@ -22891,8 +22891,13 @@ textarea.form-control-lg {
     border-radius: 0.5rem;
 }
 
-.sidebar .nav-link .sidebar-icon {
+.sidebar .nav-link .sidebar-icon-container{
+    width: 2rem;
     margin-right: 0.5rem;
+}
+
+.sidebar .nav-link .sidebar-icon {
+    /* margin-right: 0.5rem; */
     color: #9CA3AF;
 }
 
@@ -22909,9 +22914,9 @@ textarea.form-control-lg {
     color: #F2F4F6;
 }
 
-.sidebar .multi-level .nav-link {
+/* .sidebar .multi-level .nav-link {
     padding-left: 53px;
-}
+} */
 
 .sidebar .sidebar-text,
 .sidebar .link-arrow,

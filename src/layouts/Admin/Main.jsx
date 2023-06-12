@@ -1,12 +1,12 @@
 import Navbar from './Navbar'
+import Breadcrumb from './Breadcrumb'
 const Main = ({ content }) => {
   return (
     <>
-      <main className="content vh-100">
+      <main className="content">
         <Navbar />
-        <div className='pt-3'>
-          {content}
-        </div>
+        <Breadcrumb />
+        {content}
       </main>
     </>
   )
